@@ -1,0 +1,12 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!149 &1
+NetworkManager:
+  m_ObjectHideFlags: 0
+  m_DebugLevel: 0
+  m_Sendrate: 15
+  m_AssetToPrefab:
+  - 7e9f9635acb228c47be47a7d13a616fb: {fileID: 1982295030464427, guid: a6969afe9fffa1740b03987af0795f6b, type: 2}
+  - 09b85ce7d63ba4e44897ef8b88495769: {fileID: 1618106265267859, guid: b19d765bd522bba4ab3619185a60b8ea, type: 2}
+  - fb2d0db849b2f3847a217ed0a0c9bb93: {fileID: 1121631486355633, guid: 81d988a83c00d3f46879e2cb07ca2913, type: 2}
+  - aed8264d0630f144ea495942671e4826: {fileID: 1703089518501812, guid: 859ff8735b2d679409adb4c6a99ff0cd, type: 2}
