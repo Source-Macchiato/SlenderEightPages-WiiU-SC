@@ -1,4 +1,5 @@
 using UnityEngine;
+using WiiU = UnityEngine.WiiU;
 
 public class PickupPage : MonoBehaviour
 {
@@ -12,14 +13,59 @@ public class PickupPage : MonoBehaviour
 
 	public LayerMask mask;
 
+    private WiiU.GamePad gamePad;
+    private WiiU.Remote remote;
+
+    private void Start()
+    {
+        gamePad = WiiU.GamePad.access;
+        remote = WiiU.Remote.Access(0);
+    }
+
 	private void Update()
 	{
-		
+        WiiU.GamePadState gamePadState = gamePad.state;
+        WiiU.RemoteState remoteState = remote.state;
 
-		if (Input.GetMouseButtonDown(0))
-		{
-			PickupPageActions();
-		}
+        // Gamepad
+        if (gamePadState.gamePadErr == WiiU.GamePadError.None)
+        {
+            if (gamePadState.IsTriggered(WiiU.GamePadButton.Y))
+            {
+                PickupPageActions();
+            }
+        }
+
+        // Remotes
+        switch (remoteState.devType)
+        {
+            case WiiU.RemoteDevType.ProController:
+                if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Y))
+                {
+                    PickupPageActions();
+                }
+                break;
+            case WiiU.RemoteDevType.Classic:
+                if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Y))
+                {
+                    PickupPageActions();
+                }
+                break;
+            default:
+                if (remoteState.IsTriggered(WiiU.RemoteButton.A))
+                {
+                    PickupPageActions();
+                }
+                break;
+        }
+
+        if (Application.isEditor)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                PickupPageActions();
+            }
+        }
 	}
 
 	private void PickupPageActions()
