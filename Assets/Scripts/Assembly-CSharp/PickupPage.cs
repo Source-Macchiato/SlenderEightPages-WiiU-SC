@@ -30,7 +30,7 @@ public class PickupPage : MonoBehaviour
         // Gamepad
         if (gamePadState.gamePadErr == WiiU.GamePadError.None)
         {
-            if (gamePadState.IsTriggered(WiiU.GamePadButton.Y))
+            if (gamePadState.IsTriggered(WiiU.GamePadButton.X))
             {
                 PickupPageActions();
             }
@@ -40,13 +40,13 @@ public class PickupPage : MonoBehaviour
         switch (remoteState.devType)
         {
             case WiiU.RemoteDevType.ProController:
-                if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Y))
+                if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.X))
                 {
                     PickupPageActions();
                 }
                 break;
             case WiiU.RemoteDevType.Classic:
-                if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Y))
+                if (remoteState.classic.IsTriggered(WiiU.ClassicButton.X))
                 {
                     PickupPageActions();
                 }

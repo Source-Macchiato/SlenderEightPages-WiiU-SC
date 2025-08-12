@@ -18,8 +18,11 @@ public class SprintScript : MonoBehaviour
 
 	private float dist;
 
-	private void Start()
+	private PlayerScript playerScript;
+
+    private void Start()
 	{
+		playerScript = FindObjectOfType<PlayerScript>();
 		chMotor = GetComponent<CharacterMotor>();
 		tr = base.transform;
 		CharacterController component = GetComponent<CharacterController>();
@@ -30,7 +33,7 @@ public class SprintScript : MonoBehaviour
 	{
 		float to = 1f;
 		float maxForwardSpeed = walkSpeed;
-		if (Input.GetButton("Jog/Sprint") && chMotor.grounded && view.stamina > 10f)
+		if (playerScript.canRun && chMotor.grounded && view.stamina > 10f)
 		{
 			maxForwardSpeed = ((view.scared <= 0) ? jogSpeed : runSpeed);
 		}

@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using WiiU = UnityEngine.WiiU;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -116,9 +118,7 @@ public class PlayerScript : MonoBehaviour
 
 	public int fadeoutgui = 400;
 
-	public MouseLook ml1;
-
-	public MouseLook ml2;
+	public MouseLook mouseLook;
 
 	public CharacterMotor cm;
 
@@ -174,12 +174,22 @@ public class PlayerScript : MonoBehaviour
 
 	public LayerMask mask;
 
-	private void Start()
+	public bool canRun;
+	public bool enableFlashlight;
+
+	public Vector2 direction = Vector2.zero;
+
+    private WiiU.GamePad gamePad;
+    private WiiU.Remote remote;
+
+    private void Start()
 	{
 		cm.canControl = false;
-		ml1.enabled = false;
-		ml2.enabled = false;
-	}
+        mouseLook.enabled = false;
+
+        gamePad = WiiU.GamePad.access;
+        remote = WiiU.Remote.Access(0);
+    }
 
 	private void OnGUI()
 	{
@@ -204,7 +214,193 @@ public class PlayerScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (!paused)
+        WiiU.GamePadState gamePadState = gamePad.state;
+        WiiU.RemoteState remoteState = remote.state;
+
+        // Gamepad
+        if (gamePadState.gamePadErr == WiiU.GamePadError.None)
+        {
+            Vector2 leftStickGamepad = gamePadState.lStick;
+
+			if (Mathf.Abs(leftStickGamepad.x) > 0.1f)
+			{
+				direction.x = leftStickGamepad.x;
+			}
+
+			if (Mathf.Abs(leftStickGamepad.y) > 0.1f)
+			{
+				direction.y = leftStickGamepad.y;
+			}
+
+            if (gamePadState.IsTriggered(WiiU.GamePadButton.ZR))
+            {
+                canRun = true;
+            }
+            else if (gamePadState.IsReleased(WiiU.GamePadButton.ZR))
+            {
+                canRun = false;
+            }
+
+			if (gamePadState.IsTriggered(WiiU.GamePadButton.StickR))
+			{
+				enableFlashlight = !enableFlashlight;
+			}
+			else if (gamePadState.IsTriggered(WiiU.GamePadButton.Y))
+			{
+				enableFlashlight = !enableFlashlight;
+			}
+        }
+
+        // Remotes
+        switch (remoteState.devType)
+        {
+            case WiiU.RemoteDevType.ProController:
+                Vector2 leftStickProController = remoteState.pro.leftStick;
+
+				if (Mathf.Abs(leftStickProController.x) > 0.1f)
+				{
+					direction.x = leftStickProController.x;
+				}
+
+				if (Mathf.Abs(leftStickProController.y) > 0.1f)
+				{
+					direction.y = leftStickProController.y;
+				}
+
+                if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.ZR))
+                {
+                    canRun = true;
+                }
+                else if (remoteState.pro.IsReleased(WiiU.ProControllerButton.ZR))
+                {
+                    canRun = false;
+                }
+
+				if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.StickR))
+				{
+					enableFlashlight = !enableFlashlight;
+				}
+				else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Y))
+				{
+					enableFlashlight = !enableFlashlight;
+				}
+				break;
+            case WiiU.RemoteDevType.Classic:
+                Vector2 leftStickClassicController = remoteState.classic.leftStick;
+
+				if (Mathf.Abs(leftStickClassicController.x) > 0.1f)
+				{
+					direction.x = leftStickClassicController.x;
+				}
+
+				if (Mathf.Abs(leftStickClassicController.y) > 0.1f)
+				{
+					direction.y = leftStickClassicController.y;
+				}
+
+                if (remoteState.classic.IsTriggered(WiiU.ClassicButton.R))
+                {
+                    canRun = true;
+                }
+                else if (remoteState.classic.IsReleased(WiiU.ClassicButton.R))
+                {
+                    canRun = false;
+                }
+
+                if (remoteState.classic.IsTriggered(WiiU.ClassicButton.ZR))
+                {
+                    canRun = true;
+                }
+                else if (remoteState.classic.IsReleased(WiiU.ClassicButton.ZR))
+                {
+                    canRun = false;
+                }
+
+				if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Y))
+				{
+					enableFlashlight = !enableFlashlight;
+				}
+                break;
+            default:
+                Vector2 stickNunchuk = remoteState.nunchuk.stick;
+
+				if (Mathf.Abs(stickNunchuk.x) > 0.1f)
+				{
+					direction.x = stickNunchuk.x;
+				}
+
+				if (Mathf.Abs(stickNunchuk.y) > 0.1f)
+				{
+					direction.y = stickNunchuk.y;
+				}
+
+                if (remoteState.IsTriggered(WiiU.RemoteButton.B))
+                {
+                    canRun = true;
+                }
+                else if (remoteState.IsReleased(WiiU.RemoteButton.B))
+                {
+                    canRun = false;
+                }
+
+				if (remoteState.IsTriggered(WiiU.RemoteButton.Down))
+				{
+					enableFlashlight = !enableFlashlight;
+				}
+                break;
+        }
+
+		if (Application.isEditor)
+		{
+			if (Input.GetKeyDown(KeyCode.LeftShift))
+			{
+				canRun = true;
+			}
+			else if (Input.GetKeyUp(KeyCode.LeftShift))
+			{
+				canRun = false;
+			}
+
+			// Y axis
+			if (Input.GetKeyDown(KeyCode.W))
+			{
+				direction.y = 1;
+			}
+			else if (Input.GetKeyUp(KeyCode.W))
+			{
+				direction.y = 0;
+			}
+
+			if (Input.GetKeyDown(KeyCode.S))
+			{
+				direction.y = -1;
+			}
+			else if (Input.GetKeyUp(KeyCode.S))
+			{
+				direction.y = 0;
+			}
+
+			// X axis
+			if (Input.GetKeyDown(KeyCode.D))
+			{
+				direction.x = 1;
+			}
+			else if (Input.GetKeyUp(KeyCode.D))
+			{
+				direction.x = 0;
+			}
+
+			if (Input.GetKeyDown(KeyCode.A))
+			{
+				direction.x = -1;
+			}
+			else if (Input.GetKeyUp(KeyCode.A))
+			{
+				direction.x = 0;
+			}
+		}
+
+        if (!paused)
 		{
 			if (debug)
 			{
@@ -249,8 +445,7 @@ public class PlayerScript : MonoBehaviour
 						paused = true;
 						Time.timeScale = 0f;
 						cm.canControl = false;
-						ml1.enabled = false;
-						ml2.enabled = false;
+                        mouseLook.enabled = false;
 					}
 					else if (!lost)
 					{
@@ -264,7 +459,7 @@ public class PlayerScript : MonoBehaviour
 			}
 			if (startgame.fltype == 0)
 			{
-				if ((Input.GetMouseButtonDown(1) || Input.GetButtonDown("Flashlight")) && startgame.timer >= 1600 && ((!lost && !daytime) || (endgame.timeleft > 250 && endgame.timeleft < 950 && daytime)))
+				if ((Input.GetButtonDown("Flashlight")) && startgame.timer >= 1600 && ((!lost && !daytime) || (endgame.timeleft > 250 && endgame.timeleft < 950 && daytime)))
 				{
 					if (torch.enabled)
 					{
@@ -292,7 +487,7 @@ public class PlayerScript : MonoBehaviour
 			}
 			if (startgame.gamestarted)
 			{
-				Screen.lockCursor = true;
+				Cursor.lockState = CursorLockMode.Locked;
 			}
 		}
 		else if (Input.GetKeyDown("escape"))
@@ -300,16 +495,14 @@ public class PlayerScript : MonoBehaviour
 			paused = false;
 			Time.timeScale = 1f;
 			cm.canControl = true;
-			ml1.enabled = true;
-			ml2.enabled = true;
+            mouseLook.enabled = true;
 		}
 		else if (Input.GetKeyDown("space"))
 		{
 			Time.timeScale = 1f;
 			cm.canControl = true;
-			ml1.enabled = true;
-			ml2.enabled = true;
-			Application.LoadLevel(0);
+            mouseLook.enabled = true;
+			SceneManager.LoadScene(0);
 		}
 		if (endflicker)
 		{
@@ -427,7 +620,7 @@ public class PlayerScript : MonoBehaviour
 		}
 		if (caught && !lost)
 		{
-			ml1.enabled = false;
+            mouseLook.enabled = false;
 			cm.canControl = false;
 			Vector3 vector = new Vector3(SM.transform.position.x, SM.transform.position.y + 1f, SM.transform.position.z);
 			Quaternion to = Quaternion.LookRotation(vector - base.transform.parent.transform.position);
@@ -580,7 +773,7 @@ public class PlayerScript : MonoBehaviour
 				{
 					scared--;
 				}
-				if (Input.GetButton("Jog/Sprint") && Input.GetAxis("Vertical") > 0f)
+				if (canRun && direction.y > 0f)
 				{
 					if (!amrunning && stamina >= 10f)
 					{
@@ -669,7 +862,7 @@ public class PlayerScript : MonoBehaviour
 						{
 							torch.transform.rotation = Quaternion.Slerp(torch.transform.rotation, to2, Time.deltaTime * (2f + (60f - (float)sprintcooldown) / 10f));
 						}
-						if (Input.GetAxis("Vertical") != 0f || Input.GetAxis("Horizontal") != 0f)
+						if (direction.y != 0f || direction.x != 0f)
 						{
 							stamina += 0.05f;
 						}
@@ -682,7 +875,7 @@ public class PlayerScript : MonoBehaviour
 							stamina = maxstam;
 						}
 					}
-					if (Input.GetAxis("Vertical") != 0f || Input.GetAxis("Horizontal") != 0f)
+					if (direction.y != 0f || direction.x != 0f)
 					{
 						stepcd -= 4;
 					}
@@ -881,8 +1074,8 @@ public class PlayerScript : MonoBehaviour
 			else if (startgame.timer == 1599)
 			{
 				cm.canControl = true;
-				ml1.enabled = true;
-				ml2.enabled = true;
+                mouseLook.enabled = true;
+
 				if (daytime)
 				{
 					torch.enabled = false;
@@ -907,16 +1100,14 @@ public class PlayerScript : MonoBehaviour
 		if (endgame.timeleft >= 250)
 		{
 			cm.canControl = true;
-			ml1.enabled = true;
-			ml2.enabled = true;
+            mouseLook.enabled = true;
 		}
 		if (endgame.timeleft >= 950)
 		{
 			breathing.volume = 0f;
 			zsound.volume = 0f;
 			cm.canControl = false;
-			ml1.enabled = false;
-			ml2.enabled = false;
+            mouseLook.enabled = false;
 		}
 		if (pages < 8 || endgame.timeleft < 1000 + endgame.mhdelay)
 		{

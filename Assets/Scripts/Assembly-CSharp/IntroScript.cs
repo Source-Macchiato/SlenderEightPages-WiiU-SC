@@ -22,9 +22,7 @@ public class IntroScript : MonoBehaviour
 
 	public bool extmenu;
 
-	public MouseLook mlx;
-
-	public MouseLook mly;
+	public MouseLook mouseLook;
 
 	public GUISkin menu;
 
@@ -88,17 +86,7 @@ public class IntroScript : MonoBehaviour
 		view.fadeoutgui = 400;
 		mainview.enabled = false;
 		base.GetComponent<Camera>().enabled = true;
-		if (PlayerPrefs.HasKey("minvert"))
-		{
-			if (PlayerPrefs.GetInt("minvert") == 1)
-			{
-				mly.inverted = true;
-			}
-		}
-		else
-		{
-			PlayerPrefs.SetInt("minvert", 0);
-		}
+
 		if (PlayerPrefs.HasKey("daytime"))
 		{
 			if (PlayerPrefs.GetInt("daytime") == 1)
@@ -110,6 +98,7 @@ public class IntroScript : MonoBehaviour
 		{
 			PlayerPrefs.SetInt("daytime", 0);
 		}
+
 		if (PlayerPrefs.HasKey("trees"))
 		{
 			if (PlayerPrefs.GetFloat("trees") < 20f)
@@ -148,14 +137,14 @@ public class IntroScript : MonoBehaviour
 		}
 		if (PlayerPrefs.HasKey("msensitivity"))
 		{
-			mlx.sensitivityX = PlayerPrefs.GetFloat("msensitivity");
-			mly.sensitivityY = PlayerPrefs.GetFloat("msensitivity");
+			mouseLook.sensitivityX = PlayerPrefs.GetFloat("msensitivity");
+			mouseLook.sensitivityY = PlayerPrefs.GetFloat("msensitivity");
 		}
 		else
 		{
 			PlayerPrefs.SetFloat("msensitivity", 5f);
-			mlx.sensitivityX = 5f;
-			mlx.sensitivityY = 5f;
+			mouseLook.sensitivityX = 5f;
+			mouseLook.sensitivityY = 5f;
 		}
 		if (PlayerPrefs.HasKey("skintro"))
 		{
@@ -554,27 +543,13 @@ public class IntroScript : MonoBehaviour
 		}
 		else if (optmenu)
 		{
-			bool inverted = mly.inverted;
-			mly.inverted = GUI.Toggle(new Rect(210f, 50f, 180f, 20f), mly.inverted, "Invert Mouse");
-			if (inverted != mly.inverted)
-			{
-				view.flashlight.Play();
-				if (mly.inverted)
-				{
-					PlayerPrefs.SetInt("minvert", 1);
-				}
-				else
-				{
-					PlayerPrefs.SetInt("minvert", 0);
-				}
-			}
 			GUI.Label(new Rect(210f, 75f, 80f, 20f), "Sensitivity");
-			float sensitivityX = mlx.sensitivityX;
+			float sensitivityX = mouseLook.sensitivityX;
 			sensitivityX = GUI.HorizontalSlider(new Rect(290f, 80f, 115f, 15f), sensitivityX, 1f, 30f);
-			if (sensitivityX != mlx.sensitivityX)
+			if (sensitivityX != mouseLook.sensitivityX)
 			{
-				mlx.sensitivityX = sensitivityX;
-				mly.sensitivityY = sensitivityX;
+				mouseLook.sensitivityX = sensitivityX;
+				mouseLook.sensitivityY = sensitivityX;
 				PlayerPrefs.SetFloat("msensitivity", sensitivityX);
 			}
 			GUI.Label(new Rect(210f, 125f, 80f, 20f), "Grass Level");

@@ -7,15 +7,17 @@ using UnityEngine;
 public class FPSInputController : MonoBehaviour
 {
 	private CharacterMotor motor;
+	private PlayerScript playerScript;
 
 	public virtual void Awake()
 	{
-		motor = (CharacterMotor)GetComponent(typeof(CharacterMotor));
+		motor = GetComponent<CharacterMotor>();
+		playerScript = FindObjectOfType<PlayerScript>();
 	}
 
 	public virtual void Update()
 	{
-		Vector3 vector = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+		Vector3 vector = new Vector3(playerScript.direction.x, 0f, playerScript.direction.y);
 		if (vector != Vector3.zero)
 		{
 			float magnitude = vector.magnitude;
@@ -25,9 +27,5 @@ public class FPSInputController : MonoBehaviour
 			vector *= magnitude;
 		}
 		motor.inputMoveDirection = transform.rotation * vector;
-	}
-
-	public virtual void Main()
-	{
 	}
 }
