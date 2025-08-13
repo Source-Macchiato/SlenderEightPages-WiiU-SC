@@ -176,6 +176,8 @@ public class PlayerScript : MonoBehaviour
 
 	public bool canRun;
 	public bool enableFlashlight;
+	private bool zoomIn;
+	private bool zoomOut;
 
 	public Vector2 direction = Vector2.zero;
 
@@ -232,6 +234,7 @@ public class PlayerScript : MonoBehaviour
 				direction.y = leftStickGamepad.y;
 			}
 
+			// Toggle run
             if (gamePadState.IsTriggered(WiiU.GamePadButton.ZR))
             {
                 canRun = true;
@@ -241,6 +244,7 @@ public class PlayerScript : MonoBehaviour
                 canRun = false;
             }
 
+			// Toggle flashlight
 			if (gamePadState.IsTriggered(WiiU.GamePadButton.StickR))
 			{
 				enableFlashlight = !enableFlashlight;
@@ -249,6 +253,18 @@ public class PlayerScript : MonoBehaviour
 			{
 				enableFlashlight = !enableFlashlight;
 			}
+
+            // Zoom in and out
+            if (gamePadState.IsTriggered(WiiU.GamePadButton.ZL))
+            {
+                zoomOut = false;
+                zoomIn = true;
+            }
+            else if (gamePadState.IsReleased(WiiU.GamePadButton.ZL))
+            {
+                zoomIn = false;
+                zoomOut = true;
+            }
         }
 
         // Remotes
@@ -267,6 +283,7 @@ public class PlayerScript : MonoBehaviour
 					direction.y = leftStickProController.y;
 				}
 
+				// Toggle run
                 if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.ZR))
                 {
                     canRun = true;
@@ -276,6 +293,7 @@ public class PlayerScript : MonoBehaviour
                     canRun = false;
                 }
 
+				// Toggle flashlight
 				if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.StickR))
 				{
 					enableFlashlight = !enableFlashlight;
@@ -284,7 +302,19 @@ public class PlayerScript : MonoBehaviour
 				{
 					enableFlashlight = !enableFlashlight;
 				}
-				break;
+
+                // Zoom in and out
+                if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.ZL))
+                {
+                    zoomOut = false;
+                    zoomIn = true;
+                }
+                else if (remoteState.pro.IsReleased(WiiU.ProControllerButton.ZL))
+                {
+                    zoomIn = false;
+                    zoomOut = true;
+                }
+                break;
             case WiiU.RemoteDevType.Classic:
                 Vector2 leftStickClassicController = remoteState.classic.leftStick;
 
@@ -298,6 +328,7 @@ public class PlayerScript : MonoBehaviour
 					direction.y = leftStickClassicController.y;
 				}
 
+				// Toggle run
                 if (remoteState.classic.IsTriggered(WiiU.ClassicButton.R))
                 {
                     canRun = true;
@@ -316,9 +347,32 @@ public class PlayerScript : MonoBehaviour
                     canRun = false;
                 }
 
-				if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Y))
+                // Toggle flashlight
+                if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Y))
 				{
 					enableFlashlight = !enableFlashlight;
+				}
+
+                // Zoom in and out
+				if (remoteState.classic.IsTriggered(WiiU.ClassicButton.L))
+				{
+					zoomOut = false;
+					zoomIn = true;
+				}
+				else if (remoteState.classic.IsReleased(WiiU.ClassicButton.L))
+				{
+					zoomIn = false;
+					zoomOut = true;
+				}
+				else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.ZL))
+				{
+					zoomOut = false;
+					zoomIn = true;
+				}
+				else if (remoteState.classic.IsReleased(WiiU.ClassicButton.ZL))
+				{
+					zoomIn = false;
+					zoomOut = true;
 				}
                 break;
             default:
@@ -334,6 +388,8 @@ public class PlayerScript : MonoBehaviour
 					direction.y = stickNunchuk.y;
 				}
 
+
+				// Toggle run
                 if (remoteState.IsTriggered(WiiU.RemoteButton.B))
                 {
                     canRun = true;
@@ -343,24 +399,36 @@ public class PlayerScript : MonoBehaviour
                     canRun = false;
                 }
 
-				if (remoteState.IsTriggered(WiiU.RemoteButton.Down))
+
+				// Toggle flashlight
+				if (remoteState.IsTriggered(WiiU.RemoteButton.One))
 				{
 					enableFlashlight = !enableFlashlight;
 				}
-                break;
+
+                // Zoom in and out
+				if (remoteState.IsTriggered(WiiU.RemoteButton.Minus))
+				{
+					zoomOut = true;
+				}
+				else if (remoteState.IsReleased(WiiU.RemoteButton.Minus))
+				{
+					zoomOut = false;
+				}
+
+				if (remoteState.IsTriggered(WiiU.RemoteButton.Plus))
+				{
+					zoomIn = true;
+				}
+				else if (remoteState.IsReleased(WiiU.RemoteButton.Plus))
+				{
+					zoomIn = false;
+				}
+				break;
         }
 
 		if (Application.isEditor)
 		{
-			if (Input.GetKeyDown(KeyCode.LeftShift))
-			{
-				canRun = true;
-			}
-			else if (Input.GetKeyUp(KeyCode.LeftShift))
-			{
-				canRun = false;
-			}
-
 			// Y axis
 			if (Input.GetKeyDown(KeyCode.W))
 			{
@@ -397,6 +465,41 @@ public class PlayerScript : MonoBehaviour
 			else if (Input.GetKeyUp(KeyCode.A))
 			{
 				direction.x = 0;
+			}
+
+			// Toggle run
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                canRun = true;
+            }
+            else if (Input.GetKeyUp(KeyCode.LeftShift))
+            {
+                canRun = false;
+            }
+
+			// Toggle flashlight
+            if (Input.GetMouseButtonDown(1))
+			{
+				enableFlashlight = !enableFlashlight;
+			}
+
+			// Zoom in and out
+			if (Input.GetKeyDown(KeyCode.Q))
+			{
+				zoomOut = true;
+			}
+			else if (Input.GetKeyUp(KeyCode.Q))
+			{
+				zoomOut = false;
+			}
+
+			if (Input.GetKeyDown(KeyCode.E))
+			{
+				zoomIn = true;
+			}
+			else if (Input.GetKeyUp(KeyCode.E))
+			{
+				zoomIn = false;
 			}
 		}
 
@@ -459,7 +562,7 @@ public class PlayerScript : MonoBehaviour
 			}
 			if (startgame.fltype == 0)
 			{
-				if ((Input.GetButtonDown("Flashlight")) && startgame.timer >= 1600 && ((!lost && !daytime) || (endgame.timeleft > 250 && endgame.timeleft < 950 && daytime)))
+				if (Input.GetMouseButton(1) && startgame.timer >= 1600 && ((!lost && !daytime) || (endgame.timeleft > 250 && endgame.timeleft < 950 && daytime)))
 				{
 					if (torch.enabled)
 					{
@@ -471,10 +574,11 @@ public class PlayerScript : MonoBehaviour
 					}
 					flashlight.Play();
 				}
+
 			}
 			else if (startgame.fltype == 2)
 			{
-				if ((Input.GetMouseButton(1) || Input.GetButton("Flashlight")) && startgame.timer >= 1600 && ((!lost && !daytime) || (endgame.timeleft > 250 && endgame.timeleft < 950 && daytime)) && !Input.GetButton("Jog/Sprint") && stamina >= 10f)
+				if (Input.GetMouseButton(1) && startgame.timer >= 1600 && ((!lost && !daytime) || (endgame.timeleft > 250 && endgame.timeleft < 950 && daytime)) && !Input.GetButton("Jog/Sprint") && stamina >= 10f)
 				{
 					cranking = true;
 					cranksound.volume = 1f;
@@ -884,7 +988,7 @@ public class PlayerScript : MonoBehaviour
 						stepcd = 120;
 					}
 				}
-				if (Input.GetButton("Zoom In") && !Input.GetButton("Zoom Out") && zoom > 20f)
+				if (zoomIn && !zoomOut && zoom > 20f)
 				{
 					zoom -= 0.75f;
 					if (zoom < 20f)
@@ -893,7 +997,7 @@ public class PlayerScript : MonoBehaviour
 					}
 					zsound.volume = 1f;
 				}
-				else if (Input.GetButton("Zoom Out") && !Input.GetButton("Zoom In") && zoom < 60f)
+				else if (zoomOut && !zoomIn && zoom < 60f)
 				{
 					zoom += 0.75f;
 					if (zoom > 60f)
