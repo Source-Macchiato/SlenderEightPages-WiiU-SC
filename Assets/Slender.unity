@@ -54314,6 +54314,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 23
   canRun: 0
+  flashlightEnabled: 0
   direction: {x: 0, y: 0}
 --- !u!114 &1387
 MonoBehaviour:

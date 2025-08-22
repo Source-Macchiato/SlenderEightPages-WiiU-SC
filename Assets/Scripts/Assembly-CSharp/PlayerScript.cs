@@ -175,7 +175,7 @@ public class PlayerScript : MonoBehaviour
 	public LayerMask mask;
 
 	public bool canRun;
-	public bool enableFlashlight;
+	public bool flashlightEnabled;
 	private bool zoomIn;
 	private bool zoomOut;
 
@@ -247,12 +247,12 @@ public class PlayerScript : MonoBehaviour
 			// Toggle flashlight
 			if (gamePadState.IsTriggered(WiiU.GamePadButton.StickR))
 			{
-				enableFlashlight = !enableFlashlight;
+				ToggleFlashlight(!flashlightEnabled);
 			}
 			else if (gamePadState.IsTriggered(WiiU.GamePadButton.Y))
 			{
-				enableFlashlight = !enableFlashlight;
-			}
+                ToggleFlashlight(!flashlightEnabled);
+            }
 
             // Zoom in and out
             if (gamePadState.IsTriggered(WiiU.GamePadButton.ZL))
@@ -296,12 +296,12 @@ public class PlayerScript : MonoBehaviour
 				// Toggle flashlight
 				if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.StickR))
 				{
-					enableFlashlight = !enableFlashlight;
-				}
+                    ToggleFlashlight(!flashlightEnabled);
+                }
 				else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Y))
 				{
-					enableFlashlight = !enableFlashlight;
-				}
+                    ToggleFlashlight(!flashlightEnabled);
+                }
 
                 // Zoom in and out
                 if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.ZL))
@@ -350,8 +350,8 @@ public class PlayerScript : MonoBehaviour
                 // Toggle flashlight
                 if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Y))
 				{
-					enableFlashlight = !enableFlashlight;
-				}
+                    ToggleFlashlight(!flashlightEnabled);
+                }
 
                 // Zoom in and out
 				if (remoteState.classic.IsTriggered(WiiU.ClassicButton.L))
@@ -403,8 +403,8 @@ public class PlayerScript : MonoBehaviour
 				// Toggle flashlight
 				if (remoteState.IsTriggered(WiiU.RemoteButton.One))
 				{
-					enableFlashlight = !enableFlashlight;
-				}
+                    ToggleFlashlight(!flashlightEnabled);
+                }
 
                 // Zoom in and out
 				if (remoteState.IsTriggered(WiiU.RemoteButton.Minus))
@@ -480,8 +480,8 @@ public class PlayerScript : MonoBehaviour
 			// Toggle flashlight
             if (Input.GetMouseButtonDown(1))
 			{
-				enableFlashlight = !enableFlashlight;
-			}
+                ToggleFlashlight(!flashlightEnabled);
+            }
 
 			// Zoom in and out
 			if (Input.GetKeyDown(KeyCode.Q))
@@ -560,23 +560,7 @@ public class PlayerScript : MonoBehaviour
 					backedup = true;
 				}
 			}
-			if (startgame.fltype == 0)
-			{
-				if (Input.GetMouseButton(1) && startgame.timer >= 1600 && ((!lost && !daytime) || (endgame.timeleft > 250 && endgame.timeleft < 950 && daytime)))
-				{
-					if (torch.enabled)
-					{
-						torch.enabled = false;
-					}
-					else if (battery > 0f)
-					{
-						torch.enabled = true;
-					}
-					flashlight.Play();
-				}
-
-			}
-			else if (startgame.fltype == 2)
+			if (startgame.fltype == 2)
 			{
 				if (Input.GetMouseButton(1) && startgame.timer >= 1600 && ((!lost && !daytime) || (endgame.timeleft > 250 && endgame.timeleft < 950 && daytime)) && !Input.GetButton("Jog/Sprint") && stamina >= 10f)
 				{
@@ -606,7 +590,7 @@ public class PlayerScript : MonoBehaviour
 			Time.timeScale = 1f;
 			cm.canControl = true;
             mouseLook.enabled = true;
-			SceneManager.LoadScene(0);
+			SceneManager.LoadScene("Slender");
 		}
 		if (endflicker)
 		{
@@ -1235,5 +1219,23 @@ public class PlayerScript : MonoBehaviour
 				fadeinmusic = 2f;
 			}
 		}
+	}
+
+	private void ToggleFlashlight(bool status)
+	{
+		if (!paused && startgame.fltype == 0 && startgame.timer >= 1600 && ((!lost && !daytime) || (endgame.timeleft > 250 && endgame.timeleft < 950 && daytime)))
+		{
+            if (torch.enabled)
+            {
+                torch.enabled = false;
+            }
+            else if (battery > 0f)
+            {
+                torch.enabled = true;
+            }
+            flashlight.Play();
+
+			flashlightEnabled = status;
+        }
 	}
 }
