@@ -265,6 +265,12 @@ public class PlayerScript : MonoBehaviour
                 zoomIn = false;
                 zoomOut = true;
             }
+
+			// Skip Intro
+			if (gamePadState.IsTriggered(WiiU.GamePadButton.A))
+			{
+				SkipIntro();
+			}
         }
 
         // Remotes
@@ -314,6 +320,12 @@ public class PlayerScript : MonoBehaviour
                     zoomIn = false;
                     zoomOut = true;
                 }
+
+				// Skip intro
+				if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.A))
+				{
+					SkipIntro();
+				}
                 break;
             case WiiU.RemoteDevType.Classic:
                 Vector2 leftStickClassicController = remoteState.classic.leftStick;
@@ -374,6 +386,12 @@ public class PlayerScript : MonoBehaviour
 					zoomIn = false;
 					zoomOut = true;
 				}
+
+				// Skip intro
+				if (remoteState.classic.IsTriggered(WiiU.ClassicButton.A))
+				{
+					SkipIntro();
+				}
                 break;
             default:
                 Vector2 stickNunchuk = remoteState.nunchuk.stick;
@@ -387,7 +405,6 @@ public class PlayerScript : MonoBehaviour
 				{
 					direction.y = stickNunchuk.y;
 				}
-
 
 				// Toggle run
                 if (remoteState.IsTriggered(WiiU.RemoteButton.B))
@@ -423,6 +440,12 @@ public class PlayerScript : MonoBehaviour
 				else if (remoteState.IsReleased(WiiU.RemoteButton.Plus))
 				{
 					zoomIn = false;
+				}
+
+				// Skip intro
+				if (remoteState.IsTriggered(WiiU.RemoteButton.A))
+				{
+					SkipIntro();
 				}
 				break;
         }
@@ -477,6 +500,12 @@ public class PlayerScript : MonoBehaviour
                 canRun = false;
             }
 
+			// Skip intro
+			if (Input.GetMouseButtonDown(0))
+			{
+				SkipIntro();
+			}
+
 			// Toggle flashlight
             if (Input.GetMouseButtonDown(1))
 			{
@@ -528,11 +557,6 @@ public class PlayerScript : MonoBehaviour
 				{
 					toolong = 60;
 				}
-			}
-			if (Input.GetMouseButtonDown(0) && startgame.timer < 1598 && startgame.timer > 0)
-			{
-				startgame.timer = 1598;
-				climbfence.Stop();
 			}
 			if (Input.GetKeyDown("escape"))
 			{
@@ -1236,6 +1260,15 @@ public class PlayerScript : MonoBehaviour
             flashlight.Play();
 
 			flashlightEnabled = status;
+        }
+	}
+
+	private void SkipIntro()
+	{
+		if (startgame.timer < 1598 && startgame.timer > 0)
+		{
+            startgame.timer = 1598;
+            climbfence.Stop();
         }
 	}
 }

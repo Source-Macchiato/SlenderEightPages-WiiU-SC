@@ -228,9 +228,11 @@ public class IntroScript : MonoBehaviour
 		{
 			PlayerPrefs.SetInt("fltype", 0);
 		}
+
+		StartGame();
 	}
 
-	private void OnGUI()
+	/*private void OnGUI()
 	{
 		if (view.mh)
 		{
@@ -605,7 +607,7 @@ public class IntroScript : MonoBehaviour
 			}
 		}
 		GUI.EndGroup();
-	}
+	}*/
 
 	private void Update()
 	{
@@ -657,4 +659,53 @@ public class IntroScript : MonoBehaviour
 			RenderSettings.ambientLight = Color.gray;
 		}
 	}
+
+	private void StartGame()
+	{
+        gamestarted = true;
+        Screen.lockCursor = false;
+        entry = Random.Range(4, 16);
+        if (view.mh)
+        {
+            timer = 200;
+        }
+        else
+        {
+            stat1.GetComponent<Renderer>().enabled = false;
+            stat2.GetComponent<Renderer>().enabled = false;
+        }
+        if (view.dustyair && !view.daytime)
+        {
+            view.dust.Play();
+        }
+        sk1.enableEmission = false;
+        sk1.Clear();
+        sk2.enableEmission = false;
+        sk2.Clear();
+        sk3.enableEmission = false;
+        sk3.Clear();
+        sk4.enableEmission = false;
+        sk4.Clear();
+        sk5.enableEmission = false;
+        sk5.Clear();
+        sk6.enableEmission = false;
+        sk6.Clear();
+        sk7.enableEmission = false;
+        sk7.Clear();
+        sk8.enableEmission = false;
+        sk8.Clear();
+        toptitle.transform.Rotate(new Vector3(180f, 0f, 0f));
+        thememusic.Stop();
+        switch (fltype)
+        {
+            case 1:
+                flsource.type = LightType.Point;
+                flsource.range = 20f;
+                flsource.color = new Color(0.4f, 1f, 0.6f);
+                break;
+            case 2:
+                flsource.spotAngle = 80f;
+                break;
+        }
+    }
 }
