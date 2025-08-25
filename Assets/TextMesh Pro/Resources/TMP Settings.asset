@@ -29,7 +29,7 @@ MonoBehaviour:
   m_autoSizeTextContainer: 0
   m_fallbackFontAssets: []
   m_matchMaterialPreset: 1
-  m_defaultSpriteAsset: {fileID: 11400000, guid: 5475e193f3a63e24fa620080b16d39ba,
+  m_defaultSpriteAsset: {fileID: 11400000, guid: f243b3f0a85945f4eb4f47f1e38e9c6d,
     type: 2}
   m_defaultSpriteAssetPath: Sprite Assets/
   m_defaultColorGradientPresetsPath: Color Gradient Presets/
