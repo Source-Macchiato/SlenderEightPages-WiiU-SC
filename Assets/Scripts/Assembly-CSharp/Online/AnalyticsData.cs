@@ -9,7 +9,7 @@ public class AnalyticsData : MonoBehaviour
 {
     public static AnalyticsData analyticsData;
 
-    private string projectToken = "84c14daff12d468d51c2f849ee2bf6de8329a5e4080c7e2ab895ab3623fdf6a1";
+    private string projectToken = "31bd0a33956e67961b6cc12117530e188d95d89d35cd435339883c67c0e370bc";
     private string analyticsToken;
 
     MenuManager menuManager;
