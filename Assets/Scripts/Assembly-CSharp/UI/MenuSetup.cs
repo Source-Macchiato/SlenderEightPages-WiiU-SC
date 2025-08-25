@@ -1,14 +1,24 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class MenuSetup : MonoBehaviour {
+public class MenuSetup : MonoBehaviour
+{
+	private MenuManager menuManager;
 
 	// Use this for initialization
-	void Start () {
-		
+	void Start()
+	{
+		menuManager = FindObjectOfType<MenuManager>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
+	// Button functions
+	public void StartGame()
+	{
+		if (menuManager.canNavigate)
+		{
+			menuManager.canNavigate = false;
+
+            SceneManager.LoadSceneAsync("Slender");
+        }
 	}
 }
