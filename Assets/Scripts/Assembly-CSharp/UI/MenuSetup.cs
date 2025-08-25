@@ -18,7 +18,7 @@ public class MenuSetup : MonoBehaviour
 		{
 			menuManager.canNavigate = false;
 
-            SceneManager.LoadSceneAsync("Slender");
+            SceneManager.LoadSceneAsync("Loading");
         }
 	}
 }
