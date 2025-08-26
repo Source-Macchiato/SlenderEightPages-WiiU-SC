@@ -636,13 +636,6 @@ public class PlayerScript : MonoBehaviour
 				Cursor.lockState = CursorLockMode.Locked;
 			}
 		}
-		else if (Input.GetKeyDown("space"))
-		{
-			Time.timeScale = 1f;
-			cm.canControl = true;
-            mouseLook.enabled = true;
-			SceneManager.LoadScene("Slender");
-		}
 		if (endflicker)
 		{
 			endflicker = false;
