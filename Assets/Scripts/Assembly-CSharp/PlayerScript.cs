@@ -216,6 +216,9 @@ public class PlayerScript : MonoBehaviour
 
 	private void Update()
 	{
+        // Reset direction at each frames
+        direction = Vector2.zero;
+
         WiiU.GamePadState gamePadState = gamePad.state;
         WiiU.RemoteState remoteState = remote.state;
 
@@ -453,41 +456,25 @@ public class PlayerScript : MonoBehaviour
 		if (Application.isEditor)
 		{
 			// Y axis
-			if (Input.GetKeyDown(KeyCode.W))
+			if (Input.GetKey(KeyCode.W))
 			{
 				direction.y = 1;
 			}
-			else if (Input.GetKeyUp(KeyCode.W))
-			{
-				direction.y = 0;
-			}
 
-			if (Input.GetKeyDown(KeyCode.S))
+			if (Input.GetKey(KeyCode.S))
 			{
 				direction.y = -1;
 			}
-			else if (Input.GetKeyUp(KeyCode.S))
-			{
-				direction.y = 0;
-			}
 
 			// X axis
-			if (Input.GetKeyDown(KeyCode.D))
+			if (Input.GetKey(KeyCode.D))
 			{
 				direction.x = 1;
 			}
-			else if (Input.GetKeyUp(KeyCode.D))
-			{
-				direction.x = 0;
-			}
 
-			if (Input.GetKeyDown(KeyCode.A))
+			if (Input.GetKey(KeyCode.A))
 			{
 				direction.x = -1;
-			}
-			else if (Input.GetKeyUp(KeyCode.A))
-			{
-				direction.x = 0;
 			}
 
 			// Toggle run
