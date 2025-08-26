@@ -13,6 +13,10 @@ public class PickupPage : MonoBehaviour
 
 	public LayerMask mask;
 
+    [SerializeField] private GameObject pickupText;
+
+    private RaycastHit hitInfo;
+
     private WiiU.GamePad gamePad;
     private WiiU.Remote remote;
 
@@ -66,11 +70,8 @@ public class PickupPage : MonoBehaviour
                 PickupPageActions();
             }
         }
-	}
 
-	private void PickupPageActions()
-	{
-        RaycastHit hitInfo;
+        // Detect player looking at pages
         if (base.GetComponent<Renderer>().isVisible)
         {
             if ((double)Vector3.Distance(base.transform.position, player.position) <= 2.0)
@@ -93,6 +94,11 @@ public class PickupPage : MonoBehaviour
             view.nearpage = null;
         }
 
+        pickupText.SetActive(withinrange);
+    }
+
+	private void PickupPageActions()
+	{
         if (withinrange && Physics.Raycast(player.position, (base.transform.position - player.position).normalized, out hitInfo, 2f, mask) && hitInfo.collider.gameObject == base.gameObject)
 		{
             if ((view.pages == 0 || view.pages == 2 || view.pages == 4 || view.pages == 6 || view.pages == 7) && view.level == 0)

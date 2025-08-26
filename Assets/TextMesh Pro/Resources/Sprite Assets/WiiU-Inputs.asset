@@ -64,7 +64,7 @@ MonoBehaviour:
     width: 100
     height: 100
     xOffset: 0
-    yOffset: 80
+    yOffset: 85
     xAdvance: 100
     scale: 1
     name: WiiU-X
