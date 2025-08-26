@@ -44,7 +44,6 @@ public class SaveManager : MonoBehaviour
 [Serializable]
 public class SaveData
 {
-    public Game game = new Game();
     public Settings settings = new Settings();
     public bool[] achievements = new bool[Enum.GetValues(typeof(Achievements.achievements)).Length];
 
@@ -57,14 +56,6 @@ public class SaveData
     {
         achievements[(int)a] = true;
     }
-}
-
-[Serializable]
-public class Game
-{
-    public int nightNumber = 0;
-    public int starsId = 0;
-    public bool goldenFreddyUnlocked = false;
 }
 
 [Serializable]

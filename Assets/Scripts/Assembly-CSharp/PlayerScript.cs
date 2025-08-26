@@ -274,6 +274,23 @@ public class PlayerScript : MonoBehaviour
 			{
 				SkipIntro();
 			}
+
+			if (gamePadState.IsTriggered(WiiU.GamePadButton.B))
+			{
+				SetGamePlayed();
+			}
+
+			if (gamePadState.IsTriggered(WiiU.GamePadButton.Plus))
+			{
+                if (paused)
+                {
+                    SetGamePlayed();
+                }
+                else
+                {
+                    SetGamePaused();
+                }
+            }
         }
 
         // Remotes
@@ -329,6 +346,23 @@ public class PlayerScript : MonoBehaviour
 				{
 					SkipIntro();
 				}
+
+				if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.B))
+				{
+					SetGamePlayed();
+				}
+
+				if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Plus))
+				{
+                    if (paused)
+                    {
+                        SetGamePlayed();
+                    }
+                    else
+                    {
+                        SetGamePaused();
+                    }
+                }
                 break;
             case WiiU.RemoteDevType.Classic:
                 Vector2 leftStickClassicController = remoteState.classic.leftStick;
@@ -395,6 +429,23 @@ public class PlayerScript : MonoBehaviour
 				{
 					SkipIntro();
 				}
+
+				if (remoteState.classic.IsTriggered(WiiU.ClassicButton.B))
+				{
+					SetGamePlayed();
+				}
+
+				if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Plus))
+				{
+                    if (paused)
+                    {
+                        SetGamePlayed();
+                    }
+                    else
+                    {
+                        SetGamePaused();
+                    }
+                }
                 break;
             default:
                 Vector2 stickNunchuk = remoteState.nunchuk.stick;
@@ -409,16 +460,15 @@ public class PlayerScript : MonoBehaviour
 					direction.y = stickNunchuk.y;
 				}
 
-				// Toggle run
                 if (remoteState.IsTriggered(WiiU.RemoteButton.B))
                 {
                     canRun = true;
+					SetGamePlayed();
                 }
                 else if (remoteState.IsReleased(WiiU.RemoteButton.B))
                 {
                     canRun = false;
                 }
-
 
 				// Toggle flashlight
 				if (remoteState.IsTriggered(WiiU.RemoteButton.One))
@@ -427,20 +477,20 @@ public class PlayerScript : MonoBehaviour
                 }
 
                 // Zoom in and out
-				if (remoteState.IsTriggered(WiiU.RemoteButton.Minus))
+				if (remoteState.IsTriggered(WiiU.RemoteButton.Down))
 				{
 					zoomOut = true;
 				}
-				else if (remoteState.IsReleased(WiiU.RemoteButton.Minus))
+				else if (remoteState.IsReleased(WiiU.RemoteButton.Down))
 				{
 					zoomOut = false;
 				}
 
-				if (remoteState.IsTriggered(WiiU.RemoteButton.Plus))
+				if (remoteState.IsTriggered(WiiU.RemoteButton.Up))
 				{
 					zoomIn = true;
 				}
-				else if (remoteState.IsReleased(WiiU.RemoteButton.Plus))
+				else if (remoteState.IsReleased(WiiU.RemoteButton.Up))
 				{
 					zoomIn = false;
 				}
@@ -450,6 +500,19 @@ public class PlayerScript : MonoBehaviour
 				{
 					SkipIntro();
 				}
+
+				// Set game paused
+				if (remoteState.IsTriggered(WiiU.RemoteButton.Plus))
+				{
+                    if (paused)
+                    {
+                        SetGamePlayed();
+                    }
+                    else
+                    {
+                        SetGamePaused();
+                    }
+                }
 				break;
         }
 
@@ -517,6 +580,18 @@ public class PlayerScript : MonoBehaviour
 			{
 				zoomIn = false;
 			}
+
+			if (Input.GetKeyDown(KeyCode.Escape))
+			{
+				if (paused)
+				{
+                    SetGamePlayed();
+                }
+				else
+				{
+                    SetGamePaused();
+                }
+			}
 		}
 
         if (!paused)
@@ -545,32 +620,6 @@ public class PlayerScript : MonoBehaviour
 					toolong = 60;
 				}
 			}
-			if (Input.GetKeyDown("escape"))
-			{
-				if (startgame.gamestarted)
-				{
-					if (startgame.timer < 1598)
-					{
-						startgame.timer = 1598;
-						climbfence.Stop();
-					}
-					else if (!lost && sanity == 100f)
-					{
-						paused = true;
-						Time.timeScale = 0f;
-						cm.canControl = false;
-                        mouseLook.enabled = false;
-					}
-					else if (!lost)
-					{
-						flicker = 3;
-					}
-				}
-				else if (!startgame.gamestarted)
-				{
-					backedup = true;
-				}
-			}
 			if (startgame.fltype == 2)
 			{
 				if (Input.GetMouseButton(1) && startgame.timer >= 1600 && ((!lost && !daytime) || (endgame.timeleft > 250 && endgame.timeleft < 950 && daytime)) && !Input.GetButton("Jog/Sprint") && stamina >= 10f)
@@ -588,13 +637,6 @@ public class PlayerScript : MonoBehaviour
 			{
 				Cursor.lockState = CursorLockMode.Locked;
 			}
-		}
-		else if (Input.GetKeyDown("escape"))
-		{
-			paused = false;
-			Time.timeScale = 1f;
-			cm.canControl = true;
-            mouseLook.enabled = true;
 		}
 		else if (Input.GetKeyDown("space"))
 		{
@@ -1256,6 +1298,47 @@ public class PlayerScript : MonoBehaviour
 		{
             startgame.timer = 1598;
             climbfence.Stop();
+        }
+	}
+
+	private void SetGamePaused()
+	{
+        if (!paused)
+		{
+            if (startgame.gamestarted)
+            {
+                if (startgame.timer < 1598)
+                {
+                    startgame.timer = 1598;
+                    climbfence.Stop();
+                }
+                else if (!lost && sanity == 100f)
+                {
+                    paused = true;
+                    Time.timeScale = 0f;
+                    cm.canControl = false;
+                    mouseLook.enabled = false;
+                }
+                else if (!lost)
+                {
+                    flicker = 3;
+                }
+            }
+            else if (!startgame.gamestarted)
+            {
+                backedup = true;
+            }
+        }
+    }
+
+	public void SetGamePlayed()
+	{
+		if (paused)
+		{
+            paused = false;
+            Time.timeScale = 1f;
+            cm.canControl = true;
+            mouseLook.enabled = true;
         }
 	}
 }
