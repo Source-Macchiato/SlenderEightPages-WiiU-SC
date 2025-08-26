@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MenuSetup : MonoBehaviour
+public class MainMenuSetup : MonoBehaviour
 {
 	private MenuManager menuManager;
 
@@ -9,7 +9,9 @@ public class MenuSetup : MonoBehaviour
 	void Start()
 	{
 		menuManager = FindObjectOfType<MenuManager>();
-	}
+
+        menuManager.ChangeMenu(0);
+    }
 	
 	// Button functions
 	public void StartGame()

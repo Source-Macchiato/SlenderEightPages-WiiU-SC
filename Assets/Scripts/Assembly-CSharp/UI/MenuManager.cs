@@ -51,14 +51,13 @@ public class MenuManager : MonoBehaviour
     // Store menu history
     private Stack<int> menuHistory = new Stack<int>();
 
-    // Flag to check if the user is navigating back
+    [SerializeField] private bool alwaysDisplayMainMenu = true;
     private bool isNavigatingBack = false;
 
     [HideInInspector]
     public bool canNavigate = true;
 
-    [HideInInspector]
-    public int currentMenuId = 0;
+    private int currentMenuId = -1;
 
     // Elements to keep in memory
     private ScrollRect currentScrollRect;
@@ -75,13 +74,22 @@ public class MenuManager : MonoBehaviour
     WiiU.GamePad gamePad;
     WiiU.Remote remote;
 
+    void Awake()
+    {
+        foreach (var menu in menus)
+        {
+            if (menu != null)
+            {
+                menu.SetActive(false);
+            }
+        }
+    }
+
     void Start()
     {
         // Access the WiiU GamePad and Remote
         gamePad = WiiU.GamePad.access;
         remote = WiiU.Remote.Access(0);
-
-        ChangeMenu(0);
     }
 
     void Update()
@@ -90,105 +98,592 @@ public class MenuManager : MonoBehaviour
         WiiU.GamePadState gamePadState = gamePad.state;
         WiiU.RemoteState remoteState = remote.state;
 
-        // Handle GamePad input
-        if (gamePadState.gamePadErr == WiiU.GamePadError.None)
+        if (currentMenuId != -1)
         {
-            // If can navigate with gamepad
-            if (gamepadController)
+            // Handle GamePad input
+            if (gamePadState.gamePadErr == WiiU.GamePadError.None)
             {
-                // Stick
-                Vector2 leftStickGamepad = gamePadState.lStick;
-
-                if (Mathf.Abs(leftStickGamepad.y) > stickDeadzone)
+                // If can navigate with gamepad
+                if (gamepadController)
                 {
-                    if (EventSystem.current.currentSelectedGameObject != null)
+                    // Stick
+                    Vector2 leftStickGamepad = gamePadState.lStick;
+
+                    if (Mathf.Abs(leftStickGamepad.y) > stickDeadzone)
                     {
-                        if (EventSystem.current.currentSelectedGameObject.GetComponent<Button>() != null)
+                        if (EventSystem.current.currentSelectedGameObject != null)
+                        {
+                            if (EventSystem.current.currentSelectedGameObject.GetComponent<Button>() != null)
+                            {
+                                if (lastNavigationTime > stickNavigationCooldown)
+                                {
+                                    if (leftStickGamepad.y > stickDeadzone)
+                                    {
+                                        MenuNavigation(Vector2.up);
+                                    }
+                                    else if (leftStickGamepad.y < -stickDeadzone)
+                                    {
+                                        MenuNavigation(Vector2.down);
+                                    }
+
+                                    lastNavigationTime = 0f;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            ScrollNavigation(new Vector2(0, leftStickGamepad.y));
+                        }
+                    }
+
+                    if (Mathf.Abs(leftStickGamepad.x) > stickDeadzone)
+                    {
+                        if (lastNavigationTime > stickNavigationCooldown)
+                        {
+                            if (leftStickGamepad.x > stickDeadzone)
+                            {
+                                MenuNavigation(Vector2.right);
+                            }
+                            else if (leftStickGamepad.x < -stickDeadzone)
+                            {
+                                MenuNavigation(Vector2.left);
+                            }
+
+                            lastNavigationTime = 0f;
+                        }
+                    }
+
+                    // Is Triggered
+                    if (gamePadState.IsTriggered(WiiU.GamePadButton.Up))
+                    {
+                        MenuNavigation(Vector2.up);
+                    }
+                    else if (gamePadState.IsTriggered(WiiU.GamePadButton.Down))
+                    {
+                        MenuNavigation(Vector2.down);
+                    }
+                    else if (gamePadState.IsTriggered(WiiU.GamePadButton.Left))
+                    {
+                        MenuNavigation(Vector2.left);
+                    }
+                    else if (gamePadState.IsTriggered(WiiU.GamePadButton.Right))
+                    {
+                        MenuNavigation(Vector2.right);
+                    }
+                    else if (gamePadState.IsTriggered(WiiU.GamePadButton.ZL))
+                    {
+                        if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
+                        {
+                            EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().DecreaseDifficulty();
+                        }
+                    }
+                    else if (gamePadState.IsTriggered(WiiU.GamePadButton.ZR))
+                    {
+                        if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
+                        {
+                            EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().IncreaseDifficulty();
+                        }
+                    }
+                    else if (gamePadState.IsTriggered(WiiU.GamePadButton.L))
+                    {
+                        if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
+                        {
+                            EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().DecreaseOptions();
+                        }
+                    }
+                    else if (gamePadState.IsTriggered(WiiU.GamePadButton.R))
+                    {
+                        if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
+                        {
+                            EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().IncreaseOptions();
+                        }
+                    }
+                    else if (gamePadState.IsTriggered(WiiU.GamePadButton.A))
+                    {
+                        if (canNavigate)
+                        {
+                            if (currentPopup == null)
+                            {
+                                ClickSelectedButton();
+                            }
+                            else
+                            {
+                                if (currentPopup.actionType == 0)
+                                {
+                                    CloseCurrentPopup();
+                                }
+                                else if (currentPopup.actionType == 1)
+                                {
+                                    ClickSelectedButton();
+                                }
+                            }
+                        }
+                    }
+                    else if (gamePadState.IsTriggered(WiiU.GamePadButton.B))
+                    {
+                        GoBack();
+                    }
+
+                    // Is Pressed
+                    if (gamePadState.IsPressed(WiiU.GamePadButton.Up))
+                    {
+                        ScrollNavigation(new Vector2(0, 1));
+                    }
+                    else if (gamePadState.IsPressed(WiiU.GamePadButton.Down))
+                    {
+                        ScrollNavigation(new Vector2(0, -1));
+                    }
+                }
+            }
+
+            // Handle Remote input based on the device type
+            switch (remoteState.devType)
+            {
+                case WiiU.RemoteDevType.ProController:
+                    // If can navigate with Pro Controller
+                    if (proController)
+                    {
+                        // Stick
+                        Vector2 leftStickProController = remoteState.pro.leftStick;
+
+                        if (Mathf.Abs(leftStickProController.y) > stickDeadzone)
+                        {
+                            if (EventSystem.current.currentSelectedGameObject != null)
+                            {
+                                if (EventSystem.current.currentSelectedGameObject.GetComponent<Button>() != null)
+                                {
+                                    if (lastNavigationTime > stickNavigationCooldown)
+                                    {
+                                        if (leftStickProController.y > stickDeadzone)
+                                        {
+                                            MenuNavigation(Vector2.up);
+                                        }
+                                        else if (leftStickProController.y < -stickDeadzone)
+                                        {
+                                            MenuNavigation(Vector2.down);
+                                        }
+
+                                        lastNavigationTime = 0f;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                ScrollNavigation(new Vector2(0, leftStickProController.y));
+                            }
+                        }
+
+                        if (Mathf.Abs(leftStickProController.x) > stickDeadzone)
                         {
                             if (lastNavigationTime > stickNavigationCooldown)
                             {
-                                if (leftStickGamepad.y > stickDeadzone)
+                                if (leftStickProController.x > stickDeadzone)
                                 {
-                                    MenuNavigation(Vector2.up);
+                                    MenuNavigation(Vector2.right);
                                 }
-                                else if (leftStickGamepad.y < -stickDeadzone)
+                                else if (leftStickProController.x < -stickDeadzone)
                                 {
-                                    MenuNavigation(Vector2.down);
+                                    MenuNavigation(Vector2.left);
                                 }
 
                                 lastNavigationTime = 0f;
                             }
                         }
-                    }
-                    else
-                    {
-                        ScrollNavigation(new Vector2(0, leftStickGamepad.y));
-                    }
-                }
 
-                if (Mathf.Abs(leftStickGamepad.x) > stickDeadzone)
-                {
-                    if (lastNavigationTime > stickNavigationCooldown)
-                    {
-                        if (leftStickGamepad.x > stickDeadzone)
+                        // Is Triggered
+                        if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Up))
                         {
-                            MenuNavigation(Vector2.right);
+                            MenuNavigation(Vector2.up);
                         }
-                        else if (leftStickGamepad.x < -stickDeadzone)
+                        else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Down))
+                        {
+                            MenuNavigation(Vector2.down);
+                        }
+                        else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Left))
                         {
                             MenuNavigation(Vector2.left);
                         }
+                        else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Right))
+                        {
+                            MenuNavigation(Vector2.right);
+                        }
+                        else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.ZL))
+                        {
+                            if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
+                            {
+                                EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().DecreaseDifficulty();
+                            }
+                        }
+                        else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.ZR))
+                        {
+                            if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
+                            {
+                                EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().IncreaseDifficulty();
+                            }
+                        }
+                        else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.L))
+                        {
+                            if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
+                            {
+                                EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().DecreaseOptions();
+                            }
+                        }
+                        else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.R))
+                        {
+                            if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
+                            {
+                                EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().IncreaseOptions();
+                            }
+                        }
+                        else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.A))
+                        {
+                            if (canNavigate)
+                            {
+                                if (currentPopup == null)
+                                {
+                                    ClickSelectedButton();
+                                }
+                                else
+                                {
+                                    if (currentPopup.actionType == 0)
+                                    {
+                                        CloseCurrentPopup();
+                                    }
+                                    else if (currentPopup.actionType == 1)
+                                    {
+                                        ClickSelectedButton();
+                                    }
+                                }
+                            }
+                        }
+                        else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.B))
+                        {
+                            GoBack();
+                        }
 
-                        lastNavigationTime = 0f;
+                        // Is Pressed
+                        if (remoteState.pro.IsPressed(WiiU.ProControllerButton.Up))
+                        {
+                            ScrollNavigation(new Vector2(0, 1));
+                        }
+                        else if (remoteState.pro.IsPressed(WiiU.ProControllerButton.Down))
+                        {
+                            ScrollNavigation(new Vector2(0, -1));
+                        }
                     }
-                }
+                    break;
+                case WiiU.RemoteDevType.Classic:
+                    // If can navigate with Classic Controller
+                    if (classicController)
+                    {
+                        // Stick
+                        Vector2 leftStickClassicController = remoteState.classic.leftStick;
 
-                // Is Triggered
-                if (gamePadState.IsTriggered(WiiU.GamePadButton.Up))
+                        if (Mathf.Abs(leftStickClassicController.y) > stickDeadzone)
+                        {
+                            if (EventSystem.current.currentSelectedGameObject != null)
+                            {
+                                if (EventSystem.current.currentSelectedGameObject.GetComponent<Button>() != null)
+                                {
+                                    if (lastNavigationTime > stickNavigationCooldown)
+                                    {
+                                        if (leftStickClassicController.y > stickDeadzone)
+                                        {
+                                            MenuNavigation(Vector2.up);
+                                        }
+                                        else if (leftStickClassicController.y < -stickDeadzone)
+                                        {
+                                            MenuNavigation(Vector2.down);
+                                        }
+
+                                        lastNavigationTime = 0f;
+                                    }
+
+                                }
+                            }
+                            else
+                            {
+                                ScrollNavigation(new Vector2(0, leftStickClassicController.y));
+                            }
+                        }
+
+                        if (Mathf.Abs(leftStickClassicController.x) > stickDeadzone)
+                        {
+                            if (lastNavigationTime > stickNavigationCooldown)
+                            {
+                                if (leftStickClassicController.x > stickDeadzone)
+                                {
+                                    MenuNavigation(Vector2.right);
+                                }
+                                else if (leftStickClassicController.x < -stickDeadzone)
+                                {
+                                    MenuNavigation(Vector2.left);
+                                }
+
+                                lastNavigationTime = 0f;
+                            }
+                        }
+
+                        // Is Triggered
+                        if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Up))
+                        {
+                            MenuNavigation(Vector2.up);
+                        }
+                        else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Down))
+                        {
+                            MenuNavigation(Vector2.down);
+                        }
+                        else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Left))
+                        {
+                            MenuNavigation(Vector2.left);
+                        }
+                        else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Right))
+                        {
+                            MenuNavigation(Vector2.right);
+                        }
+                        else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.ZL) || remoteState.classic.IsTriggered(WiiU.ClassicButton.L))
+                        {
+                            if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
+                            {
+                                EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().DecreaseDifficulty();
+                            }
+                        }
+                        else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.ZR) || remoteState.classic.IsTriggered(WiiU.ClassicButton.R))
+                        {
+                            if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
+                            {
+                                EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().IncreaseDifficulty();
+                            }
+                        }
+                        else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.L))
+                        {
+                            if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
+                            {
+                                EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().DecreaseOptions();
+                            }
+                        }
+                        else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.R))
+                        {
+                            if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
+                            {
+                                EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().IncreaseOptions();
+                            }
+                        }
+                        else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.A))
+                        {
+                            if (canNavigate)
+                            {
+                                if (currentPopup == null)
+                                {
+                                    ClickSelectedButton();
+                                }
+                                else
+                                {
+                                    if (currentPopup.actionType == 0)
+                                    {
+                                        CloseCurrentPopup();
+                                    }
+                                    else if (currentPopup.actionType == 1)
+                                    {
+                                        ClickSelectedButton();
+                                    }
+                                }
+                            }
+                        }
+                        else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.B))
+                        {
+                            GoBack();
+                        }
+
+                        // Is Pressed
+                        if (remoteState.classic.IsPressed(WiiU.ClassicButton.Up))
+                        {
+                            ScrollNavigation(new Vector2(0, 1));
+                        }
+                        else if (remoteState.classic.IsPressed(WiiU.ClassicButton.Down))
+                        {
+                            ScrollNavigation(new Vector2(0, -1));
+                        }
+                    }
+                    break;
+                default:
+                    // If can navigate with Wiimote and Nunchuk
+                    if (wiimoteAndNunchuk)
+                    {
+                        // Stick
+                        Vector2 stickNunchuk = remoteState.nunchuk.stick;
+
+                        if (Mathf.Abs(stickNunchuk.y) > stickDeadzone)
+                        {
+                            if (EventSystem.current.currentSelectedGameObject != null)
+                            {
+                                if (EventSystem.current.currentSelectedGameObject.GetComponent<Button>() != null)
+                                {
+                                    if (lastNavigationTime > stickNavigationCooldown)
+                                    {
+                                        if (stickNunchuk.y > stickDeadzone)
+                                        {
+                                            MenuNavigation(Vector2.up);
+                                        }
+                                        else if (stickNunchuk.y < -stickDeadzone)
+                                        {
+                                            MenuNavigation(Vector2.down);
+                                        }
+
+                                        lastNavigationTime = 0f;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                ScrollNavigation(new Vector2(0, stickNunchuk.y));
+                            }
+                        }
+
+                        if (Mathf.Abs(stickNunchuk.x) > stickDeadzone)
+                        {
+                            if (lastNavigationTime > stickNavigationCooldown)
+                            {
+                                if (stickNunchuk.x > stickDeadzone)
+                                {
+                                    MenuNavigation(Vector2.right);
+                                }
+                                else if (stickNunchuk.x < -stickDeadzone)
+                                {
+                                    MenuNavigation(Vector2.left);
+                                }
+
+                                lastNavigationTime = 0f;
+                            }
+                        }
+
+                        // Is Triggered
+                        if (remoteState.IsTriggered(WiiU.RemoteButton.Up))
+                        {
+                            MenuNavigation(Vector2.up);
+                        }
+                        else if (remoteState.IsTriggered(WiiU.RemoteButton.Down))
+                        {
+                            MenuNavigation(Vector2.down);
+                        }
+                        else if (remoteState.IsTriggered(WiiU.RemoteButton.Left))
+                        {
+                            MenuNavigation(Vector2.left);
+                        }
+                        else if (remoteState.IsTriggered(WiiU.RemoteButton.Right))
+                        {
+                            MenuNavigation(Vector2.right);
+                        }
+                        else if (remoteState.IsTriggered(WiiU.RemoteButton.Minus) || remoteState.IsTriggered(WiiU.RemoteButton.NunchukZ))
+                        {
+                            if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
+                            {
+                                EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().DecreaseDifficulty();
+                            }
+                            else if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
+                            {
+                                EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().DecreaseOptions();
+                            }
+                        }
+                        else if (remoteState.IsTriggered(WiiU.RemoteButton.Plus) || remoteState.IsTriggered(WiiU.RemoteButton.NunchukC))
+                        {
+                            if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
+                            {
+                                EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().IncreaseDifficulty();
+                            }
+                            else if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
+                            {
+                                EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().IncreaseOptions();
+                            }
+                        }
+                        else if (remoteState.IsTriggered(WiiU.RemoteButton.A))
+                        {
+                            if (canNavigate)
+                            {
+                                if (currentPopup == null)
+                                {
+                                    ClickSelectedButton();
+                                }
+                                else
+                                {
+                                    if (currentPopup.actionType == 0)
+                                    {
+                                        CloseCurrentPopup();
+                                    }
+                                    else if (currentPopup.actionType == 1)
+                                    {
+                                        ClickSelectedButton();
+                                    }
+                                }
+                            }
+                        }
+                        else if (remoteState.IsTriggered(WiiU.RemoteButton.B))
+                        {
+                            GoBack();
+                        }
+
+                        // Is Pressed
+                        if (remoteState.IsPressed(WiiU.RemoteButton.Up))
+                        {
+                            if (currentScrollRect != null && currentPopup == null && canNavigate)
+                            {
+                                ScrollNavigation(new Vector2(0, 1));
+                            }
+                        }
+                        else if (remoteState.IsPressed(WiiU.RemoteButton.Down))
+                        {
+                            if (currentScrollRect != null && currentPopup == null && canNavigate)
+                            {
+                                ScrollNavigation(new Vector2(0, -1));
+                            }
+                        }
+                    }
+                    break;
+            }
+
+            // Handle keyboard input, useful for testing in the editor
+            if (Application.isEditor)
+            {
+                // Key Down
+                if (Input.GetKeyDown(KeyCode.UpArrow))
                 {
                     MenuNavigation(Vector2.up);
                 }
-                else if (gamePadState.IsTriggered(WiiU.GamePadButton.Down))
+                else if (Input.GetKeyDown(KeyCode.DownArrow))
                 {
                     MenuNavigation(Vector2.down);
                 }
-                else if (gamePadState.IsTriggered(WiiU.GamePadButton.Left))
+                else if (Input.GetKeyDown(KeyCode.LeftArrow))
                 {
                     MenuNavigation(Vector2.left);
                 }
-                else if (gamePadState.IsTriggered(WiiU.GamePadButton.Right))
+                else if (Input.GetKeyDown(KeyCode.RightArrow))
                 {
                     MenuNavigation(Vector2.right);
                 }
-                else if (gamePadState.IsTriggered(WiiU.GamePadButton.ZL))
+                else if (Input.GetKeyDown(KeyCode.Q))
                 {
                     if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
                     {
                         EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().DecreaseDifficulty();
                     }
+                    else if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
+                    {
+                        EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().DecreaseOptions();
+                    }
                 }
-                else if (gamePadState.IsTriggered(WiiU.GamePadButton.ZR))
+                else if (Input.GetKeyDown(KeyCode.E))
                 {
                     if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
                     {
                         EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().IncreaseDifficulty();
                     }
-                }
-                else if (gamePadState.IsTriggered(WiiU.GamePadButton.L))
-                {
-                    if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
-                    {
-                        EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().DecreaseOptions();
-                    }
-                }
-                else if (gamePadState.IsTriggered(WiiU.GamePadButton.R))
-                {
-                    if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
+                    else if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
                     {
                         EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().IncreaseOptions();
                     }
                 }
-                else if (gamePadState.IsTriggered(WiiU.GamePadButton.A))
+                else if (Input.GetKeyDown(KeyCode.Return))
                 {
                     if (canNavigate)
                     {
@@ -209,509 +704,25 @@ public class MenuManager : MonoBehaviour
                         }
                     }
                 }
-                else if (gamePadState.IsTriggered(WiiU.GamePadButton.B))
+                else if (Input.GetKeyDown(KeyCode.Escape))
                 {
                     GoBack();
                 }
 
-                // Is Pressed
-                if (gamePadState.IsPressed(WiiU.GamePadButton.Up))
+                // Key
+                if (Input.GetKey(KeyCode.UpArrow))
                 {
-                    ScrollNavigation(new Vector2(0, 1));
-                }
-                else if (gamePadState.IsPressed(WiiU.GamePadButton.Down))
-                {
-                    ScrollNavigation(new Vector2(0, -1));
-                }
-            }
-        }
-
-        // Handle Remote input based on the device type
-        switch (remoteState.devType)
-        {
-            case WiiU.RemoteDevType.ProController:
-                // If can navigate with Pro Controller
-                if (proController)
-                {
-                    // Stick
-                    Vector2 leftStickProController = remoteState.pro.leftStick;
-
-                    if (Mathf.Abs(leftStickProController.y) > stickDeadzone)
-                    {
-                        if (EventSystem.current.currentSelectedGameObject != null)
-                        {
-                            if (EventSystem.current.currentSelectedGameObject.GetComponent<Button>() != null)
-                            {
-                                if (lastNavigationTime > stickNavigationCooldown)
-                                {
-                                    if (leftStickProController.y > stickDeadzone)
-                                    {
-                                        MenuNavigation(Vector2.up);
-                                    }
-                                    else if (leftStickProController.y < -stickDeadzone)
-                                    {
-                                        MenuNavigation(Vector2.down);
-                                    }
-
-                                    lastNavigationTime = 0f;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            ScrollNavigation(new Vector2(0, leftStickProController.y));
-                        }
-                    }
-
-                    if (Mathf.Abs(leftStickProController.x) > stickDeadzone)
-                    {
-                        if (lastNavigationTime > stickNavigationCooldown)
-                        {
-                            if (leftStickProController.x > stickDeadzone)
-                            {
-                                MenuNavigation(Vector2.right);
-                            }
-                            else if (leftStickProController.x < -stickDeadzone)
-                            {
-                                MenuNavigation(Vector2.left);
-                            }
-
-                            lastNavigationTime = 0f;
-                        }
-                    }
-
-                    // Is Triggered
-                    if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Up))
-                    {
-                        MenuNavigation(Vector2.up);
-                    }
-                    else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Down))
-                    {
-                        MenuNavigation(Vector2.down);
-                    }
-                    else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Left))
-                    {
-                        MenuNavigation(Vector2.left);
-                    }
-                    else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Right))
-                    {
-                        MenuNavigation(Vector2.right);
-                    }
-                    else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.ZL))
-                    {
-                        if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
-                        {
-                            EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().DecreaseDifficulty();
-                        }
-                    }
-                    else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.ZR))
-                    {
-                        if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
-                        {
-                            EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().IncreaseDifficulty();
-                        }
-                    }
-                    else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.L))
-                    {
-                        if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
-                        {
-                            EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().DecreaseOptions();
-                        }
-                    }
-                    else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.R))
-                    {
-                        if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
-                        {
-                            EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().IncreaseOptions();
-                        }
-                    }
-                    else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.A))
-                    {
-                        if (canNavigate)
-                        {
-                            if (currentPopup == null)
-                            {
-                                ClickSelectedButton();
-                            }
-                            else
-                            {
-                                if (currentPopup.actionType == 0)
-                                {
-                                    CloseCurrentPopup();
-                                }
-                                else if (currentPopup.actionType == 1)
-                                {
-                                    ClickSelectedButton();
-                                }
-                            }
-                        }
-                    }
-                    else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.B))
-                    {
-                        GoBack();
-                    }
-
-                    // Is Pressed
-                    if (remoteState.pro.IsPressed(WiiU.ProControllerButton.Up))
+                    if (currentScrollRect != null && currentPopup == null && canNavigate)
                     {
                         ScrollNavigation(new Vector2(0, 1));
                     }
-                    else if (remoteState.pro.IsPressed(WiiU.ProControllerButton.Down))
+                }
+                else if (Input.GetKey(KeyCode.DownArrow))
+                {
+                    if (currentScrollRect != null && currentPopup == null && canNavigate)
                     {
                         ScrollNavigation(new Vector2(0, -1));
                     }
-                }
-                break;
-            case WiiU.RemoteDevType.Classic:
-                // If can navigate with Classic Controller
-                if (classicController)
-                {
-                    // Stick
-                    Vector2 leftStickClassicController = remoteState.classic.leftStick;
-
-                    if (Mathf.Abs(leftStickClassicController.y) > stickDeadzone)
-                    {
-                        if (EventSystem.current.currentSelectedGameObject != null)
-                        {
-                            if (EventSystem.current.currentSelectedGameObject.GetComponent<Button>() != null)
-                            {
-                                if (lastNavigationTime > stickNavigationCooldown)
-                                {
-                                    if (leftStickClassicController.y > stickDeadzone)
-                                    {
-                                        MenuNavigation(Vector2.up);
-                                    }
-                                    else if (leftStickClassicController.y < -stickDeadzone)
-                                    {
-                                        MenuNavigation(Vector2.down);
-                                    }
-
-                                    lastNavigationTime = 0f;
-                                }
-
-                            }
-                        }
-                        else
-                        {
-                            ScrollNavigation(new Vector2(0, leftStickClassicController.y));
-                        }
-                    }
-
-                    if (Mathf.Abs(leftStickClassicController.x) > stickDeadzone)
-                    {
-                        if (lastNavigationTime > stickNavigationCooldown)
-                        {
-                            if (leftStickClassicController.x > stickDeadzone)
-                            {
-                                MenuNavigation(Vector2.right);
-                            }
-                            else if (leftStickClassicController.x < -stickDeadzone)
-                            {
-                                MenuNavigation(Vector2.left);
-                            }
-
-                            lastNavigationTime = 0f;
-                        }
-                    }
-
-                    // Is Triggered
-                    if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Up))
-                    {
-                        MenuNavigation(Vector2.up);
-                    }
-                    else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Down))
-                    {
-                        MenuNavigation(Vector2.down);
-                    }
-                    else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Left))
-                    {
-                        MenuNavigation(Vector2.left);
-                    }
-                    else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Right))
-                    {
-                        MenuNavigation(Vector2.right);
-                    }
-                    else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.ZL) || remoteState.classic.IsTriggered(WiiU.ClassicButton.L))
-                    {
-                        if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
-                        {
-                            EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().DecreaseDifficulty();
-                        }
-                    }
-                    else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.ZR) || remoteState.classic.IsTriggered(WiiU.ClassicButton.R))
-                    {
-                        if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
-                        {
-                            EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().IncreaseDifficulty();
-                        }
-                    }
-                    else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.L))
-                    {
-                        if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
-                        {
-                            EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().DecreaseOptions();
-                        }
-                    }
-                    else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.R))
-                    {
-                        if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
-                        {
-                            EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().IncreaseOptions();
-                        }
-                    }
-                    else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.A))
-                    {
-                        if (canNavigate)
-                        {
-                            if (currentPopup == null)
-                            {
-                                ClickSelectedButton();
-                            }
-                            else
-                            {
-                                if (currentPopup.actionType == 0)
-                                {
-                                    CloseCurrentPopup();
-                                }
-                                else if (currentPopup.actionType == 1)
-                                {
-                                    ClickSelectedButton();
-                                }
-                            }
-                        }
-                    }
-                    else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.B))
-                    {
-                        GoBack();
-                    }
-
-                    // Is Pressed
-                    if (remoteState.classic.IsPressed(WiiU.ClassicButton.Up))
-                    {
-                        ScrollNavigation(new Vector2(0, 1));
-                    }
-                    else if (remoteState.classic.IsPressed(WiiU.ClassicButton.Down))
-                    {
-                        ScrollNavigation(new Vector2(0, -1));
-                    }
-                }
-                break;
-            default:
-                // If can navigate with Wiimote and Nunchuk
-                if (wiimoteAndNunchuk)
-                {
-                    // Stick
-                    Vector2 stickNunchuk = remoteState.nunchuk.stick;
-
-                    if (Mathf.Abs(stickNunchuk.y) > stickDeadzone)
-                    {
-                        if (EventSystem.current.currentSelectedGameObject != null)
-                        {
-                            if (EventSystem.current.currentSelectedGameObject.GetComponent<Button>() != null)
-                            {
-                                if (lastNavigationTime > stickNavigationCooldown)
-                                {
-                                    if (stickNunchuk.y > stickDeadzone)
-                                    {
-                                        MenuNavigation(Vector2.up);
-                                    }
-                                    else if (stickNunchuk.y < -stickDeadzone)
-                                    {
-                                        MenuNavigation(Vector2.down);
-                                    }
-
-                                    lastNavigationTime = 0f;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            ScrollNavigation(new Vector2(0, stickNunchuk.y));
-                        }
-                    }
-
-                    if (Mathf.Abs(stickNunchuk.x) > stickDeadzone)
-                    {
-                        if (lastNavigationTime > stickNavigationCooldown)
-                        {
-                            if (stickNunchuk.x > stickDeadzone)
-                            {
-                                MenuNavigation(Vector2.right);
-                            }
-                            else if (stickNunchuk.x < -stickDeadzone)
-                            {
-                                MenuNavigation(Vector2.left);
-                            }
-
-                            lastNavigationTime = 0f;
-                        }
-                    }
-
-                    // Is Triggered
-                    if (remoteState.IsTriggered(WiiU.RemoteButton.Up))
-                    {
-                        MenuNavigation(Vector2.up);
-                    }
-                    else if (remoteState.IsTriggered(WiiU.RemoteButton.Down))
-                    {
-                        MenuNavigation(Vector2.down);
-                    }
-                    else if (remoteState.IsTriggered(WiiU.RemoteButton.Left))
-                    {
-                        MenuNavigation(Vector2.left);
-                    }
-                    else if (remoteState.IsTriggered(WiiU.RemoteButton.Right))
-                    {
-                        MenuNavigation(Vector2.right);
-                    }
-                    else if (remoteState.IsTriggered(WiiU.RemoteButton.Minus) || remoteState.IsTriggered(WiiU.RemoteButton.NunchukZ))
-                    {
-                        if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
-                        {
-                            EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().DecreaseDifficulty();
-                        }
-                        else if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
-                        {
-                            EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().DecreaseOptions();
-                        }
-                    }
-                    else if (remoteState.IsTriggered(WiiU.RemoteButton.Plus) || remoteState.IsTriggered(WiiU.RemoteButton.NunchukC))
-                    {
-                        if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
-                        {
-                            EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().IncreaseDifficulty();
-                        }
-                        else if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
-                        {
-                            EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().IncreaseOptions();
-                        }
-                    }
-                    else if (remoteState.IsTriggered(WiiU.RemoteButton.A))
-                    {
-                        if (canNavigate)
-                        {
-                            if (currentPopup == null)
-                            {
-                                ClickSelectedButton();
-                            }
-                            else
-                            {
-                                if (currentPopup.actionType == 0)
-                                {
-                                    CloseCurrentPopup();
-                                }
-                                else if (currentPopup.actionType == 1)
-                                {
-                                    ClickSelectedButton();
-                                }
-                            }
-                        }
-                    }
-                    else if (remoteState.IsTriggered(WiiU.RemoteButton.B))
-                    {
-                        GoBack();
-                    }
-
-                    // Is Pressed
-                    if (remoteState.IsPressed(WiiU.RemoteButton.Up))
-                    {
-                        if (currentScrollRect != null && currentPopup == null && canNavigate)
-                        {
-                            ScrollNavigation(new Vector2(0, 1));
-                        }
-                    }
-                    else if (remoteState.IsPressed(WiiU.RemoteButton.Down))
-                    {
-                        if (currentScrollRect != null && currentPopup == null && canNavigate)
-                        {
-                            ScrollNavigation(new Vector2(0, -1));
-                        }
-                    }
-                }
-                break;
-        }
-
-        // Handle keyboard input, useful for testing in the editor
-        if (Application.isEditor)
-        {
-            // Key Down
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                MenuNavigation(Vector2.up);
-            }
-            else if (Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                MenuNavigation(Vector2.down);
-            }
-            else if (Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                MenuNavigation(Vector2.left);
-            }
-            else if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                MenuNavigation(Vector2.right);
-            }
-            else if (Input.GetKeyDown(KeyCode.Q))
-            {
-                if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
-                {
-                    EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().DecreaseDifficulty();
-                }
-                else if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
-                {
-                    EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().DecreaseOptions();
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.E))
-            {
-                if (EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>() != null && canNavigate)
-                {
-                    EventSystem.current.currentSelectedGameObject.GetComponent<CardSwitcherData>().IncreaseDifficulty();
-                }
-                else if (EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>() != null && canNavigate)
-                {
-                    EventSystem.current.currentSelectedGameObject.GetComponent<SwitcherData>().IncreaseOptions();
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.Return))
-            {
-                if (canNavigate)
-                {
-                    if (currentPopup == null)
-                    {
-                        ClickSelectedButton();
-                    }
-                    else
-                    {
-                        if (currentPopup.actionType == 0)
-                        {
-                            CloseCurrentPopup();
-                        }
-                        else if (currentPopup.actionType == 1)
-                        {
-                            ClickSelectedButton();
-                        }
-                    }
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.Backspace))
-            {
-                GoBack();
-            }
-
-            // Key
-            if (Input.GetKey(KeyCode.UpArrow))
-            {
-                if (currentScrollRect != null && currentPopup == null && canNavigate)
-                {
-                    ScrollNavigation(new Vector2(0, 1));
-                }
-            }
-            else if (Input.GetKey(KeyCode.DownArrow))
-            {
-                if (currentScrollRect != null && currentPopup == null && canNavigate)
-                {
-                    ScrollNavigation(new Vector2(0, -1));
                 }
             }
         }
@@ -971,44 +982,52 @@ public class MenuManager : MonoBehaviour
     // Method to change menu and manage display of extra container
     public void ChangeMenu(int menuId)
     {
-        if (currentMenuId != menuId && !isNavigatingBack)
+        // Add menu to history
+        if (currentMenuId != menuId && !isNavigatingBack && menuId > 0)
         {
             menuHistory.Push(currentMenuId);
         }
 
-        // Button
-        for (int i = 0; i < defaultButtons.Length; i++)
+        // Display current menu
+        if (menuId >= 0 && menuId < menus.Length)
         {
-            if (i == menuId)
+            // Menu
+            foreach (var menu in menus)
             {
-                if (currentPopup == null)
+                if (menu != null)
                 {
-                    if (defaultButtons[i] != null)
+                    menu.SetActive(menu == menus[menuId]);
+                }
+            }
+
+            currentMenuId = menuId;
+
+            // Button
+            for (int i = 0; i < defaultButtons.Length; i++)
+            {
+                if (i == menuId)
+                {
+                    if (currentPopup == null)
                     {
-                        Select(defaultButtons[i]);
-                    }
-                    else
-                    {
-                        EventSystem.current.SetSelectedGameObject(null);
-                        lastSelected = null;
+                        if (defaultButtons[i] != null)
+                        {
+                            Select(defaultButtons[i]);
+                        }
+                        else
+                        {
+                            EventSystem.current.SetSelectedGameObject(null);
+                            lastSelected = null;
+                        }
                     }
                 }
             }
+
+            // Set scroll rect if component exists
+            currentScrollRect = GetCurrentMenu().transform.GetChild(0).GetComponent<ScrollRect>();
+
+            AutoScroll();
+            ToggleCursorVisibility();
         }
-
-        // Menu
-        foreach (GameObject menu in menus)
-        {
-            menu.SetActive(menu == menus[menuId]);
-        }
-
-        currentMenuId = menuId;
-
-        // Set scroll rect if component exists
-        currentScrollRect = GetCurrentMenu().transform.GetChild(0).GetComponent<ScrollRect>();
-
-        AutoScroll();
-        ToggleCursorVisibility();
 
         isNavigatingBack = false;
     }
@@ -1031,18 +1050,18 @@ public class MenuManager : MonoBehaviour
         {
             if (menuHistory.Count > 0)
             {
-                // Set the navigation back flag to true
-                isNavigatingBack = true;
-
                 // Execute the callback for the current menu, if it exists
                 if (backCallbacks.ContainsKey(currentMenuId) && backCallbacks[currentMenuId] != null)
                 {
                     backCallbacks[currentMenuId].Invoke();
                 }
 
+                // Set the navigation back flag to true
+                isNavigatingBack = true;
+
                 // Retrieve the previous menu ID from the history stack
                 int previousMenuId = menuHistory.Pop();
-
+                
                 // Change to the previous menu
                 ChangeMenu(previousMenuId);
             }
@@ -1125,6 +1144,29 @@ public class MenuManager : MonoBehaviour
         if (currentScrollRect != null)
         {
             currentScrollRect.verticalNormalizedPosition = targetPosition;
+        }
+    }
+
+    public void DisplayMenu()
+    {
+        if (currentMenuId == -1)
+        {
+            ChangeMenu(0);
+        }
+    }
+
+    public void HideMenu()
+    {
+        if (currentMenuId == 0)
+        {
+            foreach (var menu in menus)
+            {
+                menu.SetActive(false);
+            }
+
+            menuHistory.Push(currentMenuId);
+
+            currentMenuId = -1;
         }
     }
 }

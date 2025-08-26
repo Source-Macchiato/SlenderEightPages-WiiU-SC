@@ -181,6 +181,8 @@ public class PlayerScript : MonoBehaviour
 
 	public Vector2 direction = Vector2.zero;
 
+	private MenuManager menuManager;
+
     private WiiU.GamePad gamePad;
     private WiiU.Remote remote;
 
@@ -189,19 +191,15 @@ public class PlayerScript : MonoBehaviour
 		cm.canControl = false;
         mouseLook.enabled = false;
 
+		menuManager = FindObjectOfType<MenuManager>();
+
         gamePad = WiiU.GamePad.access;
         remote = WiiU.Remote.Access(0);
     }
 
 	private void OnGUI()
 	{
-		if (paused)
-		{
-			GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 75, 600f, 50f), "PAUSED", hint);
-			GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "ESC to resume", hint);
-			GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 + 25, 600f, 50f), "SPACE to quit", hint);
-		}
-		else if (fadeoutgui < 400 && !mh)
+		if (!paused && fadeoutgui < 400 && !mh)
 		{
 			if (pages == 0)
 			{
@@ -1025,29 +1023,9 @@ public class PlayerScript : MonoBehaviour
 						stepcd = 120;
 					}
 				}
-				if (zoomIn && !zoomOut && zoom > 20f)
-				{
-					zoom -= 0.75f;
-					if (zoom < 20f)
-					{
-						zoom = 20f;
-					}
-					zsound.volume = 1f;
-				}
-				else if (zoomOut && !zoomIn && zoom < 60f)
-				{
-					zoom += 0.75f;
-					if (zoom > 60f)
-					{
-						zoom = 60f;
-					}
-					zsound.volume = 1f;
-				}
-				else
-				{
-					zsound.volume = 0f;
-				}
-				base.GetComponent<Camera>().fieldOfView = zoom;
+
+				ZoomSystem();
+
 				statscale.localScale = new Vector3((zoom - 2.5f) / 57.5f, (zoom - 2.5f) / 57.5f, (zoom - 2.5f) / 57.5f);
 				if (stamina < 30f)
 				{
@@ -1316,6 +1294,9 @@ public class PlayerScript : MonoBehaviour
                 {
                     paused = true;
                     Time.timeScale = 0f;
+
+					menuManager.DisplayMenu();
+
                     cm.canControl = false;
                     mouseLook.enabled = false;
                 }
@@ -1335,10 +1316,40 @@ public class PlayerScript : MonoBehaviour
 	{
 		if (paused)
 		{
+			menuManager.HideMenu();
+
             paused = false;
             Time.timeScale = 1f;
             cm.canControl = true;
             mouseLook.enabled = true;
         }
 	}
+
+	private void ZoomSystem()
+	{
+        if (zoomIn && !zoomOut && zoom > 20f)
+        {
+            zoom -= 0.75f;
+            if (zoom < 20f)
+            {
+                zoom = 20f;
+            }
+            zsound.volume = 1f;
+        }
+        else if (zoomOut && !zoomIn && zoom < 60f)
+        {
+            zoom += 0.75f;
+            if (zoom > 60f)
+            {
+                zoom = 60f;
+            }
+            zsound.volume = 1f;
+        }
+        else
+        {
+            zsound.volume = 0f;
+        }
+
+        base.GetComponent<Camera>().fieldOfView = zoom;
+    }
 }

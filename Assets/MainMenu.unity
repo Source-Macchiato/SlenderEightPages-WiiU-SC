@@ -184,7 +184,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -0.000000059605, y: 3.4449158}
+  m_AnchoredPosition: {x: -0.000000059605, y: 3.4449463}
   m_SizeDelta: {x: 409.79, y: 299.81}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &80141221
@@ -272,8 +272,8 @@ MonoBehaviour:
   - {fileID: 1811328848}
   defaultButtons:
   - {fileID: 1199504332}
+  alwaysDisplayMainMenu: 1
   canNavigate: 1
-  currentMenuId: 0
 --- !u!1 &260404603
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,7 +428,7 @@ GameObject:
   - component: {fileID: 340415205}
   - component: {fileID: 340415206}
   m_Layer: 0
-  m_Name: MenuSetup
+  m_Name: MainMenuSetup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
