@@ -23029,11 +23029,11 @@ Light:
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 2
-  m_Range: 90
+  m_Range: 100
   m_SpotAngle: 50
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 0.5
@@ -23041,7 +23041,7 @@ Light:
     m_NormalBias: 0.4
     m_NearPlane: 0.2
   m_Cookie: {fileID: 2800000, guid: a03f510adea34ce44b2583dcf2307cea, type: 3}
-  m_DrawHalo: 1
+  m_DrawHalo: 0
   m_Flare: {fileID: 0}
   m_RenderMode: 1
   m_CullingMask:
@@ -53544,7 +53544,6 @@ MonoBehaviour:
   fs9: {fileID: 8300000, guid: dcb256817e216934d838cba4b7a7cc2c, type: 3}
   fs10: {fileID: 8300000, guid: f64874b9e3799ab469ae7cedc9dc337e, type: 3}
   fs11: {fileID: 8300000, guid: b3dc49a80b2133148a7ea90184ac937a, type: 3}
-  view: {fileID: 1386}
   wind: {fileID: 1290}
   intro: {fileID: 1374}
   loser: {fileID: 1380}
@@ -54267,7 +54266,7 @@ Terrain:
   m_TreeDistance: 69
   m_TreeBillboardDistance: 50
   m_TreeCrossFadeLength: 5
-  m_TreeMaximumFullLODCount: 50
+  m_TreeMaximumFullLODCount: 0
   m_DetailObjectDistance: 26
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 5
