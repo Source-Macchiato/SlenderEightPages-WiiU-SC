@@ -11,6 +11,9 @@ public class MainMenuSetup : MonoBehaviour
 		menuManager = FindObjectOfType<MenuManager>();
 
         menuManager.ChangeMenu(0);
+
+		Cursor.visible = true;
+		Cursor.lockState = CursorLockMode.None;
     }
 	
 	// Button functions

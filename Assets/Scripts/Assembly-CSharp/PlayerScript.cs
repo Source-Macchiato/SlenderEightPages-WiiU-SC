@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using WiiU = UnityEngine.WiiU;
 
 public class PlayerScript : MonoBehaviour
@@ -258,14 +257,36 @@ public class PlayerScript : MonoBehaviour
             // Zoom in and out
             if (gamePadState.IsTriggered(WiiU.GamePadButton.ZL))
             {
-                zoomOut = false;
                 zoomIn = true;
+                zoomOut = false;
             }
             else if (gamePadState.IsReleased(WiiU.GamePadButton.ZL))
             {
                 zoomIn = false;
                 zoomOut = true;
             }
+
+			if (gamePadState.IsTriggered(WiiU.GamePadButton.Up))
+			{
+				zoomIn = true;
+				zoomOut = false;
+			}
+			else if (gamePadState.IsReleased(WiiU.GamePadButton.Up))
+			{
+				zoomIn = false;
+				zoomOut = false;
+			}
+
+			if (gamePadState.IsTriggered(WiiU.GamePadButton.Down))
+			{
+				zoomIn = false;
+				zoomOut = true;
+			}
+			else if (gamePadState.IsReleased(WiiU.GamePadButton.Down))
+			{
+				zoomIn = false;
+				zoomOut = false;
+			}
 
 			// Skip Intro
 			if (gamePadState.IsTriggered(WiiU.GamePadButton.A))
@@ -330,8 +351,8 @@ public class PlayerScript : MonoBehaviour
                 // Zoom in and out
                 if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.ZL))
                 {
-                    zoomOut = false;
                     zoomIn = true;
+                    zoomOut = false;
                 }
                 else if (remoteState.pro.IsReleased(WiiU.ProControllerButton.ZL))
                 {
@@ -339,8 +360,30 @@ public class PlayerScript : MonoBehaviour
                     zoomOut = true;
                 }
 
-				// Skip intro
-				if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.A))
+                if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Up))
+                {
+                    zoomIn = true;
+                    zoomOut = false;
+                }
+                else if (remoteState.pro.IsReleased(WiiU.ProControllerButton.Up))
+                {
+                    zoomIn = false;
+                    zoomOut = false;
+                }
+
+                if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Down))
+                {
+                    zoomIn = false;
+                    zoomOut = true;
+                }
+                else if (remoteState.pro.IsReleased(WiiU.ProControllerButton.Down))
+                {
+                    zoomIn = false;
+                    zoomOut = false;
+                }
+
+                // Skip intro
+                if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.A))
 				{
 					SkipIntro();
 				}
@@ -403,18 +446,19 @@ public class PlayerScript : MonoBehaviour
                 // Zoom in and out
 				if (remoteState.classic.IsTriggered(WiiU.ClassicButton.L))
 				{
-					zoomOut = false;
-					zoomIn = true;
+                    zoomIn = true;
+                    zoomOut = false;
 				}
 				else if (remoteState.classic.IsReleased(WiiU.ClassicButton.L))
 				{
 					zoomIn = false;
 					zoomOut = true;
 				}
-				else if (remoteState.classic.IsTriggered(WiiU.ClassicButton.ZL))
+				
+				if (remoteState.classic.IsTriggered(WiiU.ClassicButton.ZL))
 				{
-					zoomOut = false;
-					zoomIn = true;
+                    zoomIn = true;
+                    zoomOut = false;
 				}
 				else if (remoteState.classic.IsReleased(WiiU.ClassicButton.ZL))
 				{
@@ -422,8 +466,30 @@ public class PlayerScript : MonoBehaviour
 					zoomOut = true;
 				}
 
-				// Skip intro
-				if (remoteState.classic.IsTriggered(WiiU.ClassicButton.A))
+                if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Up))
+                {
+                    zoomIn = true;
+                    zoomOut = false;
+                }
+                else if (remoteState.classic.IsReleased(WiiU.ClassicButton.Up))
+                {
+                    zoomIn = false;
+                    zoomOut = false;
+                }
+
+                if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Down))
+                {
+                    zoomIn = false;
+                    zoomOut = true;
+                }
+                else if (remoteState.classic.IsReleased(WiiU.ClassicButton.Down))
+                {
+                    zoomIn = false;
+                    zoomOut = false;
+                }
+
+                // Skip intro
+                if (remoteState.classic.IsTriggered(WiiU.ClassicButton.A))
 				{
 					SkipIntro();
 				}
@@ -475,22 +541,26 @@ public class PlayerScript : MonoBehaviour
                 }
 
                 // Zoom in and out
-				if (remoteState.IsTriggered(WiiU.RemoteButton.Down))
+                if (remoteState.IsTriggered(WiiU.RemoteButton.Up))
+                {
+                    zoomIn = true;
+                    zoomOut = false;
+                }
+                else if (remoteState.IsReleased(WiiU.RemoteButton.Up))
+                {
+                    zoomIn = false;
+                    zoomOut = false;
+                }
+
+                if (remoteState.IsTriggered(WiiU.RemoteButton.Down))
 				{
+					zoomIn = false;
 					zoomOut = true;
 				}
 				else if (remoteState.IsReleased(WiiU.RemoteButton.Down))
 				{
-					zoomOut = false;
-				}
-
-				if (remoteState.IsTriggered(WiiU.RemoteButton.Up))
-				{
-					zoomIn = true;
-				}
-				else if (remoteState.IsReleased(WiiU.RemoteButton.Up))
-				{
 					zoomIn = false;
+					zoomOut = false;
 				}
 
 				// Skip intro
@@ -560,23 +630,27 @@ public class PlayerScript : MonoBehaviour
                 ToggleFlashlight(!flashlightEnabled);
             }
 
-			// Zoom in and out
-			if (Input.GetKeyDown(KeyCode.Q))
+            // Zoom in and out
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                zoomIn = true;
+                zoomOut = false;
+            }
+            else if (Input.GetKeyUp(KeyCode.E))
+            {
+                zoomIn = false;
+                zoomOut = false;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Q))
 			{
+				zoomIn = false;
 				zoomOut = true;
 			}
 			else if (Input.GetKeyUp(KeyCode.Q))
 			{
-				zoomOut = false;
-			}
-
-			if (Input.GetKeyDown(KeyCode.E))
-			{
-				zoomIn = true;
-			}
-			else if (Input.GetKeyUp(KeyCode.E))
-			{
 				zoomIn = false;
+				zoomOut = false;
 			}
 
 			if (Input.GetKeyDown(KeyCode.Escape))
@@ -1298,7 +1372,7 @@ public class PlayerScript : MonoBehaviour
                     flicker = 3;
                 }
             }
-            else if (!startgame.gamestarted)
+            else
             {
                 backedup = true;
             }
