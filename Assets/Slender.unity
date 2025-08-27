@@ -3100,7 +3100,7 @@ GameObject:
   - component: {fileID: 525}
   - component: {fileID: 1105}
   - component: {fileID: 832}
-  - component: {fileID: 1253}
+  - component: {fileID: 1235}
   m_Layer: 0
   m_Name: BuildingShed
   m_TagString: Untagged
@@ -21152,6 +21152,20 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: c2ca658f5dfcd9046bfa70fac45b74f4, type: 2}
+--- !u!64 &1235
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 199}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: 152dcf4fe7f637d4088230ef3407c98f, type: 2}
 --- !u!64 &1237
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -21236,18 +21250,6 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: dc63e0d327e4e2f439e2501eb5fcad31, type: 2}
---- !u!65 &1253
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 199}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 4.0000095, y: 2.3600287, z: 2.1999524}
-  m_Center: {x: -1.7763568e-15, y: 1.1800144, z: -0.000007688999}
 --- !u!64 &1254
 MeshCollider:
   m_ObjectHideFlags: 0
