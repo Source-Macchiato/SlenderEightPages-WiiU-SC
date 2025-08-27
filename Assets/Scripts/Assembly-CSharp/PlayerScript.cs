@@ -655,7 +655,7 @@ public class PlayerScript : MonoBehaviour
 
 			if (Input.GetKeyDown(KeyCode.Escape))
 			{
-				if (paused)
+                if (paused)
 				{
                     SetGamePlayed();
                 }
@@ -663,7 +663,9 @@ public class PlayerScript : MonoBehaviour
 				{
                     SetGamePaused();
                 }
-			}
+
+                SkipIntro();
+            }
 		}
 
         if (!paused)
@@ -1339,7 +1341,7 @@ public class PlayerScript : MonoBehaviour
 
 	private void SkipIntro()
 	{
-		if (startgame.timer < 1598 && startgame.timer > 0)
+		if (!paused && startgame.timer < 1598 && startgame.timer > 0)
 		{
             startgame.timer = 1598;
             climbfence.Stop();
@@ -1352,24 +1354,22 @@ public class PlayerScript : MonoBehaviour
 		{
             if (startgame.gamestarted)
             {
-                if (startgame.timer < 1598)
-                {
-                    startgame.timer = 1598;
-                    climbfence.Stop();
-                }
-                else if (!lost && sanity == 100f)
-                {
-                    paused = true;
-                    Time.timeScale = 0f;
+				if (!lost && startgame.timer >= 1598)
+				{
+                    if (sanity == 100f)
+                    {
+                        paused = true;
+                        Time.timeScale = 0f;
 
-					menuManager.DisplayMenu();
+                        menuManager.DisplayMenu();
 
-                    cm.canControl = false;
-                    mouseLook.enabled = false;
-                }
-                else if (!lost)
-                {
-                    flicker = 3;
+                        cm.canControl = false;
+                        mouseLook.enabled = false;
+                    }
+                    else
+                    {
+                        flicker = 3;
+                    }
                 }
             }
             else
@@ -1387,6 +1387,7 @@ public class PlayerScript : MonoBehaviour
 
             paused = false;
             Time.timeScale = 1f;
+
             cm.canControl = true;
             mouseLook.enabled = true;
         }
