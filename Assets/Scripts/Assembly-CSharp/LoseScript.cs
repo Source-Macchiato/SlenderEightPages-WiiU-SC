@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LoseScript : MonoBehaviour
 {
@@ -275,7 +276,7 @@ public class LoseScript : MonoBehaviour
 		if (timeleft >= 2700 + mhdelay && view.pages >= 8)
 		{
 			quitted = true;
-			Application.LoadLevel(0);
+			SceneManager.LoadScene("MainMenu");
 		}
 		if (timeleft == 250 + mhdelay && view.pages >= 8)
 		{

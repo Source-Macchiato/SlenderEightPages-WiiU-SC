@@ -17,6 +17,8 @@ public class PickupPage : MonoBehaviour
 
     private RaycastHit hitInfo;
 
+    [SerializeField] private Achievements.achievements achievement;
+
     private WiiU.GamePad gamePad;
     private WiiU.Remote remote;
 
@@ -134,6 +136,12 @@ public class PickupPage : MonoBehaviour
                 view.minrange = 10f;
                 view.finaldelay = 750;
             }
+
+            if (MedalsManager.medalsManager != null)
+            {
+                MedalsManager.medalsManager.UnlockAchievement(achievement);
+            }
+
             Object.Destroy(base.gameObject);
         }
 	}

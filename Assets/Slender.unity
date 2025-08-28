@@ -53454,6 +53454,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967039
   pickupText: {fileID: 958321955}
+  achievement: 1
 --- !u!114 &1367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53490,6 +53491,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967039
   pickupText: {fileID: 1911965815}
+  achievement: 2
 --- !u!114 &1369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53522,6 +53524,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967039
   pickupText: {fileID: 460851549}
+  achievement: 6
 --- !u!114 &1371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53580,6 +53583,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967039
   pickupText: {fileID: 488045839}
+  achievement: 0
 --- !u!114 &1374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53711,6 +53715,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967039
   pickupText: {fileID: 1419487147}
+  achievement: 7
 --- !u!114 &1376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53730,6 +53735,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967039
   pickupText: {fileID: 1065282507}
+  achievement: 5
 --- !u!114 &1377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53934,6 +53940,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967039
   pickupText: {fileID: 598795150}
+  achievement: 4
 --- !u!114 &1385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54256,6 +54263,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967039
   pickupText: {fileID: 706719422}
+  achievement: 3
 --- !u!218 &1394
 Terrain:
   m_ObjectHideFlags: 0
