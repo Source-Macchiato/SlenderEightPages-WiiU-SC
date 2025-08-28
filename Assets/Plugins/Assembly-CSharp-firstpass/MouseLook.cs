@@ -33,7 +33,7 @@ public class MouseLook : MonoBehaviour
         gamePad = WiiU.GamePad.access;
         remote = WiiU.Remote.Access(0);
 
-        currentRotation.x = transform.localEulerAngles.y;
+        currentRotation.x = playerTransform.localEulerAngles.y;
         currentRotation.y = transform.localEulerAngles.x;
     }
 
