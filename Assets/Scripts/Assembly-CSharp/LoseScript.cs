@@ -136,7 +136,7 @@ public class LoseScript : MonoBehaviour
 		if (view.pages < 8 && timeleft >= 250 && Input.GetMouseButtonDown(0))
 		{
 			quitted = true;
-			Application.LoadLevel(0);
+			SceneManager.LoadScene("MainMenu");
 		}
 	}
 
@@ -153,6 +153,11 @@ public class LoseScript : MonoBehaviour
 		}
 		if (timeleft == 0)
 		{
+			if (MedalsManager.medalsManager != null)
+			{
+				MedalsManager.medalsManager.UnlockAchievement(Achievements.achievements.SLENDER);
+			}
+
 			original.enabled = false;
 			base.transform.parent.GetComponent<Camera>().enabled = true;
 			oldposition = player.position;
