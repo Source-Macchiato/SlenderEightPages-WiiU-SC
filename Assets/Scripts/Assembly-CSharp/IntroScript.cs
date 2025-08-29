@@ -87,39 +87,11 @@ public class IntroScript : MonoBehaviour
 		mainview.enabled = false;
 		base.GetComponent<Camera>().enabled = true;
 
-		if (PlayerPrefs.HasKey("daytime"))
-		{
-			if (PlayerPrefs.GetInt("daytime") == 1)
-			{
-				sunup = true;
-			}
-		}
-		else
-		{
-			PlayerPrefs.SetInt("daytime", 0);
-		}
+		// Optimize trees
+        land.treeBillboardDistance = 80f;
+        land.treeMaximumFullLODCount = 160;
 
-		if (PlayerPrefs.HasKey("trees"))
-		{
-			if (PlayerPrefs.GetFloat("trees") < 20f)
-			{
-				PlayerPrefs.SetFloat("trees", 80f);
-				land.treeBillboardDistance = 80f;
-				land.treeMaximumFullLODCount = 160;
-			}
-			else
-			{
-				land.treeBillboardDistance = PlayerPrefs.GetFloat("trees");
-				land.treeMaximumFullLODCount = (int)(PlayerPrefs.GetFloat("trees") * 2f);
-			}
-		}
-		else
-		{
-			PlayerPrefs.SetFloat("trees", 80f);
-			land.treeBillboardDistance = 80f;
-			land.treeMaximumFullLODCount = 160;
-		}
-		if (PlayerPrefs.HasKey("dusty"))
+        if (PlayerPrefs.HasKey("dusty"))
 		{
 			if (PlayerPrefs.GetInt("dusty") == 1)
 			{
@@ -134,17 +106,6 @@ public class IntroScript : MonoBehaviour
 		{
 			PlayerPrefs.SetInt("dusty", 1);
 			view.dustyair = true;
-		}
-		if (PlayerPrefs.HasKey("msensitivity"))
-		{
-			mouseLook.sensitivityX = PlayerPrefs.GetFloat("msensitivity");
-			mouseLook.sensitivityY = PlayerPrefs.GetFloat("msensitivity");
-		}
-		else
-		{
-			PlayerPrefs.SetFloat("msensitivity", 5f);
-			mouseLook.sensitivityX = 5f;
-			mouseLook.sensitivityY = 5f;
 		}
 		if (PlayerPrefs.HasKey("skintro"))
 		{
@@ -609,25 +570,6 @@ public class IntroScript : MonoBehaviour
 		GUI.EndGroup();
 	}*/
 
-	private void Update()
-	{
-		if (!gamestarted && Input.GetKeyDown(KeyCode.Escape))
-		{
-			if (optmenu)
-			{
-				optmenu = false;
-			}
-			else if (extmenu)
-			{
-				extmenu = false;
-			}
-			else
-			{
-				Application.Quit();
-			}
-		}
-	}
-
 	private void FixedUpdate()
 	{
 		if (timer >= 1600 || !gamestarted)
@@ -663,7 +605,7 @@ public class IntroScript : MonoBehaviour
 	private void StartGame()
 	{
         gamestarted = true;
-        Screen.lockCursor = false;
+		Cursor.lockState = CursorLockMode.None;
         entry = Random.Range(4, 16);
         if (view.mh)
         {

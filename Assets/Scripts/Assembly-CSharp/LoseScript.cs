@@ -224,9 +224,10 @@ public class LoseScript : MonoBehaviour
 				RenderSettings.skybox = daysky;
 				RenderSettings.ambientLight = Color.gray;
 				sun.enabled = true;
-				if (!view.mh)
+				
+				if (MedalsManager.medalsManager != null)
 				{
-					PlayerPrefs.SetInt("daytime", 1);
+					MedalsManager.medalsManager.UnlockAchievement(Achievements.achievements.THE_EIGHT_PAGES);
 				}
 			}
 			if (view.dustyair && view.daytime)

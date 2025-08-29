@@ -4,9 +4,9 @@ using WiiU = UnityEngine.WiiU;
 [AddComponentMenu("Camera-Control/Mouse Look")]
 public class MouseLook : MonoBehaviour
 {
-	public float sensitivityX = 15f;
+	public float sensitivityX = 5f;
 
-	public float sensitivityY = 15f;
+	public float sensitivityY = 5f;
 
 	public float minimumX = -360f;
 
