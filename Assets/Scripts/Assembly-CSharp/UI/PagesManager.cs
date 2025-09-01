@@ -10,6 +10,7 @@ public class PagesManager : MonoBehaviour
 
 	void Start()
 	{
+		// Set all pages to locked when game start
 		foreach (Image pageImage in pageImages)
 		{
 			pageImage.sprite = lockedSprite;

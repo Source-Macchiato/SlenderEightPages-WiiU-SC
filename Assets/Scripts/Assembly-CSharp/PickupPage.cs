@@ -104,7 +104,7 @@ public class PickupPage : MonoBehaviour
 
 	private void PickupPageActions()
 	{
-        if (withinrange && Physics.Raycast(player.position, (base.transform.position - player.position).normalized, out hitInfo, 2f, mask) && hitInfo.collider.gameObject == base.gameObject)
+        if (!view.paused && withinrange && Physics.Raycast(player.position, (base.transform.position - player.position).normalized, out hitInfo, 2f, mask) && hitInfo.collider.gameObject == base.gameObject)
 		{
             if ((view.pages == 0 || view.pages == 2 || view.pages == 4 || view.pages == 6 || view.pages == 7) && view.level == 0)
             {
@@ -145,6 +145,7 @@ public class PickupPage : MonoBehaviour
                 MedalsManager.medalsManager.UnlockAchievement(achievement);
             }
 
+            // Display page on GamePad
             if (pagesManager != null)
             {
                 pagesManager.PageUnlocked(achievement);
