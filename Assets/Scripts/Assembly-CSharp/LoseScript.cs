@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using WiiU = UnityEngine.WiiU;
 
 public class LoseScript : MonoBehaviour
 {
@@ -37,9 +38,15 @@ public class LoseScript : MonoBehaviour
 
 	public int mhdelay;
 
-	private void Start()
+    private WiiU.GamePad gamePad;
+    private WiiU.Remote remote;
+
+    private void Start()
 	{
-		nightsky = RenderSettings.skybox;
+        gamePad = WiiU.GamePad.access;
+        remote = WiiU.Remote.Access(0);
+
+        nightsky = RenderSettings.skybox;
 		base.transform.parent.GetComponent<Camera>().enabled = false;
 		Color color = base.GetComponent<Renderer>().material.color;
 		color.a = 0.4f;
@@ -67,45 +74,6 @@ public class LoseScript : MonoBehaviour
 					GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Someone is trying to help me.", credits);
 				}
 			}
-			if (timeleft >= 1050 + mhdelay && timeleft < 1300 + mhdelay)
-			{
-				GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 75, 600f, 50f), "Game Design & Programming", credits);
-				GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 + 25, 600f, 50f), "Mark J. Hadley", credits);
-			}
-			else if (timeleft >= 1400 + mhdelay && timeleft < 1650 + mhdelay)
-			{
-				GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 75, 600f, 50f), "Music & Sound", credits);
-				GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 + 25, 600f, 50f), "Mark J. Hadley", credits);
-			}
-			else if (timeleft >= 1750 + mhdelay && timeleft < 2250 + mhdelay)
-			{
-				GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 75, 600f, 50f), "Models", credits);
-				if (timeleft < 1850 + mhdelay)
-				{
-					GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 + 25, 600f, 50f), "Pau Cano", credits);
-				}
-				else if (timeleft < 1950 + mhdelay)
-				{
-					GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 + 25, 600f, 50f), "Universal Image", credits);
-				}
-				else if (timeleft < 2050 + mhdelay)
-				{
-					GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 + 25, 600f, 50f), "VIS Games", credits);
-				}
-				else if (timeleft < 2150 + mhdelay)
-				{
-					GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 + 25, 600f, 50f), "Profi Developers", credits);
-				}
-				else
-				{
-					GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 + 25, 600f, 50f), "Unity Technology", credits);
-				}
-			}
-			else if (timeleft >= 2350 + mhdelay && timeleft < 2600 + mhdelay)
-			{
-				GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Thanks for playing", credits);
-			}
-			return;
 		}
 		if (view.mh)
 		{
@@ -133,10 +101,45 @@ public class LoseScript : MonoBehaviour
 
 	private void Update()
 	{
-		if (view.pages < 8 && timeleft >= 250 && Input.GetMouseButtonDown(0))
+        WiiU.GamePadState gamePadState = gamePad.state;
+        WiiU.RemoteState remoteState = remote.state;
+
+		if (gamePadState.gamePadErr == WiiU.GamePadError.None)
 		{
-			quitted = true;
-			SceneManager.LoadScene("MainMenu");
+			if (gamePadState.IsTriggered(WiiU.GamePadButton.A))
+			{
+				GameOver();
+			}
+		}
+
+        switch (remoteState.devType)
+		{
+			case WiiU.RemoteDevType.ProController:
+				if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.A))
+				{
+					GameOver();
+				}
+				break;
+			case WiiU.RemoteDevType.Classic:
+				if (remoteState.classic.IsTriggered(WiiU.ClassicButton.A))
+				{
+					GameOver();
+				}
+				break;
+			default:
+				if (remoteState.IsTriggered(WiiU.RemoteButton.A))
+				{
+					GameOver();
+				}
+				break;
+		}
+
+		if (Application.isEditor)
+		{
+			if (Input.GetMouseButtonDown(0))
+			{
+				GameOver();
+			}
 		}
 	}
 
@@ -293,4 +296,13 @@ public class LoseScript : MonoBehaviour
 			view.fadeinmusic = 0f;
 		}
 	}
+
+	private void GameOver()
+	{
+        if (view.pages < 8 && timeleft >= 250)
+        {
+            quitted = true;
+            SceneManager.LoadScene("MainMenu");
+        }
+    }
 }
