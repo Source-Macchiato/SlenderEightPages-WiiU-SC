@@ -5,8 +5,6 @@ public class PickupPage : MonoBehaviour
 {
 	public Transform player;
 
-	public PlayerScript view;
-
 	public AudioClip pagesound;
 
 	public bool withinrange;
@@ -17,6 +15,9 @@ public class PickupPage : MonoBehaviour
 
     private RaycastHit hitInfo;
 
+    public PlayerScript view;
+    private PagesManager pagesManager;
+
     [SerializeField] private Achievements.achievements achievement;
 
     private WiiU.GamePad gamePad;
@@ -26,6 +27,8 @@ public class PickupPage : MonoBehaviour
     {
         gamePad = WiiU.GamePad.access;
         remote = WiiU.Remote.Access(0);
+
+        pagesManager = FindObjectOfType<PagesManager>();
     }
 
 	private void Update()
@@ -140,6 +143,11 @@ public class PickupPage : MonoBehaviour
             if (MedalsManager.medalsManager != null)
             {
                 MedalsManager.medalsManager.UnlockAchievement(achievement);
+            }
+
+            if (pagesManager != null)
+            {
+                pagesManager.PageUnlocked(achievement);
             }
 
             Object.Destroy(base.gameObject);

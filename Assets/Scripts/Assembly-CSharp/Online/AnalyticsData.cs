@@ -201,19 +201,7 @@ public class AnalyticsData : MonoBehaviour
 
     public string GetLayout()
     {
-        switch (SaveManager.saveData.settings.layoutId)
-        {
-            case 0:
-                return "TV only";
-            case 1:
-                return "TV + Gamepad (Classic)";
-            case 2:
-                return "TV + Gamepad (Alternative)";
-            case 3:
-                return "Gamepad only";
-            default:
-                return "TV + Gamepad (Classic)";
-        }
+        return string.Empty;
     }
 
     public void ShareAnalytics(bool share)
