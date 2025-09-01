@@ -5,7 +5,6 @@ public class MainMenuSetup : MonoBehaviour
 {
 	private MenuManager menuManager;
 
-	// Use this for initialization
 	void Start()
 	{
 		menuManager = FindObjectOfType<MenuManager>();
@@ -25,5 +24,15 @@ public class MainMenuSetup : MonoBehaviour
 
             SceneManager.LoadSceneAsync("Loading");
         }
+	}
+
+	public void Credits()
+	{
+		if (menuManager.canNavigate)
+		{
+			menuManager.canNavigate = false;
+
+			SceneManager.LoadSceneAsync("Credits");
+		}
 	}
 }
