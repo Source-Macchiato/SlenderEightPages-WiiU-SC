@@ -75,12 +75,8 @@ public class AnalyticsData : MonoBehaviour
                         "\"value\": \"" + GetLanguage() + "\"" +
                     "}," +
                     "{" +
-                        "\"name\": \"current_night\"," +
-                        "\"value\": \"" + GetCurrentNight() + "\"" +
-                    "}," +
-                    "{" +
-                        "\"name\": \"layout\"," +
-                        "\"value\": \"" + GetLayout() + "\"" +
+                        "\"name\": \"pages\"," +
+                        "\"value\": \"" + GetPages() + "\"" +
                     "}" +
                 "]" +
             "}";
@@ -194,7 +190,7 @@ public class AnalyticsData : MonoBehaviour
         return language.ToUpper();
     }
 
-    public int GetCurrentNight()
+    public int GetPages()
     {
         return 0;
     }
