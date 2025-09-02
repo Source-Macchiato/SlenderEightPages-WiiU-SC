@@ -1,42 +1,37 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClosedBeta : MonoBehaviour
+public class VersionChecker : MonoBehaviour
 {
     [Header("BrewConnect")]
     [SerializeField] private string projectToken;
 
+    // Scripts
     private MenuManager menuManager;
 
-    void Awake()
+    [System.Serializable]
+    public class VersionData
+    {
+        public string version;
+    }
+
+    private void Start()
     {
         menuManager = FindObjectOfType<MenuManager>();
 
-        if (!Application.isEditor)
-        {
-            menuManager.AddPopup(3);
-        }
+        StartCoroutine(CheckVersion());
     }
 
-    void Start()
-	{
-        if (!Application.isEditor)
-        {
-            StartCoroutine(IsTester(SaveManager.token, projectToken));
-        }
-	}
-
-    IEnumerator IsTester(string userToken, string projectToken)
+    IEnumerator CheckVersion()
     {
-        string url = "https://api.brew-connect.com/v1/online/is_tester";
-        string json = "{\"user_token\":\"" + userToken + "\",\"project_token\":\"" + projectToken + "\"}";
+        string url = "https://api.brew-connect.com/v1/online/get_version";
+        string json = "{\"project_token\":\"" + projectToken + "\"}";
         byte[] post = Encoding.UTF8.GetBytes(json);
 
         Dictionary<string, string> headers = new Dictionary<string, string>();
-        headers.Add("content-Type", "application/json");
+        headers.Add("Content-Type", "application/json");
 
         using (WWW www = new WWW(url, post, headers))
         {
@@ -44,11 +39,22 @@ public class ClosedBeta : MonoBehaviour
 
             if (StatusCode(www) == 200)
             {
-                menuManager.CloseCurrentPopup();
-            }
-            else
-            {
-                Application.Quit();
+                VersionData data = JsonUtility.FromJson<VersionData>(www.text);
+                string onlineVersion = data.version;
+
+                TextAsset localVersionAsset = Resources.Load<TextAsset>("Meta/version");
+                string localVersion = localVersionAsset.text;
+
+                if (onlineVersion.Trim() == localVersion.Trim())
+                {
+                    Debug.Log("Same version number");
+                }
+                else
+                {
+                    menuManager.AddPopup(0);
+
+                    Debug.Log("Different version number");
+                }
             }
         }
     }
@@ -73,18 +79,5 @@ public class ClosedBeta : MonoBehaviour
         {
             return 0;
         }
-    }
-
-    [Serializable]
-    private class AuthResponse
-    {
-        public string[] message;
-        public AuthData data;
-    }
-
-    [Serializable]
-    private class AuthData
-    {
-        public string token;
     }
 }
