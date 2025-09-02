@@ -731,7 +731,7 @@ public class MenuManager : MonoBehaviour
         lastNavigationTime += Time.deltaTime;
     }
 
-    public void AddPopup(int actionType) // Action type : 0 = Press input to continue, 1 = Options
+    public void AddPopup(int actionType) // Action type : 0 = Press input to continue, 1 = Options, 2 = Form, 3 = Checking tester status
     {
         // Instantiate the popup prefab
         GameObject newPopup = Instantiate(popupPrefab[actionType]);

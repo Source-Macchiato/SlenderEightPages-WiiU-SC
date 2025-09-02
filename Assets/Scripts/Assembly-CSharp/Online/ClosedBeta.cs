@@ -11,12 +11,15 @@ public class ClosedBeta : MonoBehaviour
 
     private MenuManager menuManager;
 
-    void Start()
-	{
+    void Awake()
+    {
         menuManager = FindObjectOfType<MenuManager>();
 
-        //menuManager.canNavigate = false;
+        menuManager.AddPopup(3);
+    }
 
+    void Start()
+	{
         StartCoroutine(IsTester(SaveManager.token, projectToken));
 	}
 
@@ -35,7 +38,7 @@ public class ClosedBeta : MonoBehaviour
 
             if (StatusCode(www) == 200)
             {
-                menuManager.canNavigate = true;
+                menuManager.CloseCurrentPopup();
             }
             else
             {
