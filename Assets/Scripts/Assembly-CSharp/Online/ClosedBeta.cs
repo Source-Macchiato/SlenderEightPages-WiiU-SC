@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -73,18 +72,5 @@ public class ClosedBeta : MonoBehaviour
         {
             return 0;
         }
-    }
-
-    [Serializable]
-    private class AuthResponse
-    {
-        public string[] message;
-        public AuthData data;
-    }
-
-    [Serializable]
-    private class AuthData
-    {
-        public string token;
     }
 }
