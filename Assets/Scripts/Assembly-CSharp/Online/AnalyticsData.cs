@@ -192,12 +192,15 @@ public class AnalyticsData : MonoBehaviour
 
     public int GetPages()
     {
-        return 0;
-    }
+        PlayerScript playerScript = FindObjectOfType<PlayerScript>();
+        int pages = 0;
 
-    public string GetLayout()
-    {
-        return string.Empty;
+        if (playerScript != null)
+        {
+            pages = playerScript.pages;
+        }
+
+        return pages;
     }
 
     public void ShareAnalytics(bool share)

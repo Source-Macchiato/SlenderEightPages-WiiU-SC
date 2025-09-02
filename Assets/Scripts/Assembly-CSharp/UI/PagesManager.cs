@@ -24,5 +24,11 @@ public class PagesManager : MonoBehaviour
 
 		// Page is now enabled (and the player could press it for display it)
 		pageStatus[(int)achievement] = true;
+
+		// Send analytics
+		if (AnalyticsData.analyticsData != null)
+		{
+			StartCoroutine(AnalyticsData.analyticsData.UpdateAnalytics("pages", AnalyticsData.analyticsData.GetPages()));
+		}
 	}
 }
