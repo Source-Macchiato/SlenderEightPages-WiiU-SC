@@ -260,7 +260,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0b0ae4581cd69746a03d085dca166a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  popupPrefab: []
+  popupPrefab:
+  - {fileID: 0}
+  - {fileID: 1606905500946458, guid: 58afb4e7d6cddba43a98b0013854d4f8, type: 2}
+  - {fileID: 0}
+  - {fileID: 1737449395258068, guid: 2310d414aac6372479497e50b285ddc1, type: 2}
   buttonAudio: {fileID: 1740033406}
   gamepadController: 1
   proController: 1
