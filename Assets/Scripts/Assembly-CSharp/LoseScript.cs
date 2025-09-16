@@ -165,8 +165,12 @@ public class LoseScript : MonoBehaviour
 			base.transform.parent.GetComponent<Camera>().enabled = true;
 			oldposition = player.position;
 			player.position = new Vector3(0f, -2000f, 0f);
-			RenderSettings.ambientLight = Color.black;
-			sun.enabled = false;
+
+            // Disable skybox
+            RenderSettings.skybox = null;
+            DynamicGI.UpdateEnvironment();
+
+            sun.enabled = false;
 			if (view.mh)
 			{
 				mhdelay = 1400;
@@ -217,15 +221,18 @@ public class LoseScript : MonoBehaviour
 			onthistime = false;
 			if (view.daytime)
 			{
-				RenderSettings.skybox = nightsky;
-				RenderSettings.ambientLight = Color.black;
-				view.torch.enabled = true;
+                // Disable skybox
+                RenderSettings.skybox = null;
+                DynamicGI.UpdateEnvironment();
+
+                view.torch.enabled = true;
 				sun.enabled = false;
 			}
 			else
 			{
-				RenderSettings.skybox = daysky;
-				RenderSettings.ambientLight = Color.gray;
+                // Disable skybox
+                RenderSettings.skybox = daysky;
+                DynamicGI.UpdateEnvironment();
 				sun.enabled = true;
 				
 				if (MedalsManager.medalsManager != null)
@@ -249,8 +256,12 @@ public class LoseScript : MonoBehaviour
 			l1.intensity = 0f;
 			l2.intensity = 0f;
 			sun.enabled = false;
-			RenderSettings.ambientLight = Color.black;
-			player.position = new Vector3(0f, -2000f, 0f);
+
+            // Disable skybox
+            RenderSettings.skybox = null;
+            DynamicGI.UpdateEnvironment();
+
+            player.position = new Vector3(0f, -2000f, 0f);
 		}
 		if (timeleft > 250 && view.pages >= 8)
 		{

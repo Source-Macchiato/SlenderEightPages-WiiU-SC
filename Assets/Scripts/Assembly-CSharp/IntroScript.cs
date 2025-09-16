@@ -571,9 +571,9 @@ public class IntroScript : MonoBehaviour
 				optmenu = false;
 				view.backedup = false;
 			}
-		}*/
-        GUI.EndGroup();
-	}
+		}
+        GUI.EndGroup();*/
+    }
 
     private void FixedUpdate()
 	{
