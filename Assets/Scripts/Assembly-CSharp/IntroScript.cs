@@ -193,9 +193,9 @@ public class IntroScript : MonoBehaviour
 		StartGame();
 	}
 
-	/*private void OnGUI()
+	private void OnGUI()
 	{
-		if (view.mh)
+        /*if (view.mh)
 		{
 			if (timer >= 300 && timer < 500)
 			{
@@ -211,16 +211,21 @@ public class IntroScript : MonoBehaviour
 				GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 45, 600f, 50f), "The video quality was poor, and I", credits);
 				GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 5, 600f, 50f), "don't know when it was filmed.", credits);
 			}
-		}
-		else if (timer >= 50 && timer < 400)
+		}*/
+
+		if (!view.mh)
 		{
-			GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Parsec Productions", credits);
-		}
-		else if (timer >= 500 && timer < 850)
-		{
-			GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Presents", credits);
-		}
-		if (gamestarted)
+            if (timer >= 50 && timer < 400)
+            {
+                GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Parsec Productions", credits);
+            }
+            else if (timer >= 500 && timer < 850)
+            {
+                GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Presents", credits);
+            }
+        }
+
+        /*if (gamestarted)
 		{
 			return;
 		}
@@ -566,11 +571,11 @@ public class IntroScript : MonoBehaviour
 				optmenu = false;
 				view.backedup = false;
 			}
-		}
-		GUI.EndGroup();
-	}*/
+		}*/
+        GUI.EndGroup();
+	}
 
-	private void FixedUpdate()
+    private void FixedUpdate()
 	{
         if (timer >= 1600 || !gamestarted)
 		{
