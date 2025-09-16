@@ -72,6 +72,8 @@ public class IntroScript : MonoBehaviour
 
 	public bool infomenu;
 
+	private Material skyboxMat;
+
 	private void Start()
 	{
 		sk1.enableEmission = true;
@@ -87,7 +89,14 @@ public class IntroScript : MonoBehaviour
 		mainview.enabled = false;
 		base.GetComponent<Camera>().enabled = true;
 
-		// Optimize trees
+		// Get skybox material reference
+		skyboxMat = RenderSettings.skybox;
+
+        // Disable skybox
+        RenderSettings.skybox = null;
+        DynamicGI.UpdateEnvironment();
+
+        // Optimize trees
         land.treeBillboardDistance = 80f;
         land.treeMaximumFullLODCount = 160;
 
@@ -122,15 +131,6 @@ public class IntroScript : MonoBehaviour
 		{
 			PlayerPrefs.SetInt("skintro", 0);
 			skintro = false;
-		}
-		if (PlayerPrefs.HasKey("grasslevel"))
-		{
-			land.detailObjectDensity = PlayerPrefs.GetFloat("grasslevel");
-		}
-		else
-		{
-			PlayerPrefs.SetFloat("grasslevel", 1f);
-			land.detailObjectDensity = 1f;
 		}
 		if (PlayerPrefs.HasKey("currentm"))
 		{
@@ -572,21 +572,29 @@ public class IntroScript : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (timer >= 1600 || !gamestarted)
+        if (timer >= 1600 || !gamestarted)
 		{
-			return;
+            return;
 		}
+
 		timer++;
-		if (timer >= 700 && timer < 1700 && !view.mh)
+
+        if (timer >= 700 && timer < 1700 && !view.mh)
 		{
-			spotlight.Rotate(new Vector3(0f, base.transform.rotation.x + Time.deltaTime * 5f, 0f));
-		}
-		if (timer != 1600)
+            spotlight.Rotate(new Vector3(0f, base.transform.rotation.x + Time.deltaTime * 5f, 0f));
+        }
+
+        if (timer != 1600)
 		{
-			return;
+            return;
 		}
+
 		mainview.enabled = true;
-		base.GetComponent<Camera>().enabled = false;
+
+        RenderSettings.skybox = skyboxMat;
+        DynamicGI.UpdateEnvironment();
+
+        base.GetComponent<Camera>().enabled = false;
 		view.fadeoutgui = 0;
 		if (!view.daytime)
 		{
@@ -598,7 +606,6 @@ public class IntroScript : MonoBehaviour
 		else
 		{
 			sun.enabled = true;
-			RenderSettings.ambientLight = Color.gray;
 		}
 	}
 
