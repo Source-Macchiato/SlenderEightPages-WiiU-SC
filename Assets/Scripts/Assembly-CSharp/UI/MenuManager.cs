@@ -51,7 +51,6 @@ public class MenuManager : MonoBehaviour
     // Store menu history
     private Stack<int> menuHistory = new Stack<int>();
 
-    [SerializeField] private bool alwaysDisplayMainMenu = true;
     private bool isNavigatingBack = false;
 
     [HideInInspector]
