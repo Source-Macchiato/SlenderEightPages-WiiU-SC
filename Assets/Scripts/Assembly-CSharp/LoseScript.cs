@@ -92,7 +92,7 @@ public class LoseScript : MonoBehaviour
 				GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "But I intend to find out.", credits);
 			}
 		}
-		if (timeleft >= 250 + mhdelay && !quitted)
+		if (view.pages < 8 && timeleft >= 250 + mhdelay && !quitted)
 		{
 			GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 75, 600f, 50f), "Pages: " + view.pages + "/8", credits);
 			GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 + 25, 600f, 50f), "Click to continue", credits);
@@ -262,7 +262,10 @@ public class LoseScript : MonoBehaviour
             DynamicGI.UpdateEnvironment();
 
             player.position = new Vector3(0f, -2000f, 0f);
-		}
+
+            quitted = true;
+            SceneManager.LoadScene("Credits");
+        }
 		if (timeleft > 250 && view.pages >= 8)
 		{
 			if (view.mh)
