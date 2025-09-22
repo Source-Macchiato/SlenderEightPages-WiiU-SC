@@ -53867,6 +53867,7 @@ MonoBehaviour:
   nightsky: {fileID: 0}
   oldposition: {x: 0, y: 0, z: 0}
   mhdelay: 0
+  aIcon: {fileID: 2800000, guid: a099f954a5614ea4b947464fb77b97cb, type: 3}
 --- !u!114 &1381
 MonoBehaviour:
   m_ObjectHideFlags: 0

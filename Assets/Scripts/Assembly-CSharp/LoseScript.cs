@@ -38,6 +38,8 @@ public class LoseScript : MonoBehaviour
 
 	public int mhdelay;
 
+	[SerializeField] private Texture2D aIcon;
+
     private WiiU.GamePad gamePad;
     private WiiU.Remote remote;
 
@@ -95,8 +97,8 @@ public class LoseScript : MonoBehaviour
 		if (view.pages < 8 && timeleft >= 250 + mhdelay && !quitted)
 		{
 			GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 75, 600f, 50f), "Pages: " + view.pages + "/8", credits);
-			GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 + 25, 600f, 50f), "Click to continue", credits);
-		}
+            GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 + 25, 600f, 50f), new GUIContent(" Press to continue", aIcon), credits);
+        }
 	}
 
 	private void Update()
