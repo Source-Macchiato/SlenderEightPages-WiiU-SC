@@ -1,16 +1,37 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class MenuData : MonoBehaviour {
+public class MenuData : MonoBehaviour
+{
+	[SerializeField] private SwitcherData analyticsSwitcher;
 
-	// Use this for initialization
-	void Start () {
-		
+	void Start()
+	{
+
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	// Share analytics
+	public void SaveAndUpdateAnalytics()
+	{
+		SaveManager.saveData.settings.shareAnalytics = analyticsSwitcher.currentOptionId == 1 ? 0 : 1;
+		SaveManager.Save();
+
+		if (AnalyticsData.analyticsData != null)
+		{
+            AnalyticsData.analyticsData.CanShareAnalytics();
+        }
+	}
+
+	public void LoadAnalyticsAndUpdateSwitcher()
+	{
+		// Get share analytics
+		int shareAnalytics = SaveManager.saveData.settings.shareAnalytics;
+
+		int switcherIndex = shareAnalytics == 1 ? 0 : 1;
+
+		if (switcherIndex >= 0 && switcherIndex < analyticsSwitcher.optionsName.Length)
+		{
+			analyticsSwitcher.currentOptionId = switcherIndex;
+			analyticsSwitcher.UpdateText();
+		}
 	}
 }
