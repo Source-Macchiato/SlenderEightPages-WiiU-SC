@@ -21191,7 +21191,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Convex: 1
+  m_Convex: 0
   m_InflateMesh: 0
   m_SkinWidth: 1.00000005e-20
   m_Mesh: {fileID: 4300000, guid: d5c9a43add14e774b8b0afbeadfe1624, type: 2}
@@ -55311,7 +55311,6 @@ MonoBehaviour:
   - {fileID: 161549207}
   defaultButtons:
   - {fileID: 841836638}
-  alwaysDisplayMainMenu: 0
   canNavigate: 1
 --- !u!1 &816271169
 GameObject:
