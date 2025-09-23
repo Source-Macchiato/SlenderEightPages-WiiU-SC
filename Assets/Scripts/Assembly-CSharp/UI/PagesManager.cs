@@ -3,9 +3,13 @@ using UnityEngine.UI;
 
 public class PagesManager : MonoBehaviour
 {
-	[SerializeField] private Image[] pageImages;
-	[SerializeField] private Sprite[] pageSprites;
+    [SerializeField] private GameObject pageFullScreen;
+    
 	[SerializeField] private Sprite lockedSprite;
+
+    [SerializeField] private Image[] pageImages;
+	[SerializeField] private Sprite[] pageSprites;
+	
 	private bool[] pageStatus = new bool[8];
 
 	void Start()
@@ -15,6 +19,9 @@ public class PagesManager : MonoBehaviour
 		{
 			pageImage.sprite = lockedSprite;
 		}
+
+		// Disable full page by default
+		pageFullScreen.SetActive(false);
 	}
 
 	public void PageUnlocked(Achievements.achievements achievement)
@@ -30,5 +37,20 @@ public class PagesManager : MonoBehaviour
 		{
 			StartCoroutine(AnalyticsData.analyticsData.UpdateAnalytics("pages", AnalyticsData.analyticsData.GetPages()));
 		}
+	}
+
+	public void DisplayPage(int achievementId)
+	{
+		if (pageStatus[achievementId])
+		{
+            pageFullScreen.SetActive(true);
+
+            pageFullScreen.GetComponent<Image>().sprite = pageSprites[achievementId];
+        }
+	}
+
+	public void HidePage()
+	{
+		pageFullScreen.SetActive(false);
 	}
 }
