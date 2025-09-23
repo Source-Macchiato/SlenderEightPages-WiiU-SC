@@ -55001,6 +55001,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 33224860109616802, guid: 3e17ce211fe58184b8c7e0f3cbfa4d4e,
+        type: 2}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 33162954776736002, guid: 3e17ce211fe58184b8c7e0f3cbfa4d4e,
         type: 2}
       propertyPath: m_Mesh
@@ -55015,11 +55020,6 @@ Prefab:
         type: 2}
       propertyPath: m_isInputParsingRequired
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 33224860109616802, guid: 3e17ce211fe58184b8c7e0f3cbfa4d4e,
-        type: 2}
-      propertyPath: m_Mesh
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3e17ce211fe58184b8c7e0f3cbfa4d4e, type: 2}
