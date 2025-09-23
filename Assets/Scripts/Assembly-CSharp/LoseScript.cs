@@ -232,6 +232,9 @@ public class LoseScript : MonoBehaviour
 			}
 			else
 			{
+				// Disable the fog
+				view.targetfog = 0f;
+
                 // Disable skybox
                 RenderSettings.skybox = daysky;
                 DynamicGI.UpdateEnvironment();
