@@ -95,10 +95,11 @@ public class IntroScript : MonoBehaviour
         // Disable skybox
         RenderSettings.skybox = null;
         DynamicGI.UpdateEnvironment();
-
+		/*
         // Optimize trees
         land.treeBillboardDistance = 80f;
         land.treeMaximumFullLODCount = 160;
+		*/
 
         if (PlayerPrefs.HasKey("dusty"))
 		{
