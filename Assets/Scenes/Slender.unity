@@ -4718,6 +4718,7 @@ GameObject:
   - component: {fileID: 1385}
   - component: {fileID: 1286}
   - component: {fileID: 1386}
+  - component: {fileID: 1236}
   - component: {fileID: 1297}
   m_Layer: 8
   m_Name: Main Camera
@@ -21167,6 +21168,27 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 152dcf4fe7f637d4088230ef3407c98f, type: 2}
+--- !u!114 &1236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05910b5f507b4144eb4dafa143812757, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  introScript: {fileID: 1374}
+  pauseManager: {fileID: 107483800}
+  zoomManager: {fileID: 1119387458}
+  playerScript: {fileID: 1386}
+  cm: {fileID: 1389}
+  mouseLook: {fileID: 1385}
+  paused: 0
+  canRun: 0
+  flashlightEnabled: 0
+  direction: {x: 0, y: 0}
 --- !u!64 &1237
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -21429,7 +21451,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Convex: 1
+  m_Convex: 0
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: c3c01bc6d0f45844ab9ae9e7e16fd1e8, type: 2}
@@ -53447,6 +53469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7450a6c8cd3dd13671f827088f61b8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseManager: {fileID: 107483800}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
   withinrange: 0
@@ -53484,6 +53507,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7450a6c8cd3dd13671f827088f61b8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseManager: {fileID: 107483800}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
   withinrange: 0
@@ -53517,6 +53541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7450a6c8cd3dd13671f827088f61b8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseManager: {fileID: 107483800}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
   withinrange: 0
@@ -53537,6 +53562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 810bd89dda0253cf92662f3951100658, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseManager: {fileID: 107483800}
   rotateme: {fileID: 483}
   timer: 100
   fs1: {fileID: 8300000, guid: bacb9259ef45c1340af830cf4d3a1709, type: 3}
@@ -53576,6 +53602,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7450a6c8cd3dd13671f827088f61b8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseManager: {fileID: 107483800}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
   withinrange: 0
@@ -53596,6 +53623,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f022e3e0d49046a26f0594e39fb0aba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseManager: {fileID: 107483800}
+  climbfence: {fileID: 1289}
   timer: 0
   credits:
     m_Name: 
@@ -53708,6 +53737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7450a6c8cd3dd13671f827088f61b8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseManager: {fileID: 107483800}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
   withinrange: 0
@@ -53728,6 +53758,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7450a6c8cd3dd13671f827088f61b8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseManager: {fileID: 107483800}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
   withinrange: 0
@@ -53784,6 +53815,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62e329f98519f6464b3610e657f2ff28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  introScript: {fileID: 1374}
   player: {fileID: 631}
   view: {fileID: 1386}
   onthistime: 0
@@ -53904,6 +53936,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62266fc5087cc32983003392eb34a82e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseManager: {fileID: 107483800}
   player: {fileID: 619}
   view: {fileID: 1386}
   dramatic: {fileID: 1295}
@@ -53934,6 +53967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7450a6c8cd3dd13671f827088f61b8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseManager: {fileID: 107483800}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
   withinrange: 0
@@ -53972,6 +54006,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 516bdecd537eb8f2da6ff511f080f12e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zoomManager: {fileID: 1119387458}
+  playerController: {fileID: 1236}
+  pauseManager: {fileID: 107483800}
   debug: 0
   pages: 0
   level: 0
@@ -54095,16 +54132,13 @@ MonoBehaviour:
     m_StretchWidth: 1
     m_StretchHeight: 0
   fadeoutgui: 0
-  mouseLook: {fileID: 1385}
-  cm: {fileID: 1389}
   flicker: 0
   endflicker: 0
   lastflicker: 0
-  zoom: 60
   statscale: {fileID: 589}
   zsound: {fileID: 1288}
-  endgame: {fileID: 1380}
-  startgame: {fileID: 1374}
+  loseScript: {fileID: 1380}
+  introScript: {fileID: 1374}
   finaldelay: 0
   chasetest: {fileID: 518}
   tentacles: {fileID: 616}
@@ -54114,10 +54148,8 @@ MonoBehaviour:
   endfix: {fileID: 530}
   dust: {fileID: 1351}
   dustyair: 1
-  backedup: 0
   sprintcooldown: 0
   sprscr: {fileID: 1391}
-  paused: 0
   targetfog: 0.02
   amrunning: 0
   cranking: 0
@@ -54125,7 +54157,6 @@ MonoBehaviour:
   mask:
     serializedVersion: 2
     m_Bits: 23
-  canRun: 0
   flashlightEnabled: 0
   direction: {x: 0, y: 0}
 --- !u!114 &1387
@@ -54257,6 +54288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7450a6c8cd3dd13671f827088f61b8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseManager: {fileID: 107483800}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
   withinrange: 0
@@ -54297,6 +54329,52 @@ Terrain:
   m_BakeLightProbesForTrees: 1
   m_ScaleInLightmap: 1
   m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
+--- !u!1 &107483799
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 107483801}
+  - component: {fileID: 107483800}
+  m_Layer: 0
+  m_Name: PauseManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &107483800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 107483799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c64d0cb078e3b8a4090d89d7df732507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuManager: {fileID: 780895475}
+  introScript: {fileID: 1374}
+  playerController: {fileID: 1236}
+  playerScript: {fileID: 1386}
+  paused: 0
+  backedup: 0
+--- !u!4 &107483801
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 107483799}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1360401515}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &133272401
 GameObject:
   m_ObjectHideFlags: 0
@@ -56495,6 +56573,51 @@ GameObject:
   m_PrefabParentObject: {fileID: 1237667909980118, guid: 3e17ce211fe58184b8c7e0f3cbfa4d4e,
     type: 2}
   m_PrefabInternal: {fileID: 1065282505}
+--- !u!1 &1119387456
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1119387457}
+  - component: {fileID: 1119387458}
+  m_Layer: 0
+  m_Name: ZoomManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1119387457
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1119387456}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1360401515}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1119387458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1119387456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a258c2570dccff1458eb8103298a8dfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  palyerCamera: {fileID: 678}
+  zsound: {fileID: 1288}
+  zoomIn: 0
+  zoomOut: 0
+  zoom: 60
 --- !u!1 &1138025777
 GameObject:
   m_ObjectHideFlags: 0
@@ -56881,6 +57004,8 @@ Transform:
   - {fileID: 780895474}
   - {fileID: 2021821481}
   - {fileID: 445636188}
+  - {fileID: 107483801}
+  - {fileID: 1119387457}
   m_Father: {fileID: 0}
   m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

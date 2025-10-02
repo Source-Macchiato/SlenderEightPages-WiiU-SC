@@ -4,6 +4,7 @@ using WiiU = UnityEngine.WiiU;
 
 public class LoseScript : MonoBehaviour
 {
+	[SerializeField] private IntroScript introScript;
 	public Transform player;
 
 	public PlayerScript view;
@@ -148,7 +149,7 @@ public class LoseScript : MonoBehaviour
 	private void FixedUpdate()
 	{
 		base.transform.parent.position = new Vector3(0f, -180f, 0f);
-		if (view.startgame.timer == 1599 && view.daytime)
+		if (introScript.timer == 1599 && view.daytime)
 		{
 			RenderSettings.skybox = daysky;
 		}

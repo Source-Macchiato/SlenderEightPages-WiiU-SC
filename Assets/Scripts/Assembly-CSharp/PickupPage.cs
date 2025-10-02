@@ -3,6 +3,7 @@ using WiiU = UnityEngine.WiiU;
 
 public class PickupPage : MonoBehaviour
 {
+    [SerializeField] private PauseManager pauseManager;
 	public Transform player;
 
 	public AudioClip pagesound;
@@ -104,7 +105,7 @@ public class PickupPage : MonoBehaviour
 
 	private void PickupPageActions()
 	{
-        if (!view.paused && withinrange && Physics.Raycast(player.position, (base.transform.position - player.position).normalized, out hitInfo, 2f, mask) && hitInfo.collider.gameObject == base.gameObject)
+        if (!pauseManager.paused && withinrange && Physics.Raycast(player.position, (base.transform.position - player.position).normalized, out hitInfo, 2f, mask) && hitInfo.collider.gameObject == base.gameObject)
 		{
             if ((view.pages == 0 || view.pages == 2 || view.pages == 4 || view.pages == 6 || view.pages == 7) && view.level == 0)
             {

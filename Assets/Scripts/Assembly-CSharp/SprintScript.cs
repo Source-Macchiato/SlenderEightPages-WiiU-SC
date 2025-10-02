@@ -18,11 +18,11 @@ public class SprintScript : MonoBehaviour
 
 	private float dist;
 
-	private PlayerScript playerScript;
+	private PlayerController playerController;
 
     private void Start()
 	{
-		playerScript = FindObjectOfType<PlayerScript>();
+		playerController = FindObjectOfType<PlayerController>();
 		chMotor = GetComponent<CharacterMotor>();
 		tr = base.transform;
 		CharacterController component = GetComponent<CharacterController>();
@@ -33,7 +33,7 @@ public class SprintScript : MonoBehaviour
 	{
 		float to = 1f;
 		float maxForwardSpeed = walkSpeed;
-		if (playerScript.canRun && chMotor.grounded && view.stamina > 10f)
+		if (playerController.canRun && chMotor.grounded && view.stamina > 10f)
 		{
 			maxForwardSpeed = ((view.scared <= 0) ? jogSpeed : runSpeed);
 		}

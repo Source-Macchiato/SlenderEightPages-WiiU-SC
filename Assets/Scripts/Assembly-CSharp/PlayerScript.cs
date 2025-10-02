@@ -3,216 +3,226 @@ using WiiU = UnityEngine.WiiU;
 
 public class PlayerScript : MonoBehaviour
 {
-	public bool debug;
+    // TEMPORARY NEW REFERENCES, DO NOT DELETE //
+    [SerializeField] public ZoomManager zoomManager;
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private PauseManager pauseManager;
 
-	public int pages;
 
-	public int level;
+    // OLD REFERENCES //
+    public bool debug;
 
-	public int toolong = 12000;
+    public int pages;
 
-	public float sanity = 100f;
+    public int level;
 
-	public float stamina = 100f;
+    public int toolong = 12000;
 
-	public float maxstam = 100f;
+    public float sanity = 100f;
 
-	public int scared;
+    public float stamina = 100f;
 
-	public bool cansee;
+    public float maxstam = 100f;
 
-	public bool justsaw;
+    public int scared;
 
-	public float drain;
+    public bool cansee;
 
-	public bool lost;
+    public bool justsaw;
 
-	public bool caught;
+    public float drain;
 
-	public float maxrange = 100f;
+    public bool lost;
 
-	public float minrange = 80f;
+    public bool caught;
 
-	public float fadeinmusic = 2f;
+    public float maxrange = 100f;
 
-	public AudioSource san1;
+    public float minrange = 80f;
 
-	public AudioSource san2;
+    public float fadeinmusic = 2f;
 
-	public AudioSource san3;
+    public AudioSource san1;
 
-	public AudioSource music1;
+    public AudioSource san2;
 
-	public AudioSource music2;
+    public AudioSource san3;
 
-	public AudioSource music3;
+    public AudioSource music1;
 
-	public AudioSource music4;
+    public AudioSource music2;
 
-	public AudioSource breathing;
+    public AudioSource music3;
 
-	public AudioClip s1;
+    public AudioSource music4;
 
-	public AudioClip s2;
+    public AudioSource breathing;
 
-	public AudioClip s3;
+    public AudioClip s1;
 
-	public AudioClip s4;
+    public AudioClip s2;
 
-	public AudioClip s5;
+    public AudioClip s3;
 
-	public AudioClip s6;
+    public AudioClip s4;
 
-	public AudioClip s7;
+    public AudioClip s5;
 
-	public AudioClip s8;
+    public AudioClip s6;
 
-	public AudioClip s9;
+    public AudioClip s7;
 
-	public AudioClip s10;
+    public AudioClip s8;
 
-	public AudioClip s11;
+    public AudioClip s9;
 
-	public AudioClip s12;
+    public AudioClip s10;
 
-	public AudioClip t1;
+    public AudioClip s11;
 
-	public AudioClip t2;
+    public AudioClip s12;
 
-	public AudioClip t3;
+    public AudioClip t1;
 
-	public AudioClip t4;
+    public AudioClip t2;
 
-	public AudioClip t5;
+    public AudioClip t3;
 
-	public AudioClip t6;
+    public AudioClip t4;
 
-	public AudioClip t7;
+    public AudioClip t5;
 
-	public AudioSource climbfence;
+    public AudioClip t6;
 
-	public AudioSource flashlight;
+    public AudioClip t7;
 
-	public Light torch;
+    public AudioSource climbfence;
 
-	public Light eyes;
+    public AudioSource flashlight;
 
-	public float battery = 1f;
+    public Light torch;
 
-	public bool torchdying;
+    public Light eyes;
 
-	public bool flraised = true;
+    public float battery = 1f;
 
-	public Transform flup;
+    public bool torchdying;
 
-	public Transform fldown;
+    public bool flraised = true;
 
-	public int laststep;
+    public Transform flup;
 
-	public int stepcd = 120;
+    public Transform fldown;
 
-	public GameObject SM;
+    public int laststep;
 
-	public GUIStyle hint;
+    public int stepcd = 120;
 
-	public int fadeoutgui = 400;
+    public GameObject SM;
 
-	public MouseLook mouseLook;
+    public GUIStyle hint;
 
-	public CharacterMotor cm;
+    public int fadeoutgui = 400;
 
-	public int flicker;
+    // public mouseLook;
 
-	public bool endflicker;
+    // public CharacterMotor playerController.cm;
 
-	public bool lastflicker;
+    public int flicker;
 
-	public float zoom = 60f;
+    public bool endflicker;
 
-	public Transform statscale;
+    public bool lastflicker;
 
-	public AudioSource zsound;
+    // public float zoom = 60f;
 
-	public LoseScript endgame;
+    public Transform statscale;
 
-	public IntroScript startgame;
+    public AudioSource zsound;
 
-	public int finaldelay;
+    public LoseScript loseScript;
 
-	public Transform chasetest;
+    public IntroScript introScript;
 
-	public Transform tentacles;
+    public int finaldelay;
 
-	public bool daytime;
+    public Transform chasetest;
 
-	public bool mh;
+    public Transform tentacles;
 
-	public Transform nearpage;
+    public bool daytime;
 
-	public Transform endfix;
+    public bool mh;
 
-	public ParticleSystem dust;
+    public Transform nearpage;
 
-	public bool dustyair = true;
+    public Transform endfix;
 
-	public bool backedup;
+    public ParticleSystem dust;
 
-	public int sprintcooldown;
+    public bool dustyair = true;
 
-	public SprintScript sprscr;
+    // public bool backedup;
 
-	public bool paused;
+    public int sprintcooldown;
 
-	public float targetfog = 0.02f;
+    public SprintScript sprscr;
 
-	public bool amrunning;
+    // public bool paused;
 
-	public bool cranking;
+    public float targetfog = 0.02f;
 
-	public AudioSource cranksound;
+    public bool amrunning;
 
-	public LayerMask mask;
+    public bool cranking;
 
-	public bool canRun;
-	public bool flashlightEnabled;
+    public AudioSource cranksound;
+
+    public LayerMask mask;
+
+    // public bool playerController.canRun;
+    public bool flashlightEnabled;
+    /**
 	private bool zoomIn;
-	private bool zoomOut;
+	private bool zoomOut; **/
 
-	public Vector2 direction = Vector2.zero;
+    public Vector2 direction = Vector2.zero;
 
+    /**
 	private MenuManager menuManager;
 
     private WiiU.GamePad gamePad;
-    private WiiU.Remote remote;
+    private WiiU.Remote remote; **/
 
     private void Start()
-	{
-		cm.canControl = false;
-        mouseLook.enabled = false;
+    {
+        /** playerController.cm.canControl = false;
+        playerController.mouseLook.enabled = false;
 
-		menuManager = FindObjectOfType<MenuManager>();
+		// menuManager = FindObjectOfType<MenuManager>();
 
         gamePad = WiiU.GamePad.access;
-        remote = WiiU.Remote.Access(0);
+        remote = WiiU.Remote.Access(0); **/
     }
 
-	private void OnGUI()
-	{
-		if (!paused && fadeoutgui < 400 && !mh)
-		{
-			if (pages == 0)
-			{
-				GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Collect all 8 pages", hint);
-			}
-			else
-			{
-				GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Pages " + pages + "/8", hint);
-			}
-		}
-	}
+    private void OnGUI()
+    {
+        if (!pauseManager.paused && fadeoutgui < 400 && !mh)
+        {
+            if (pages == 0)
+            {
+                GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Collect all 8 pages", hint);
+            }
+            else
+            {
+                GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Pages " + pages + "/8", hint);
+            }
+        }
+    }
 
-	private void Update()
-	{
+    private void Update()
+    {
+        /**
         // Reset direction at each frames
         direction = Vector2.zero;
 
@@ -237,11 +247,11 @@ public class PlayerScript : MonoBehaviour
 			// Toggle run
             if (gamePadState.IsTriggered(WiiU.GamePadButton.ZR))
             {
-                canRun = true;
+                playerController.canRun = true;
             }
             else if (gamePadState.IsReleased(WiiU.GamePadButton.ZR))
             {
-                canRun = false;
+                playerController.canRun = false;
             }
 
 			// Toggle flashlight
@@ -301,13 +311,13 @@ public class PlayerScript : MonoBehaviour
 
 			if (gamePadState.IsTriggered(WiiU.GamePadButton.Plus))
 			{
-                if (paused)
+                if (pauseManager.paused)
                 {
                     SetGamePlayed();
                 }
                 else
                 {
-                    SetGamePaused();
+                    SetGamePauseManager.paused();
                 }
             }
         }
@@ -331,11 +341,11 @@ public class PlayerScript : MonoBehaviour
 				// Toggle run
                 if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.ZR))
                 {
-                    canRun = true;
+                    playerController.canRun = true;
                 }
                 else if (remoteState.pro.IsReleased(WiiU.ProControllerButton.ZR))
                 {
-                    canRun = false;
+                    playerController.canRun = false;
                 }
 
 				// Toggle flashlight
@@ -395,13 +405,13 @@ public class PlayerScript : MonoBehaviour
 
 				if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Plus))
 				{
-                    if (paused)
+                    if (pauseManager.paused)
                     {
                         SetGamePlayed();
                     }
                     else
                     {
-                        SetGamePaused();
+                        SetGamePauseManager.paused();
                     }
                 }
                 break;
@@ -421,20 +431,20 @@ public class PlayerScript : MonoBehaviour
 				// Toggle run
                 if (remoteState.classic.IsTriggered(WiiU.ClassicButton.R))
                 {
-                    canRun = true;
+                    playerController.canRun = true;
                 }
                 else if (remoteState.classic.IsReleased(WiiU.ClassicButton.R))
                 {
-                    canRun = false;
+                    playerController.canRun = false;
                 }
 
                 if (remoteState.classic.IsTriggered(WiiU.ClassicButton.ZR))
                 {
-                    canRun = true;
+                    playerController.canRun = true;
                 }
                 else if (remoteState.classic.IsReleased(WiiU.ClassicButton.ZR))
                 {
-                    canRun = false;
+                    playerController.canRun = false;
                 }
 
                 // Toggle flashlight
@@ -499,17 +509,17 @@ public class PlayerScript : MonoBehaviour
 					SetGamePlayed();
 				}
 
-				if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Plus))
-				{
-                    if (paused)
+                    if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Plus))
                     {
-                        SetGamePlayed();
+                        if (pauseManager.paused)
+                        {
+                            SetGamePlayed();
+                        }
+                        else
+                        {
+                            SetGamePauseManager.paused();
+                        }
                     }
-                    else
-                    {
-                        SetGamePaused();
-                    }
-                }
                 break;
             default:
                 Vector2 stickNunchuk = remoteState.nunchuk.stick;
@@ -526,12 +536,12 @@ public class PlayerScript : MonoBehaviour
 
                 if (remoteState.IsTriggered(WiiU.RemoteButton.B))
                 {
-                    canRun = true;
+                    playerController.canRun = true;
 					SetGamePlayed();
                 }
                 else if (remoteState.IsReleased(WiiU.RemoteButton.B))
                 {
-                    canRun = false;
+                    playerController.canRun = false;
                 }
 
 				// Toggle flashlight
@@ -569,16 +579,16 @@ public class PlayerScript : MonoBehaviour
 					SkipIntro();
 				}
 
-				// Set game paused
+				// Set game pauseManager.paused
 				if (remoteState.IsTriggered(WiiU.RemoteButton.Plus))
 				{
-                    if (paused)
+                    if (pauseManager.paused)
                     {
                         SetGamePlayed();
                     }
                     else
                     {
-                        SetGamePaused();
+                        SetGamePauseManager.paused();
                     }
                 }
 				break;
@@ -611,11 +621,11 @@ public class PlayerScript : MonoBehaviour
 			// Toggle run
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                canRun = true;
+                playerController.canRun = true;
             }
             else if (Input.GetKeyUp(KeyCode.LeftShift))
             {
-                canRun = false;
+                playerController.canRun = false;
             }
 
 			// Skip intro
@@ -655,83 +665,88 @@ public class PlayerScript : MonoBehaviour
 
 			if (Input.GetKeyDown(KeyCode.Escape))
 			{
-                if (paused)
+                if (pauseManager.paused)
 				{
                     SetGamePlayed();
                 }
 				else
 				{
-                    SetGamePaused();
+                    SetGamePauseManager.paused();
                 }
 
                 SkipIntro();
             }
-		}
+		} **/
 
-        if (!paused)
-		{
-			if (debug)
-			{
-				if (Input.GetKeyDown("f1"))
-				{
-					pages = 7;
-					maxrange = 30f;
-					minrange = 10f;
-					targetfog = 0.1f;
-					RenderSettings.fogDensity = 0.1f;
-				}
-				if (Input.GetKeyDown("f2"))
-				{
-					base.transform.parent.transform.position = new Vector3(0f, 2f, 0f);
-				}
-				if (Input.GetKeyDown("f3"))
-				{
-					pages = 8;
-					lost = true;
-				}
-				if (Input.GetKeyDown("f4"))
-				{
-					toolong = 60;
-				}
-			}
-			if (startgame.fltype == 2)
-			{
-				if (Input.GetMouseButton(1) && startgame.timer >= 1600 && ((!lost && !daytime) || (endgame.timeleft > 250 && endgame.timeleft < 950 && daytime)) && !Input.GetButton("Jog/Sprint") && stamina >= 10f)
-				{
-					cranking = true;
-					cranksound.volume = 1f;
-				}
-				else
-				{
-					cranking = false;
-					cranksound.volume = 0f;
-				}
-			}
-			if (startgame.gamestarted)
-			{
-				Cursor.lockState = CursorLockMode.Locked;
-			}
-		}
-		if (endflicker)
-		{
-			endflicker = false;
-			lastflicker = true;
-		}
-	}
+        if (!pauseManager.paused)
+        {
+            if (debug)
+            {
+                if (Input.GetKeyDown("f1"))
+                {
+                    pages = 7;
+                    maxrange = 30f;
+                    minrange = 10f;
+                    targetfog = 0.1f;
+                    RenderSettings.fogDensity = 0.1f;
+                }
+                if (Input.GetKeyDown("f2"))
+                {
+                    base.transform.parent.transform.position = new Vector3(0f, 2f, 0f);
+                }
+                if (Input.GetKeyDown("f3"))
+                {
+                    pages = 8;
+                    lost = true;
+                }
+                if (Input.GetKeyDown("f4"))
+                {
+                    toolong = 60;
+                }
+            }
+            if (introScript.fltype == 2)
+            {
+                if (Input.GetMouseButton(1) && introScript.timer >= 1600 && ((!lost && !daytime) || (loseScript.timeleft > 250 && loseScript.timeleft < 950 && daytime)) && !Input.GetButton("Jog/Sprint") && stamina >= 10f)
+                {
+                    cranking = true;
+                    cranksound.volume = 1f;
+                }
+                else
+                {
+                    cranking = false;
+                    cranksound.volume = 0f;
+                }
+            }
+            if (introScript.gamestarted)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+        }
+        if (endflicker)
+        {
+            endflicker = false;
+            lastflicker = true;
+        }
+    }
 
-	private void FixedUpdate()
-	{
-		if (!paused)
-		{
+    private void FixedUpdate()
+    {
+        if (!pauseManager.paused)
+        {
             chasetest.position = base.transform.position;
             Quaternion rotation = Quaternion.LookRotation(base.transform.position - SM.transform.position, Vector3.up);
             rotation.x = 0f;
             rotation.z = 0f;
             chasetest.rotation = rotation;
+
+            // GUI //
             if (fadeoutgui < 400)
             {
                 fadeoutgui++;
             }
+
+
+            // Fog Manager //
             if ((double)targetfog + 0.001 < (double)RenderSettings.fogDensity)
             {
                 RenderSettings.fogDensity -= 0.001f;
@@ -744,7 +759,9 @@ public class PlayerScript : MonoBehaviour
             {
                 RenderSettings.fogDensity = targetfog;
             }
-            if (toolong > 0 && startgame.timer >= 1600 && pages < 8)
+
+
+            if (toolong > 0 && introScript.timer >= 1600 && pages < 8)
             {
                 toolong--;
                 if (toolong <= 0)
@@ -762,7 +779,9 @@ public class PlayerScript : MonoBehaviour
                     }
                 }
             }
-            if (startgame.timer >= 1600)
+
+            // TO DELETE // 
+            if (introScript.timer >= 1600)
             {
                 if (!torch.enabled && eyes.range < 120f)
                 {
@@ -774,11 +793,11 @@ public class PlayerScript : MonoBehaviour
                 }
                 else if (torch.enabled)
                 {
-                    if (startgame.fltype == 0)
+                    if (introScript.fltype == 0)
                     {
                         battery -= 1.8E-05f;
                     }
-                    else if (startgame.fltype == 2 && !cranking)
+                    else if (introScript.fltype == 2 && !cranking)
                     {
                         battery -= 0.0002f;
                     }
@@ -826,16 +845,17 @@ public class PlayerScript : MonoBehaviour
             }
             if (caught && !lost)
             {
-                mouseLook.enabled = false;
-                cm.canControl = false;
+                playerController.mouseLook.enabled = false;
+                playerController.cm.canControl = false;
                 Vector3 vector = new Vector3(SM.transform.position.x, SM.transform.position.y + 1f, SM.transform.position.z);
                 Quaternion to = Quaternion.LookRotation(vector - base.transform.parent.transform.position);
                 base.transform.parent.transform.rotation = Quaternion.Slerp(base.transform.parent.transform.rotation, to, Time.deltaTime * 2f);
             }
-            if (!lost || endgame.timeleft > 250)
+            if (!lost || loseScript.timeleft > 250)
             {
-                if (startgame.timer >= 1600)
+                if (introScript.timer >= 1600)
                 {
+                    zoomManager.ZoomToggle();
                     if (caught)
                     {
                         sanity -= 1f;
@@ -875,7 +895,7 @@ public class PlayerScript : MonoBehaviour
                         sanity = 0f;
                     }
                     justsaw = cansee;
-                    if (endgame.timeleft == 0)
+                    if (loseScript.timeleft == 0)
                     {
                         if (sanity < 70f || mh)
                         {
@@ -905,7 +925,7 @@ public class PlayerScript : MonoBehaviour
                             san3.volume = 0f;
                         }
                     }
-                    else if (endgame.timeleft == 0)
+                    else if (loseScript.timeleft == 0)
                     {
                         san1.volume = 0f;
                         san2.volume = 0f;
@@ -938,7 +958,7 @@ public class PlayerScript : MonoBehaviour
                     {
                         tentacles.localScale = new Vector3(0.8f, 0.8f, 0.5f);
                     }
-                    if (pages + level > 0 && endgame.timeleft == 0 && !mh)
+                    if (pages + level > 0 && loseScript.timeleft == 0 && !mh)
                     {
                         if (pages + level < 3)
                         {
@@ -979,7 +999,7 @@ public class PlayerScript : MonoBehaviour
                     {
                         scared--;
                     }
-                    if (canRun && direction.y > 0f)
+                    if (playerController.canRun && direction.y > 0f)
                     {
                         if (!amrunning && stamina >= 10f)
                         {
@@ -1091,9 +1111,7 @@ public class PlayerScript : MonoBehaviour
                         }
                     }
 
-                    ZoomSystem();
-
-                    statscale.localScale = new Vector3((zoom - 2.5f) / 57.5f, (zoom - 2.5f) / 57.5f, (zoom - 2.5f) / 57.5f);
+                    statscale.localScale = new Vector3((zoomManager.zoom - 2.5f) / 57.5f, (zoomManager.zoom - 2.5f) / 57.5f, (zoomManager.zoom - 2.5f) / 57.5f);
                     if (stamina < 30f)
                     {
                         breathing.volume = (30f - stamina) / 20f;
@@ -1102,7 +1120,7 @@ public class PlayerScript : MonoBehaviour
                     {
                         breathing.volume = 0f;
                     }
-                    if (stepcd <= 0 && endgame.timeleft < 950)
+                    if (stepcd <= 0 && loseScript.timeleft < 950)
                     {
                         stepcd = 120;
                         int num = 0;
@@ -1188,11 +1206,11 @@ public class PlayerScript : MonoBehaviour
                         laststep = num;
                     }
                 }
-                else if (startgame.timer < 900 && startgame.timer > 0 && !mh)
+                else if (introScript.timer < 900 && introScript.timer > 0 && !mh)
                 {
-                    if (startgame.skintro)
+                    if (introScript.skintro)
                     {
-                        startgame.timer = 1598;
+                        introScript.timer = 1598;
                     }
                     else
                     {
@@ -1249,7 +1267,7 @@ public class PlayerScript : MonoBehaviour
                         }
                     }
                 }
-                else if (startgame.timer == 950)
+                else if (introScript.timer == 950)
                 {
                     stepcd = 120;
                     if (!mh)
@@ -1257,10 +1275,10 @@ public class PlayerScript : MonoBehaviour
                         climbfence.Play();
                     }
                 }
-                else if (startgame.timer == 1599)
+                else if (introScript.timer == 1599)
                 {
-                    cm.canControl = true;
-                    mouseLook.enabled = true;
+                    playerController.cm.canControl = true;
+                    playerController.mouseLook.enabled = true;
 
                     if (daytime)
                     {
@@ -1276,30 +1294,30 @@ public class PlayerScript : MonoBehaviour
             music2.volume = 0f;
             music3.volume = 0f;
             music4.volume = 0f;
-            if (endgame.timeleft < 250)
+            if (loseScript.timeleft < 250)
             {
                 breathing.volume = 0f;
                 zsound.volume = 0f;
                 torch.enabled = false;
                 return;
             }
-            if (endgame.timeleft >= 250)
+            if (loseScript.timeleft >= 250)
             {
-                cm.canControl = true;
-                mouseLook.enabled = true;
+                playerController.cm.canControl = true;
+                playerController.mouseLook.enabled = true;
             }
-            if (endgame.timeleft >= 950)
+            if (loseScript.timeleft >= 950)
             {
                 breathing.volume = 0f;
                 zsound.volume = 0f;
-                cm.canControl = false;
-                mouseLook.enabled = false;
+                playerController.cm.canControl = false;
+                playerController.mouseLook.enabled = false;
             }
-            if (pages < 8 || endgame.timeleft < 1000 + endgame.mhdelay)
+            if (pages < 8 || loseScript.timeleft < 1000 + loseScript.mhdelay)
             {
                 return;
             }
-            if (endgame.timeleft < 2500 + endgame.mhdelay)
+            if (loseScript.timeleft < 2500 + loseScript.mhdelay)
             {
                 music1.volume = fadeinmusic;
                 fadeinmusic += 0.01f;
@@ -1318,52 +1336,34 @@ public class PlayerScript : MonoBehaviour
                 }
             }
         }
-	}
+    }
 
-	private void ToggleFlashlight(bool status)
+    /**private void SkipIntro()
 	{
-		if (!paused && startgame.fltype == 0 && startgame.timer >= 1600 && ((!lost && !daytime) || (endgame.timeleft > 250 && endgame.timeleft < 950 && daytime)))
+		if (!pauseManager.paused && introScript.gamestarted && introScript.timer < 1598 && introScript.timer > 0)
 		{
-            if (torch.enabled)
-            {
-                torch.enabled = false;
-            }
-            else if (battery > 0f)
-            {
-                torch.enabled = true;
-            }
-            flashlight.Play();
-
-			flashlightEnabled = status;
-        }
-	}
-
-	private void SkipIntro()
-	{
-		if (!paused && startgame.gamestarted && startgame.timer < 1598 && startgame.timer > 0)
-		{
-            startgame.timer = 1598;
+            introScript.timer = 1598;
             climbfence.Stop();
         }
-	}
+	} **/
 
-	private void SetGamePaused()
+    /** private void SetGamePauseManager.paused()
 	{
-        if (!paused)
+        if (!pauseManager.paused)
 		{
-            if (startgame.gamestarted)
+            if (introScript.gamestarted)
             {
-				if (!lost && startgame.timer >= 1598)
+				if (!lost && introScript.timer >= 1598)
 				{
                     if (sanity == 100f)
                     {
-                        paused = true;
+                        pauseManager.paused = true;
                         Time.timeScale = 0f;
 
                         menuManager.DisplayMenu();
 
-                        cm.canControl = false;
-                        mouseLook.enabled = false;
+                        playerController.cm.canControl = false;
+                        playerController.mouseLook.enabled = false;
                     }
                     else
                     {
@@ -1380,19 +1380,19 @@ public class PlayerScript : MonoBehaviour
 
 	public void SetGamePlayed()
 	{
-		if (paused)
+		if (pauseManager.paused)
 		{
 			menuManager.HideMenu();
 
-            paused = false;
+            pauseManager.paused = false;
             Time.timeScale = 1f;
 
-            cm.canControl = true;
-            mouseLook.enabled = true;
+            playerController.cm.canControl = true;
+            playerController.mouseLook.enabled = true;
         }
-	}
+	} **/
 
-	private void ZoomSystem()
+    /** private void ZoomToggle()
 	{
         if (zoomIn && !zoomOut && zoom > 20f)
         {
@@ -1418,5 +1418,23 @@ public class PlayerScript : MonoBehaviour
         }
 
         base.GetComponent<Camera>().fieldOfView = zoom;
-    }
+    } **/
+    
+    public void ToggleFlashlight(bool status)
+    {
+        if (!pauseManager.paused && introScript.fltype == 0 && introScript.timer >= 1600 && ((!lost && !daytime) || (loseScript.timeleft > 250 && loseScript.timeleft < 950 && daytime)))
+        {
+            if (torch.enabled)
+            {
+                torch.enabled = false;
+            }
+            else if (battery > 0f)
+            {
+                torch.enabled = true;
+            }
+            flashlight.Play();
+
+            flashlightEnabled = status;
+        }
+    } 
 }

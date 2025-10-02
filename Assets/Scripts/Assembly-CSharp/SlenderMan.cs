@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class SlenderMan : MonoBehaviour
 {
+	[Header("Scripts")]
+	[SerializeField] private PauseManager pauseManager;
 	public Transform player;
 
 	public PlayerScript view;
@@ -121,7 +123,7 @@ public class SlenderMan : MonoBehaviour
 
 	private void FixedUpdate()
 	{
-		if (view.paused)
+		if (pauseManager.paused)
 		{
 			return;
 		}

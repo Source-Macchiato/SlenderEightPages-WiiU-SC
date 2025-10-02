@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class AmbientScript : MonoBehaviour
 {
+    [SerializeField] private PauseManager pauseManager;
 	public Transform rotateme;
 
 	public int timer = 100;
@@ -35,7 +36,7 @@ public class AmbientScript : MonoBehaviour
 	{
 		if ((intro.gamestarted && loser.timeleft == 0 && (!playerScript.mh || (intro.timer >= 1600 && playerScript.mh))) || (loser.timeleft > 250 && loser.timeleft < 900 && playerScript.pages >= 8))
 		{
-			if (!playerScript.paused)
+			if (!pauseManager.paused)
 			{
                 wind.volume = 1f;
                 timer--;

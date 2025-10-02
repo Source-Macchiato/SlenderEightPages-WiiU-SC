@@ -7,17 +7,17 @@ using UnityEngine;
 public class FPSInputController : MonoBehaviour
 {
 	private CharacterMotor motor;
-	private PlayerScript playerScript;
+	private PlayerController playerController;
 
 	public virtual void Awake()
 	{
 		motor = GetComponent<CharacterMotor>();
-		playerScript = FindObjectOfType<PlayerScript>();
+		playerController = FindObjectOfType<PlayerController>();
 	}
 
 	public virtual void Update()
 	{
-		Vector3 vector = new Vector3(playerScript.direction.x, 0f, playerScript.direction.y);
+		Vector3 vector = new Vector3(playerController.direction.x, 0f, playerController.direction.y);
 		if (vector != Vector3.zero)
 		{
 			float magnitude = vector.magnitude;

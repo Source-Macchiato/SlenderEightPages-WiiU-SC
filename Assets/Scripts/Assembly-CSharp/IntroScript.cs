@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class IntroScript : MonoBehaviour
 {
+	// NEW REFERENCES //
+	[SerializeField] private PauseManager pauseManager;
+	[SerializeField] private AudioSource climbfence;
+
+	// OTHER
 	public int timer;
 
 	public GUIStyle credits;
@@ -92,16 +97,16 @@ public class IntroScript : MonoBehaviour
 		// Get skybox material reference
 		skyboxMat = RenderSettings.skybox;
 
-        // Disable skybox
-        RenderSettings.skybox = null;
-        DynamicGI.UpdateEnvironment();
+		// Disable skybox
+		RenderSettings.skybox = null;
+		DynamicGI.UpdateEnvironment();
 		/*
         // Optimize trees
         land.treeBillboardDistance = 80f;
         land.treeMaximumFullLODCount = 160;
 		*/
 
-        if (PlayerPrefs.HasKey("dusty"))
+		if (PlayerPrefs.HasKey("dusty"))
 		{
 			if (PlayerPrefs.GetInt("dusty") == 1)
 			{
@@ -174,15 +179,15 @@ public class IntroScript : MonoBehaviour
 			{
 				switch (PlayerPrefs.GetInt("fltype"))
 				{
-				case 0:
-					fltype = 0;
-					break;
-				case 1:
-					fltype = 1;
-					break;
-				case 2:
-					fltype = 2;
-					break;
+					case 0:
+						fltype = 0;
+						break;
+					case 1:
+						fltype = 1;
+						break;
+					case 2:
+						fltype = 2;
+						break;
 				}
 			}
 		}
@@ -196,7 +201,7 @@ public class IntroScript : MonoBehaviour
 
 	private void OnGUI()
 	{
-        /*if (view.mh)
+		/*if (view.mh)
 		{
 			if (timer >= 300 && timer < 500)
 			{
@@ -216,17 +221,17 @@ public class IntroScript : MonoBehaviour
 
 		if (!view.mh)
 		{
-            if (timer >= 50 && timer < 400)
-            {
-                GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Parsec Productions", credits);
-            }
-            else if (timer >= 500 && timer < 850)
-            {
-                GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Presents", credits);
-            }
-        }
+			if (timer >= 50 && timer < 400)
+			{
+				GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Parsec Productions", credits);
+			}
+			else if (timer >= 500 && timer < 850)
+			{
+				GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Presents", credits);
+			}
+		}
 
-        /*if (gamestarted)
+		/*if (gamestarted)
 		{
 			return;
 		}
@@ -574,33 +579,33 @@ public class IntroScript : MonoBehaviour
 			}
 		}
         GUI.EndGroup();*/
-    }
+	}
 
-    private void FixedUpdate()
+	private void FixedUpdate()
 	{
-        if (timer >= 1600 || !gamestarted)
+		if (timer >= 1600 || !gamestarted)
 		{
-            return;
+			return;
 		}
 
 		timer++;
 
-        if (timer >= 700 && timer < 1700 && !view.mh)
+		if (timer >= 700 && timer < 1700 && !view.mh)
 		{
-            spotlight.Rotate(new Vector3(0f, base.transform.rotation.x + Time.deltaTime * 5f, 0f));
-        }
+			spotlight.Rotate(new Vector3(0f, base.transform.rotation.x + Time.deltaTime * 5f, 0f));
+		}
 
-        if (timer != 1600)
+		if (timer != 1600)
 		{
-            return;
+			return;
 		}
 
 		mainview.enabled = true;
 
-        RenderSettings.skybox = skyboxMat;
-        DynamicGI.UpdateEnvironment();
+		RenderSettings.skybox = skyboxMat;
+		DynamicGI.UpdateEnvironment();
 
-        base.GetComponent<Camera>().enabled = false;
+		base.GetComponent<Camera>().enabled = false;
 		view.fadeoutgui = 0;
 		if (!view.daytime)
 		{
@@ -617,50 +622,59 @@ public class IntroScript : MonoBehaviour
 
 	private void StartGame()
 	{
-        gamestarted = true;
+		gamestarted = true;
 		Cursor.lockState = CursorLockMode.None;
-        entry = Random.Range(4, 16);
-        if (view.mh)
-        {
-            timer = 200;
+		entry = Random.Range(4, 16);
+		if (view.mh)
+		{
+			timer = 200;
+		}
+		else
+		{
+			stat1.GetComponent<Renderer>().enabled = false;
+			stat2.GetComponent<Renderer>().enabled = false;
+		}
+		if (view.dustyair && !view.daytime)
+		{
+			view.dust.Play();
+		}
+		sk1.enableEmission = false;
+		sk1.Clear();
+		sk2.enableEmission = false;
+		sk2.Clear();
+		sk3.enableEmission = false;
+		sk3.Clear();
+		sk4.enableEmission = false;
+		sk4.Clear();
+		sk5.enableEmission = false;
+		sk5.Clear();
+		sk6.enableEmission = false;
+		sk6.Clear();
+		sk7.enableEmission = false;
+		sk7.Clear();
+		sk8.enableEmission = false;
+		sk8.Clear();
+		toptitle.transform.Rotate(new Vector3(180f, 0f, 0f));
+		thememusic.Stop();
+		switch (fltype)
+		{
+			case 1:
+				flsource.type = LightType.Point;
+				flsource.range = 20f;
+				flsource.color = new Color(0.4f, 1f, 0.6f);
+				break;
+			case 2:
+				flsource.spotAngle = 80f;
+				break;
+		}
+	}
+	
+	public void SkipIntro()
+	{
+		if (!pauseManager.paused && gamestarted && timer < 1598 && timer > 0)
+		{
+            timer = 1598;
+            climbfence.Stop();
         }
-        else
-        {
-            stat1.GetComponent<Renderer>().enabled = false;
-            stat2.GetComponent<Renderer>().enabled = false;
-        }
-        if (view.dustyair && !view.daytime)
-        {
-            view.dust.Play();
-        }
-        sk1.enableEmission = false;
-        sk1.Clear();
-        sk2.enableEmission = false;
-        sk2.Clear();
-        sk3.enableEmission = false;
-        sk3.Clear();
-        sk4.enableEmission = false;
-        sk4.Clear();
-        sk5.enableEmission = false;
-        sk5.Clear();
-        sk6.enableEmission = false;
-        sk6.Clear();
-        sk7.enableEmission = false;
-        sk7.Clear();
-        sk8.enableEmission = false;
-        sk8.Clear();
-        toptitle.transform.Rotate(new Vector3(180f, 0f, 0f));
-        thememusic.Stop();
-        switch (fltype)
-        {
-            case 1:
-                flsource.type = LightType.Point;
-                flsource.range = 20f;
-                flsource.color = new Color(0.4f, 1f, 0.6f);
-                break;
-            case 2:
-                flsource.spotAngle = 80f;
-                break;
-        }
-    }
+	}
 }
