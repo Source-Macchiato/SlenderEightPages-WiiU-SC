@@ -8,6 +8,7 @@ public class IntroScript : MonoBehaviour
 
 	// OTHER
 	public int timer;
+	public bool introEnded;
 
 	public GUIStyle credits;
 
@@ -22,18 +23,6 @@ public class IntroScript : MonoBehaviour
 	public Light sun;
 
 	public bool gamestarted;
-
-	public bool optmenu;
-
-	public bool extmenu;
-
-	public MouseLook mouseLook;
-
-	public GUISkin menu;
-
-	public Texture2D logoTexture;
-
-	public bool sunup;
 
 	public int entry;
 
@@ -71,24 +60,36 @@ public class IntroScript : MonoBehaviour
 
 	public int fltype;
 
-	public bool mythosmenu;
+	/**public bool mythosmenu;
 
 	public bool youtubemenu;
 
-	public bool infomenu;
+	public bool infomenu; **/
+
+	/**public bool optmenu;
+
+	public bool extmenu;
+
+	public MouseLook mouseLook;
+
+	public GUISkin menu;
+
+	public Texture2D logoTexture;
+
+	public bool sunup; **/
 
 	private Material skyboxMat;
 
 	private void Start()
 	{
-		sk1.enableEmission = true;
+		/**sk1.enableEmission = true;
 		sk2.enableEmission = true;
 		sk3.enableEmission = true;
 		sk4.enableEmission = true;
 		sk5.enableEmission = true;
 		sk6.enableEmission = true;
 		sk7.enableEmission = true;
-		sk8.enableEmission = true;
+		sk8.enableEmission = true; **/
 		Screen.lockCursor = false;
 		view.fadeoutgui = 400;
 		mainview.enabled = false;
@@ -585,6 +586,7 @@ public class IntroScript : MonoBehaviour
 	{
 		if (timer >= 1600 || !gamestarted)
 		{
+			introEnded = true;
 			return;
 		}
 

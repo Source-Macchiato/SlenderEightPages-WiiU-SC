@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PauseManager pauseManager;
     [SerializeField] private ZoomManager zoomManager;
     [SerializeField] private PlayerScript playerScript; // TEMPORARY
+    [SerializeField] private FlashlightManager flashlightManager;
 
     [Header("Player References")]
     public CharacterMotor cm;
@@ -63,11 +64,11 @@ public class PlayerController : MonoBehaviour
             // Toggle flashlight
             if (gamePadState.IsTriggered(WiiU.GamePadButton.StickR))
             {
-                playerScript.ToggleFlashlight(!flashlightEnabled);
+                flashlightManager.ToggleFlashlight(!flashlightEnabled);
             }
             else if (gamePadState.IsTriggered(WiiU.GamePadButton.Y))
             {
-                playerScript.ToggleFlashlight(!flashlightEnabled);
+                flashlightManager.ToggleFlashlight(!flashlightEnabled);
             }
 
             // Zoom in and out
@@ -150,11 +151,11 @@ public class PlayerController : MonoBehaviour
                 // Toggle flashlight
                 if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.StickR))
                 {
-                    playerScript.ToggleFlashlight(!flashlightEnabled);
+                    flashlightManager.ToggleFlashlight(!flashlightEnabled);
                 }
                 else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Y))
                 {
-                    playerScript.ToggleFlashlight(!flashlightEnabled);
+                    flashlightManager.ToggleFlashlight(!flashlightEnabled);
                 }
 
                 // Zoom in and out
@@ -242,7 +243,7 @@ public class PlayerController : MonoBehaviour
                 // Toggle flashlight
                 if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Y))
                 {
-                    playerScript.ToggleFlashlight(!flashlightEnabled);
+                    flashlightManager.ToggleFlashlight(!flashlightEnabled);
                 }
 
                 // Zoom in and out
@@ -332,7 +333,7 @@ public class PlayerController : MonoBehaviour
                 // Toggle flashlight
                 if (remoteState.IsTriggered(WiiU.RemoteButton.One))
                 {
-                    playerScript.ToggleFlashlight(!flashlightEnabled);
+                    flashlightManager.ToggleFlashlight(!flashlightEnabled);
                 }
 
                 // Zoom in and out
@@ -415,7 +416,7 @@ public class PlayerController : MonoBehaviour
             // Toggle flashlight
             if (Input.GetMouseButtonDown(1))
             {
-                playerScript.ToggleFlashlight(!flashlightEnabled);
+                flashlightManager.ToggleFlashlight(!flashlightEnabled);
             }
 
             // Zoom in and out

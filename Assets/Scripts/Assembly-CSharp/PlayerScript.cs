@@ -10,8 +10,6 @@ public class PlayerScript : MonoBehaviour
 
 
     // OLD REFERENCES //
-    public bool debug;
-
     public int pages;
 
     public int level;
@@ -98,16 +96,6 @@ public class PlayerScript : MonoBehaviour
 
     public AudioSource climbfence;
 
-    public AudioSource flashlight;
-
-    public Light torch;
-
-    public Light eyes;
-
-    public float battery = 1f;
-
-    public bool torchdying;
-
     public bool flraised = true;
 
     public Transform flup;
@@ -124,17 +112,11 @@ public class PlayerScript : MonoBehaviour
 
     public int fadeoutgui = 400;
 
-    // public mouseLook;
-
-    // public CharacterMotor playerController.cm;
-
     public int flicker;
 
     public bool endflicker;
 
     public bool lastflicker;
-
-    // public float zoom = 60f;
 
     public Transform statscale;
 
@@ -144,31 +126,17 @@ public class PlayerScript : MonoBehaviour
 
     public IntroScript introScript;
 
-    public int finaldelay;
-
     public Transform chasetest;
 
     public Transform tentacles;
 
-    public bool daytime;
-
     public bool mh;
 
-    public Transform nearpage;
-
-    public Transform endfix;
-
     public ParticleSystem dust;
-
-    public bool dustyair = true;
-
-    // public bool backedup;
 
     public int sprintcooldown;
 
     public SprintScript sprscr;
-
-    // public bool paused;
 
     public float targetfog = 0.02f;
 
@@ -176,34 +144,7 @@ public class PlayerScript : MonoBehaviour
 
     public bool cranking;
 
-    public AudioSource cranksound;
-
-    public LayerMask mask;
-
-    // public bool playerController.canRun;
-    public bool flashlightEnabled;
-    /**
-	private bool zoomIn;
-	private bool zoomOut; **/
-
     public Vector2 direction = Vector2.zero;
-
-    /**
-	private MenuManager menuManager;
-
-    private WiiU.GamePad gamePad;
-    private WiiU.Remote remote; **/
-
-    private void Start()
-    {
-        /** playerController.cm.canControl = false;
-        playerController.mouseLook.enabled = false;
-
-		// menuManager = FindObjectOfType<MenuManager>();
-
-        gamePad = WiiU.GamePad.access;
-        remote = WiiU.Remote.Access(0); **/
-    }
 
     private void OnGUI()
     {
@@ -222,506 +163,8 @@ public class PlayerScript : MonoBehaviour
 
     private void Update()
     {
-        /**
-        // Reset direction at each frames
-        direction = Vector2.zero;
 
-        WiiU.GamePadState gamePadState = gamePad.state;
-        WiiU.RemoteState remoteState = remote.state;
-
-        // Gamepad
-        if (gamePadState.gamePadErr == WiiU.GamePadError.None)
-        {
-            Vector2 leftStickGamepad = gamePadState.lStick;
-
-			if (Mathf.Abs(leftStickGamepad.x) > 0.1f)
-			{
-				direction.x = leftStickGamepad.x;
-			}
-
-			if (Mathf.Abs(leftStickGamepad.y) > 0.1f)
-			{
-				direction.y = leftStickGamepad.y;
-			}
-
-			// Toggle run
-            if (gamePadState.IsTriggered(WiiU.GamePadButton.ZR))
-            {
-                playerController.canRun = true;
-            }
-            else if (gamePadState.IsReleased(WiiU.GamePadButton.ZR))
-            {
-                playerController.canRun = false;
-            }
-
-			// Toggle flashlight
-			if (gamePadState.IsTriggered(WiiU.GamePadButton.StickR))
-			{
-				ToggleFlashlight(!flashlightEnabled);
-			}
-			else if (gamePadState.IsTriggered(WiiU.GamePadButton.Y))
-			{
-                ToggleFlashlight(!flashlightEnabled);
-            }
-
-            // Zoom in and out
-            if (gamePadState.IsTriggered(WiiU.GamePadButton.ZL))
-            {
-                zoomIn = true;
-                zoomOut = false;
-            }
-            else if (gamePadState.IsReleased(WiiU.GamePadButton.ZL))
-            {
-                zoomIn = false;
-                zoomOut = true;
-            }
-
-			if (gamePadState.IsTriggered(WiiU.GamePadButton.Up))
-			{
-				zoomIn = true;
-				zoomOut = false;
-			}
-			else if (gamePadState.IsReleased(WiiU.GamePadButton.Up))
-			{
-				zoomIn = false;
-				zoomOut = false;
-			}
-
-			if (gamePadState.IsTriggered(WiiU.GamePadButton.Down))
-			{
-				zoomIn = false;
-				zoomOut = true;
-			}
-			else if (gamePadState.IsReleased(WiiU.GamePadButton.Down))
-			{
-				zoomIn = false;
-				zoomOut = false;
-			}
-
-			// Skip Intro
-			if (gamePadState.IsTriggered(WiiU.GamePadButton.A))
-			{
-				SkipIntro();
-			}
-
-			if (gamePadState.IsTriggered(WiiU.GamePadButton.B))
-			{
-				SetGamePlayed();
-			}
-
-			if (gamePadState.IsTriggered(WiiU.GamePadButton.Plus))
-			{
-                if (pauseManager.paused)
-                {
-                    SetGamePlayed();
-                }
-                else
-                {
-                    SetGamePauseManager.paused();
-                }
-            }
-        }
-
-        // Remotes
-        switch (remoteState.devType)
-        {
-            case WiiU.RemoteDevType.ProController:
-                Vector2 leftStickProController = remoteState.pro.leftStick;
-
-				if (Mathf.Abs(leftStickProController.x) > 0.1f)
-				{
-					direction.x = leftStickProController.x;
-				}
-
-				if (Mathf.Abs(leftStickProController.y) > 0.1f)
-				{
-					direction.y = leftStickProController.y;
-				}
-
-				// Toggle run
-                if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.ZR))
-                {
-                    playerController.canRun = true;
-                }
-                else if (remoteState.pro.IsReleased(WiiU.ProControllerButton.ZR))
-                {
-                    playerController.canRun = false;
-                }
-
-				// Toggle flashlight
-				if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.StickR))
-				{
-                    ToggleFlashlight(!flashlightEnabled);
-                }
-				else if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Y))
-				{
-                    ToggleFlashlight(!flashlightEnabled);
-                }
-
-                // Zoom in and out
-                if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.ZL))
-                {
-                    zoomIn = true;
-                    zoomOut = false;
-                }
-                else if (remoteState.pro.IsReleased(WiiU.ProControllerButton.ZL))
-                {
-                    zoomIn = false;
-                    zoomOut = true;
-                }
-
-                if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Up))
-                {
-                    zoomIn = true;
-                    zoomOut = false;
-                }
-                else if (remoteState.pro.IsReleased(WiiU.ProControllerButton.Up))
-                {
-                    zoomIn = false;
-                    zoomOut = false;
-                }
-
-                if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Down))
-                {
-                    zoomIn = false;
-                    zoomOut = true;
-                }
-                else if (remoteState.pro.IsReleased(WiiU.ProControllerButton.Down))
-                {
-                    zoomIn = false;
-                    zoomOut = false;
-                }
-
-                // Skip intro
-                if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.A))
-				{
-					SkipIntro();
-				}
-
-				if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.B))
-				{
-					SetGamePlayed();
-				}
-
-				if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Plus))
-				{
-                    if (pauseManager.paused)
-                    {
-                        SetGamePlayed();
-                    }
-                    else
-                    {
-                        SetGamePauseManager.paused();
-                    }
-                }
-                break;
-            case WiiU.RemoteDevType.Classic:
-                Vector2 leftStickClassicController = remoteState.classic.leftStick;
-
-				if (Mathf.Abs(leftStickClassicController.x) > 0.1f)
-				{
-					direction.x = leftStickClassicController.x;
-				}
-
-				if (Mathf.Abs(leftStickClassicController.y) > 0.1f)
-				{
-					direction.y = leftStickClassicController.y;
-				}
-
-				// Toggle run
-                if (remoteState.classic.IsTriggered(WiiU.ClassicButton.R))
-                {
-                    playerController.canRun = true;
-                }
-                else if (remoteState.classic.IsReleased(WiiU.ClassicButton.R))
-                {
-                    playerController.canRun = false;
-                }
-
-                if (remoteState.classic.IsTriggered(WiiU.ClassicButton.ZR))
-                {
-                    playerController.canRun = true;
-                }
-                else if (remoteState.classic.IsReleased(WiiU.ClassicButton.ZR))
-                {
-                    playerController.canRun = false;
-                }
-
-                // Toggle flashlight
-                if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Y))
-				{
-                    ToggleFlashlight(!flashlightEnabled);
-                }
-
-                // Zoom in and out
-				if (remoteState.classic.IsTriggered(WiiU.ClassicButton.L))
-				{
-                    zoomIn = true;
-                    zoomOut = false;
-				}
-				else if (remoteState.classic.IsReleased(WiiU.ClassicButton.L))
-				{
-					zoomIn = false;
-					zoomOut = true;
-				}
-				
-				if (remoteState.classic.IsTriggered(WiiU.ClassicButton.ZL))
-				{
-                    zoomIn = true;
-                    zoomOut = false;
-				}
-				else if (remoteState.classic.IsReleased(WiiU.ClassicButton.ZL))
-				{
-					zoomIn = false;
-					zoomOut = true;
-				}
-
-                if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Up))
-                {
-                    zoomIn = true;
-                    zoomOut = false;
-                }
-                else if (remoteState.classic.IsReleased(WiiU.ClassicButton.Up))
-                {
-                    zoomIn = false;
-                    zoomOut = false;
-                }
-
-                if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Down))
-                {
-                    zoomIn = false;
-                    zoomOut = true;
-                }
-                else if (remoteState.classic.IsReleased(WiiU.ClassicButton.Down))
-                {
-                    zoomIn = false;
-                    zoomOut = false;
-                }
-
-                // Skip intro
-                if (remoteState.classic.IsTriggered(WiiU.ClassicButton.A))
-				{
-					SkipIntro();
-				}
-
-				if (remoteState.classic.IsTriggered(WiiU.ClassicButton.B))
-				{
-					SetGamePlayed();
-				}
-
-                    if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Plus))
-                    {
-                        if (pauseManager.paused)
-                        {
-                            SetGamePlayed();
-                        }
-                        else
-                        {
-                            SetGamePauseManager.paused();
-                        }
-                    }
-                break;
-            default:
-                Vector2 stickNunchuk = remoteState.nunchuk.stick;
-
-				if (Mathf.Abs(stickNunchuk.x) > 0.1f)
-				{
-					direction.x = stickNunchuk.x;
-				}
-
-				if (Mathf.Abs(stickNunchuk.y) > 0.1f)
-				{
-					direction.y = stickNunchuk.y;
-				}
-
-                if (remoteState.IsTriggered(WiiU.RemoteButton.B))
-                {
-                    playerController.canRun = true;
-					SetGamePlayed();
-                }
-                else if (remoteState.IsReleased(WiiU.RemoteButton.B))
-                {
-                    playerController.canRun = false;
-                }
-
-				// Toggle flashlight
-				if (remoteState.IsTriggered(WiiU.RemoteButton.One))
-				{
-                    ToggleFlashlight(!flashlightEnabled);
-                }
-
-                // Zoom in and out
-                if (remoteState.IsTriggered(WiiU.RemoteButton.Up))
-                {
-                    zoomIn = true;
-                    zoomOut = false;
-                }
-                else if (remoteState.IsReleased(WiiU.RemoteButton.Up))
-                {
-                    zoomIn = false;
-                    zoomOut = false;
-                }
-
-                if (remoteState.IsTriggered(WiiU.RemoteButton.Down))
-				{
-					zoomIn = false;
-					zoomOut = true;
-				}
-				else if (remoteState.IsReleased(WiiU.RemoteButton.Down))
-				{
-					zoomIn = false;
-					zoomOut = false;
-				}
-
-				// Skip intro
-				if (remoteState.IsTriggered(WiiU.RemoteButton.A))
-				{
-					SkipIntro();
-				}
-
-				// Set game pauseManager.paused
-				if (remoteState.IsTriggered(WiiU.RemoteButton.Plus))
-				{
-                    if (pauseManager.paused)
-                    {
-                        SetGamePlayed();
-                    }
-                    else
-                    {
-                        SetGamePauseManager.paused();
-                    }
-                }
-				break;
-        }
-
-		if (Application.isEditor)
-		{
-			// Y axis
-			if (Input.GetKey(KeyCode.W))
-			{
-				direction.y = 1;
-			}
-
-			if (Input.GetKey(KeyCode.S))
-			{
-				direction.y = -1;
-			}
-
-			// X axis
-			if (Input.GetKey(KeyCode.D))
-			{
-				direction.x = 1;
-			}
-
-			if (Input.GetKey(KeyCode.A))
-			{
-				direction.x = -1;
-			}
-
-			// Toggle run
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                playerController.canRun = true;
-            }
-            else if (Input.GetKeyUp(KeyCode.LeftShift))
-            {
-                playerController.canRun = false;
-            }
-
-			// Skip intro
-			if (Input.GetMouseButtonDown(0))
-			{
-				SkipIntro();
-			}
-
-			// Toggle flashlight
-            if (Input.GetMouseButtonDown(1))
-			{
-                ToggleFlashlight(!flashlightEnabled);
-            }
-
-            // Zoom in and out
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                zoomIn = true;
-                zoomOut = false;
-            }
-            else if (Input.GetKeyUp(KeyCode.E))
-            {
-                zoomIn = false;
-                zoomOut = false;
-            }
-
-            if (Input.GetKeyDown(KeyCode.Q))
-			{
-				zoomIn = false;
-				zoomOut = true;
-			}
-			else if (Input.GetKeyUp(KeyCode.Q))
-			{
-				zoomIn = false;
-				zoomOut = false;
-			}
-
-			if (Input.GetKeyDown(KeyCode.Escape))
-			{
-                if (pauseManager.paused)
-				{
-                    SetGamePlayed();
-                }
-				else
-				{
-                    SetGamePauseManager.paused();
-                }
-
-                SkipIntro();
-            }
-		} **/
-
-        if (!pauseManager.paused)
-        {
-            if (debug)
-            {
-                if (Input.GetKeyDown("f1"))
-                {
-                    pages = 7;
-                    maxrange = 30f;
-                    minrange = 10f;
-                    targetfog = 0.1f;
-                    RenderSettings.fogDensity = 0.1f;
-                }
-                if (Input.GetKeyDown("f2"))
-                {
-                    base.transform.parent.transform.position = new Vector3(0f, 2f, 0f);
-                }
-                if (Input.GetKeyDown("f3"))
-                {
-                    pages = 8;
-                    lost = true;
-                }
-                if (Input.GetKeyDown("f4"))
-                {
-                    toolong = 60;
-                }
-            }
-            if (introScript.fltype == 2)
-            {
-                if (Input.GetMouseButton(1) && introScript.timer >= 1600 && ((!lost && !daytime) || (loseScript.timeleft > 250 && loseScript.timeleft < 950 && daytime)) && !Input.GetButton("Jog/Sprint") && stamina >= 10f)
-                {
-                    cranking = true;
-                    cranksound.volume = 1f;
-                }
-                else
-                {
-                    cranking = false;
-                    cranksound.volume = 0f;
-                }
-            }
-            if (introScript.gamestarted)
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-        }
+        // Flicker //
         if (endflicker)
         {
             endflicker = false;
@@ -761,7 +204,7 @@ public class PlayerScript : MonoBehaviour
             }
 
 
-            if (toolong > 0 && introScript.timer >= 1600 && pages < 8)
+            if (toolong > 0 && introScript.introEnded && pages < 8)
             {
                 toolong--;
                 if (toolong <= 0)
@@ -780,61 +223,6 @@ public class PlayerScript : MonoBehaviour
                 }
             }
 
-            // TO DELETE // 
-            if (introScript.timer >= 1600)
-            {
-                if (!torch.enabled && eyes.range < 120f)
-                {
-                    eyes.range += 0.15f;
-                    if (eyes.range >= 120f)
-                    {
-                        eyes.range = 120f;
-                    }
-                }
-                else if (torch.enabled)
-                {
-                    if (introScript.fltype == 0)
-                    {
-                        battery -= 1.8E-05f;
-                    }
-                    else if (introScript.fltype == 2 && !cranking)
-                    {
-                        battery -= 0.0002f;
-                    }
-                    if (battery <= 0.15f)
-                    {
-                        battery = 0f;
-                        torch.enabled = false;
-                    }
-                    if (eyes.range > 30f)
-                    {
-                        eyes.range -= 0.5f;
-                        if (eyes.range <= 30f)
-                        {
-                            eyes.range = 30f;
-                        }
-                    }
-                }
-                if (battery < 0.25f && Random.value < 0.2f)
-                {
-                    if (torchdying)
-                    {
-                        torchdying = false;
-                    }
-                    else
-                    {
-                        torchdying = true;
-                    }
-                }
-                if (torchdying)
-                {
-                    torch.intensity = battery - 0.015f;
-                }
-                else
-                {
-                    torch.intensity = battery;
-                }
-            }
             if (pages >= 8)
             {
                 dust.startColor = new Color(0.5f, 0.5f, 0.5f, 0.125f);
@@ -843,20 +231,20 @@ public class PlayerScript : MonoBehaviour
             {
                 dust.startColor = new Color(0.5f, 0.5f, 0.5f, 0.0625f + (float)(pages + level) * 0.045f);
             }
-            if (caught && !lost)
+            /**if (caught && !lost)
             {
                 playerController.mouseLook.enabled = false;
                 playerController.cm.canControl = false;
                 Vector3 vector = new Vector3(SM.transform.position.x, SM.transform.position.y + 1f, SM.transform.position.z);
                 Quaternion to = Quaternion.LookRotation(vector - base.transform.parent.transform.position);
                 base.transform.parent.transform.rotation = Quaternion.Slerp(base.transform.parent.transform.rotation, to, Time.deltaTime * 2f);
-            }
+            } **/
             if (!lost || loseScript.timeleft > 250)
             {
-                if (introScript.timer >= 1600)
+                if (introScript.introEnded)
                 {
                     zoomManager.ZoomToggle();
-                    if (caught)
+                    /**if (caught)
                     {
                         sanity -= 1f;
                         if (sanity < 0f)
@@ -998,7 +386,9 @@ public class PlayerScript : MonoBehaviour
                     if (scared > 0)
                     {
                         scared--;
-                    }
+                    } **/
+
+                    // STAMINA //
                     if (playerController.canRun && direction.y > 0f)
                     {
                         if (!amrunning && stamina >= 10f)
@@ -1010,8 +400,6 @@ public class PlayerScript : MonoBehaviour
                         {
                             flraised = false;
                         }
-                        Quaternion to2 = Quaternion.LookRotation(fldown.position - torch.transform.position);
-                        torch.transform.rotation = Quaternion.Slerp(torch.transform.rotation, to2, Time.deltaTime * 8f);
                         if (scared > 0)
                         {
                             stamina -= 0.1125f;
@@ -1058,18 +446,6 @@ public class PlayerScript : MonoBehaviour
                         }
                         if (cranking)
                         {
-                            Quaternion to2 = Quaternion.LookRotation(fldown.position - torch.transform.position);
-                            torch.transform.rotation = Quaternion.Slerp(torch.transform.rotation, to2, Time.deltaTime * 8f);
-                            if (battery < 0.15f)
-                            {
-                                battery = 0.151f;
-                                torch.enabled = true;
-                            }
-                            battery += 0.001f;
-                            if (battery > 1f)
-                            {
-                                battery = 1f;
-                            }
                             stamina -= 0.025f;
                             if (stamina < 10f)
                             {
@@ -1078,16 +454,7 @@ public class PlayerScript : MonoBehaviour
                         }
                         else
                         {
-                            RaycastHit hitInfo;
-                            Quaternion to2 = ((nearpage == null) ? Quaternion.LookRotation(flup.position - torch.transform.position) : ((!Physics.Raycast(base.transform.position, (nearpage.position - base.transform.position).normalized, out hitInfo, 2f, mask)) ? Quaternion.LookRotation(flup.position - torch.transform.position) : ((!(hitInfo.collider.gameObject == nearpage.gameObject)) ? Quaternion.LookRotation(flup.position - torch.transform.position) : Quaternion.LookRotation(nearpage.position - torch.transform.position))));
-                            if (sprintcooldown <= 0)
-                            {
-                                torch.transform.rotation = Quaternion.Slerp(torch.transform.rotation, to2, Time.deltaTime * 8f);
-                            }
-                            else
-                            {
-                                torch.transform.rotation = Quaternion.Slerp(torch.transform.rotation, to2, Time.deltaTime * (2f + (60f - (float)sprintcooldown) / 10f));
-                            }
+
                             if (direction.y != 0f || direction.x != 0f)
                             {
                                 stamina += 0.05f;
@@ -1120,6 +487,8 @@ public class PlayerScript : MonoBehaviour
                     {
                         breathing.volume = 0f;
                     }
+
+                    // FOOTSTEPS SOUND //
                     if (stepcd <= 0 && loseScript.timeleft < 950)
                     {
                         stepcd = 120;
@@ -1279,11 +648,6 @@ public class PlayerScript : MonoBehaviour
                 {
                     playerController.cm.canControl = true;
                     playerController.mouseLook.enabled = true;
-
-                    if (daytime)
-                    {
-                        torch.enabled = false;
-                    }
                 }
             }
             if (!lost)
@@ -1298,7 +662,6 @@ public class PlayerScript : MonoBehaviour
             {
                 breathing.volume = 0f;
                 zsound.volume = 0f;
-                torch.enabled = false;
                 return;
             }
             if (loseScript.timeleft >= 250)
@@ -1337,104 +700,4 @@ public class PlayerScript : MonoBehaviour
             }
         }
     }
-
-    /**private void SkipIntro()
-	{
-		if (!pauseManager.paused && introScript.gamestarted && introScript.timer < 1598 && introScript.timer > 0)
-		{
-            introScript.timer = 1598;
-            climbfence.Stop();
-        }
-	} **/
-
-    /** private void SetGamePauseManager.paused()
-	{
-        if (!pauseManager.paused)
-		{
-            if (introScript.gamestarted)
-            {
-				if (!lost && introScript.timer >= 1598)
-				{
-                    if (sanity == 100f)
-                    {
-                        pauseManager.paused = true;
-                        Time.timeScale = 0f;
-
-                        menuManager.DisplayMenu();
-
-                        playerController.cm.canControl = false;
-                        playerController.mouseLook.enabled = false;
-                    }
-                    else
-                    {
-                        flicker = 3;
-                    }
-                }
-            }
-            else
-            {
-                backedup = true;
-            }
-        }
-    }
-
-	public void SetGamePlayed()
-	{
-		if (pauseManager.paused)
-		{
-			menuManager.HideMenu();
-
-            pauseManager.paused = false;
-            Time.timeScale = 1f;
-
-            playerController.cm.canControl = true;
-            playerController.mouseLook.enabled = true;
-        }
-	} **/
-
-    /** private void ZoomToggle()
-	{
-        if (zoomIn && !zoomOut && zoom > 20f)
-        {
-            zoom -= 0.75f;
-            if (zoom < 20f)
-            {
-                zoom = 20f;
-            }
-            zsound.volume = 1f;
-        }
-        else if (zoomOut && !zoomIn && zoom < 60f)
-        {
-            zoom += 0.75f;
-            if (zoom > 60f)
-            {
-                zoom = 60f;
-            }
-            zsound.volume = 1f;
-        }
-        else
-        {
-            zsound.volume = 0f;
-        }
-
-        base.GetComponent<Camera>().fieldOfView = zoom;
-    } **/
-    
-    public void ToggleFlashlight(bool status)
-    {
-        if (!pauseManager.paused && introScript.fltype == 0 && introScript.timer >= 1600 && ((!lost && !daytime) || (loseScript.timeleft > 250 && loseScript.timeleft < 950 && daytime)))
-        {
-            if (torch.enabled)
-            {
-                torch.enabled = false;
-            }
-            else if (battery > 0f)
-            {
-                torch.enabled = true;
-            }
-            flashlight.Play();
-
-            flashlightEnabled = status;
-        }
-    } 
 }
