@@ -3,12 +3,18 @@ using UnityEngine;
 public class FlashlightManager : MonoBehaviour
 {
     [Header("Scripts")]
+    [SerializeField] private PlayerController playerController;
     [SerializeField] private PauseManager pauseManager;
     [SerializeField] private IntroScript introScript;
     [SerializeField] private LoseScript loseScript;
+    [SerializeField] private SharedVar shared;
 
     [Header("Flashlight Manager")]
+
+    public bool flashlightEnabled;
     public AudioSource flashlightSound;
+    public Transform fldown;
+    public Transform flup;
     public Light torch;
     public Light eyes;
 	public float battery = 1f;
@@ -74,11 +80,11 @@ public class FlashlightManager : MonoBehaviour
                 }
             }
 
-            if (!lost || loseScript.timeleft > 250)
+            if (!shared.lost || loseScript.timeleft > 250)
             {
                 if (introScript.introEnded)
                 {
-                    if (playerController.canRun && direction.y > 0f)
+                    if (playerController.canRun && playerController.direction.y > 0f)
                     {
                         Quaternion to2 = Quaternion.LookRotation(fldown.position - torch.transform.position);
                         torch.transform.rotation = Quaternion.Slerp(torch.transform.rotation, to2, Time.deltaTime * 8f);
@@ -103,7 +109,7 @@ public class FlashlightManager : MonoBehaviour
                         else
                         {
                             RaycastHit hitInfo;
-                            Quaternion to2 = ((nearpage == null) ? Quaternion.LookRotation(flup.position - torch.transform.position) : ((!Physics.Raycast(base.transform.position, (nearpage.position - base.transform.position).normalized, out hitInfo, 2f, mask)) ? Quaternion.LookRotation(flup.position - torch.transform.position) : ((!(hitInfo.collider.gameObject == nearpage.gameObject)) ? Quaternion.LookRotation(flup.position - torch.transform.position) : Quaternion.LookRotation(nearpage.position - torch.transform.position))));
+                            Quaternion to2 = ((shared.nearpage == null) ? Quaternion.LookRotation(flup.position - torch.transform.position) : ((!Physics.Raycast(base.transform.position, (shared.nearpage.position - base.transform.position).normalized, out hitInfo, 2f, mask)) ? Quaternion.LookRotation(flup.position - torch.transform.position) : ((!(hitInfo.collider.gameObject == shared.nearpage.gameObject)) ? Quaternion.LookRotation(flup.position - torch.transform.position) : Quaternion.LookRotation(shared.nearpage.position - torch.transform.position))));
                             if (sprintcooldown <= 0)
                             {
                                 torch.transform.rotation = Quaternion.Slerp(torch.transform.rotation, to2, Time.deltaTime * 8f);
@@ -117,18 +123,18 @@ public class FlashlightManager : MonoBehaviour
                 }
             }
 
-            if (!lost || loseScript.timeleft > 250)
+            if (!shared.lost || loseScript.timeleft > 250)
             {
                 if (introScript.timer == 1599)
                 {
-                    if (daytime)
+                    if (shared.daytime)
                     {
                         torch.enabled = false;
                     }
                 }
             }
 
-            if (loseScript.timeleft < 250) // TO BE MOVED DIRECTLY TO LOSESCRIPT
+            if (loseScript.timeleft < 250)
             {
                 torch.enabled = false;
                 return;
@@ -137,7 +143,7 @@ public class FlashlightManager : MonoBehaviour
     }
     public void ToggleFlashlight(bool status)
     {
-        if (!PauseManager.paused && introScript.fltype == 0 && introScript.introEnded && ((!lost && !daytime) || (loseScript.timeleft > 250 && loseScript.timeleft < 950 && daytime)))
+        if (!pauseManager.paused && introScript.fltype == 0 && introScript.introEnded && ((!shared.lost && !shared.daytime) || (loseScript.timeleft > 250 && loseScript.timeleft < 950 && shared.daytime)))
         {
             if (torch.enabled)
             {

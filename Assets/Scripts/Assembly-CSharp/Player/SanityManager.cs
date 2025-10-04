@@ -24,7 +24,6 @@ public class SanityManager : MonoBehaviour
     public int flicker;
     public bool endflicker;
     public bool lastflicker;
-    public bool lost;
     public bool mh;
     public int scared;
     public int pages;
@@ -36,7 +35,7 @@ public class SanityManager : MonoBehaviour
 
         if (!pauseManager.paused)
         {
-            if (caught && !lost)
+            if (caught && !shared.lost)
             {
                 playerController.mouseLook.enabled = false;
                 playerController.cm.canControl = false;
@@ -45,7 +44,7 @@ public class SanityManager : MonoBehaviour
                 base.transform.parent.transform.rotation = Quaternion.Slerp(base.transform.parent.transform.rotation, to, Time.deltaTime * 2f);
             }
             
-            if (!lost || loseScript.timeleft > 250)
+            if (!shared.lost || loseScript.timeleft > 250)
             {
                 if (introScript.introEnded)
                 {
@@ -54,7 +53,7 @@ public class SanityManager : MonoBehaviour
                         sanity -= 1f;
                         if (sanity < 0f)
                         {
-                            lost = true;
+                            shared.lost = true;
                         }
                     }
                     if (!cansee && !caught)
@@ -74,12 +73,12 @@ public class SanityManager : MonoBehaviour
                         {
                             sanity -= drain;
                         }
-                        if (sanity < 0f && !lost)
+                        if (sanity < 0f && !shared.lost)
                         {
-                            lost = true;
+                            shared.lost = true;
                         }
                     }
-                    if (lost)
+                    if (shared.lost)
                     {
                         sanity = 100f;
                     }
@@ -147,7 +146,7 @@ public class SanityManager : MonoBehaviour
                     {
                         tentacles.localScale = new Vector3((80f - sanity) * 0.01f, (80f - sanity) * 0.01f, (80f - sanity) * (1f / 160f));
                     }
-                    if (lost && !mh)
+                    if (shared.lost && !mh)
                     {
                         tentacles.localScale = new Vector3(0.8f, 0.8f, 0.5f);
                     }

@@ -7,6 +7,7 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private IntroScript introScript;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PlayerScript playerScript; // TEMPORARY
+    [SerializeField] private SharedVar shared;
 
     public bool paused;
     public bool backedup;
@@ -23,8 +24,8 @@ public class PauseManager : MonoBehaviour
                 return;
             }
 
-            // Require not playerScript.lost and timer threshold
-            if (playerScript.lost || introScript.timer < 1598)
+            // Require not shared.lost and timer threshold
+            if (shared.lost || introScript.timer < 1598)
             {
                 return;
             }  

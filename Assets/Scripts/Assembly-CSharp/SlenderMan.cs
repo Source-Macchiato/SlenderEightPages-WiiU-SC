@@ -4,6 +4,7 @@ public class SlenderMan : MonoBehaviour
 {
 	[Header("Scripts")]
 	[SerializeField] private PauseManager pauseManager;
+	[SerializeField] private FlashlightManager flashLightManager;
 	public Transform player;
 
 	public PlayerScript view;
@@ -46,7 +47,7 @@ public class SlenderMan : MonoBehaviour
 	{
 		Vector3 vector = new Vector3(base.transform.position.x, base.transform.position.y + 1.33f, base.transform.position.z);
 		float num = Vector3.Distance(vector, player.position);
-		float drain = (view.daytime ? Mathf.Pow(2f, (0f - num / 1.5f) / 10f) : ((!view.torch.enabled) ? Mathf.Pow(2f, (0f - num * 2f) / 10f) : Mathf.Pow(2f, (0f - num) / 10f)));
+		float drain = (view.daytime ? Mathf.Pow(2f, (0f - num / 1.5f) / 10f) : ((!flashLightManager.torch.enabled) ? Mathf.Pow(2f, (0f - num * 2f) / 10f) : Mathf.Pow(2f, (0f - num) / 10f)));
 		view.cansee = false;
 		RaycastHit hitInfo;
 		if (Physics.Raycast(player.position, (vector - player.position).normalized, out hitInfo) && hitInfo.collider.gameObject == base.gameObject)
@@ -166,10 +167,10 @@ public class SlenderMan : MonoBehaviour
 			{
 				chasing = false;
 			}
-			if (view.finaldelay > 0)
+			if (shared.finaldelay > 0)
 			{
-				view.finaldelay--;
-				if (view.finaldelay <= 0)
+				shared.finaldelay--;
+				if (shared.finaldelay <= 0)
 				{
 					busymove = 4;
 				}
@@ -282,7 +283,7 @@ public class SlenderMan : MonoBehaviour
 						float num8 = Vector3.Distance(player.position, vector2);
 						if (vector2.x < num && vector2.x > num2 && vector2.z < num3 && vector2.z > num4)
 						{
-							if (view.pages >= 8 || (!view.torch.enabled && !view.daytime))
+							if (view.pages >= 8 || (!flashLightManager.torch.enabled && !view.daytime))
 							{
 								if (num5 > 30f)
 								{

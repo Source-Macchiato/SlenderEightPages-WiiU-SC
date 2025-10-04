@@ -5,6 +5,7 @@ public class IntroScript : MonoBehaviour
 	// NEW REFERENCES //
 	[SerializeField] private PauseManager pauseManager;
 	[SerializeField] private AudioSource climbfence;
+	[SerializeField] private SharedVar shared;
 
 	// OTHER
 	public int timer;
@@ -111,17 +112,17 @@ public class IntroScript : MonoBehaviour
 		{
 			if (PlayerPrefs.GetInt("dusty") == 1)
 			{
-				view.dustyair = true;
+				shared.dustyair = true;
 			}
 			else
 			{
-				view.dustyair = false;
+				shared.dustyair = false;
 			}
 		}
 		else
 		{
 			PlayerPrefs.SetInt("dusty", 1);
-			view.dustyair = true;
+			shared.dustyair = true;
 		}
 		if (PlayerPrefs.HasKey("skintro"))
 		{
@@ -145,26 +146,26 @@ public class IntroScript : MonoBehaviour
 			{
 				modeoff = false;
 				view.mh = true;
-				view.daytime = false;
+				shared.daytime = false;
 			}
 			else if (PlayerPrefs.GetInt("currentm") == 2 && PlayerPrefs.GetInt("daytime") == 1)
 			{
 				modeoff = false;
 				view.mh = false;
-				view.daytime = true;
+				shared.daytime = true;
 			}
 			else if (PlayerPrefs.GetInt("currentm") == 3)
 			{
 				modeoff = false;
 				view.mh = true;
-				view.daytime = false;
+				shared.daytime = false;
 				PlayerPrefs.SetInt("currentm", 0);
 			}
 			else
 			{
 				modeoff = true;
 				view.mh = false;
-				view.daytime = false;
+				shared.daytime = false;
 			}
 		}
 		else
@@ -172,7 +173,7 @@ public class IntroScript : MonoBehaviour
 			PlayerPrefs.SetInt("currentm", 0);
 			modeoff = true;
 			view.mh = false;
-			view.daytime = false;
+			shared.daytime = false;
 		}
 		if (PlayerPrefs.HasKey("fltype"))
 		{
@@ -256,7 +257,7 @@ public class IntroScript : MonoBehaviour
 					stat1.GetComponent<Renderer>().enabled = false;
 					stat2.GetComponent<Renderer>().enabled = false;
 				}
-				if (view.dustyair && !view.daytime)
+				if (shared.dustyair && !shared.daytime)
 				{
 					view.dust.Play();
 				}
@@ -417,7 +418,7 @@ public class IntroScript : MonoBehaviour
 				{
 					view.flashlight.Play();
 					view.mh = false;
-					view.daytime = false;
+					shared.daytime = false;
 					PlayerPrefs.SetInt("currentm", 0);
 				}
 			}
@@ -434,18 +435,18 @@ public class IntroScript : MonoBehaviour
 					{
 						view.flashlight.Play();
 						modeoff = false;
-						view.daytime = false;
+						shared.daytime = false;
 						PlayerPrefs.SetInt("currentm", 1);
 					}
 				}
-				if (view.daytime)
+				if (shared.daytime)
 				{
 					GUI.Toggle(new Rect(210f, 100f, 180f, 20f), true, "Daytime Mode");
 				}
 				else
 				{
-					view.daytime = GUI.Toggle(new Rect(210f, 100f, 180f, 20f), false, "Daytime Mode");
-					if (view.daytime)
+					shared.daytime = GUI.Toggle(new Rect(210f, 100f, 180f, 20f), false, "Daytime Mode");
+					if (shared.daytime)
 					{
 						view.flashlight.Play();
 						modeoff = false;
@@ -544,12 +545,12 @@ public class IntroScript : MonoBehaviour
 				land.treeMaximumFullLODCount = (int)(treeBillboardDistance * 2f);
 				PlayerPrefs.SetFloat("trees", treeBillboardDistance);
 			}
-			bool dustyair = view.dustyair;
-			view.dustyair = GUI.Toggle(new Rect(210f, 175f, 180f, 20f), view.dustyair, "Fog");
-			if (dustyair != view.dustyair)
+			bool dustyair = shared.dustyair;
+			shared.dustyair = GUI.Toggle(new Rect(210f, 175f, 180f, 20f), shared.dustyair, "Fog");
+			if (dustyair != shared.dustyair)
 			{
 				view.flashlight.Play();
-				if (view.dustyair)
+				if (shared.dustyair)
 				{
 					PlayerPrefs.SetInt("dusty", 1);
 				}
@@ -609,7 +610,7 @@ public class IntroScript : MonoBehaviour
 
 		base.GetComponent<Camera>().enabled = false;
 		view.fadeoutgui = 0;
-		if (!view.daytime)
+		if (!shared.daytime)
 		{
 			if (!view.mh)
 			{
@@ -636,7 +637,7 @@ public class IntroScript : MonoBehaviour
 			stat1.GetComponent<Renderer>().enabled = false;
 			stat2.GetComponent<Renderer>().enabled = false;
 		}
-		if (view.dustyair && !view.daytime)
+		if (shared.dustyair && !shared.daytime)
 		{
 			view.dust.Play();
 		}

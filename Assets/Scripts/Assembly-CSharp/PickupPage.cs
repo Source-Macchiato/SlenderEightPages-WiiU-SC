@@ -4,6 +4,7 @@ using WiiU = UnityEngine.WiiU;
 public class PickupPage : MonoBehaviour
 {
     [SerializeField] private PauseManager pauseManager;
+    [SerializeField] private SharedVar shared;
 	public Transform player;
 
 	public AudioClip pagesound;
@@ -85,19 +86,19 @@ public class PickupPage : MonoBehaviour
                 if (Physics.Raycast(player.position, (base.transform.position - player.position).normalized, out hitInfo, 2f, mask))
                 {
                     withinrange = true;
-                    view.nearpage = base.transform;
+                    shared.nearpage = base.transform;
                 }
             }
             else if (withinrange)
             {
                 withinrange = false;
-                view.nearpage = null;
+                shared.nearpage = null;
             }
         }
         else if (withinrange)
         {
             withinrange = false;
-            view.nearpage = null;
+            shared.nearpage = null;
         }
 
         pickupText.SetActive(withinrange);
@@ -113,7 +114,7 @@ public class PickupPage : MonoBehaviour
             }
             view.pages++;
             view.fadeoutgui = 0;
-            view.nearpage = null;
+            shared.nearpage = null;
             view.toolong = 15000;
             view.sprscr.jogSpeed = 3.5f + (float)view.pages * 0.1f;
             if (view.pages < 8)
@@ -138,7 +139,7 @@ public class PickupPage : MonoBehaviour
             {
                 view.maxrange = 20f;
                 view.minrange = 10f;
-                view.finaldelay = 750;
+                shared.finaldelay = 750;
             }
 
             if (MedalsManager.medalsManager != null)

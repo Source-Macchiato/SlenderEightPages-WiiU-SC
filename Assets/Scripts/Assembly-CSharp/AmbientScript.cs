@@ -3,6 +3,7 @@ using UnityEngine;
 public class AmbientScript : MonoBehaviour
 {
     [SerializeField] private PauseManager pauseManager;
+    [SerializeField] private SharedVar shared;
 	public Transform rotateme;
 
 	public int timer = 100;
@@ -50,7 +51,7 @@ public class AmbientScript : MonoBehaviour
                 {
                     case 1:
                     case 2:
-                        if ((!playerScript.lost && !playerScript.daytime) || (playerScript.lost && playerScript.daytime))
+                        if ((!playerScript.lost && !shared.daytime) || (playerScript.lost && shared.daytime))
                         {
                             AudioSource.PlayClipAtPoint(fs1, base.transform.position, 1f);
                         }
@@ -61,7 +62,7 @@ public class AmbientScript : MonoBehaviour
                         break;
                     case 3:
                     case 4:
-                        if ((!playerScript.lost && !playerScript.daytime) || (playerScript.lost && playerScript.daytime))
+                        if ((!playerScript.lost && !shared.daytime) || (playerScript.lost && shared.daytime))
                         {
                             AudioSource.PlayClipAtPoint(fs2, base.transform.position, 1f);
                         }
@@ -72,7 +73,7 @@ public class AmbientScript : MonoBehaviour
                         break;
                     case 5:
                     case 6:
-                        if ((!playerScript.lost && !playerScript.daytime) || (playerScript.lost && playerScript.daytime))
+                        if ((!playerScript.lost && !shared.daytime) || (playerScript.lost && shared.daytime))
                         {
                             AudioSource.PlayClipAtPoint(fs3, base.transform.position, 1f);
                         }
@@ -83,7 +84,7 @@ public class AmbientScript : MonoBehaviour
                         break;
                     case 7:
                     case 8:
-                        if ((!playerScript.lost && !playerScript.daytime) || (playerScript.lost && playerScript.daytime))
+                        if ((!playerScript.lost && !shared.daytime) || (playerScript.lost && shared.daytime))
                         {
                             AudioSource.PlayClipAtPoint(fs4, base.transform.position, 1f);
                         }

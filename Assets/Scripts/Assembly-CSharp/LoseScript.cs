@@ -5,6 +5,8 @@ using WiiU = UnityEngine.WiiU;
 public class LoseScript : MonoBehaviour
 {
 	[SerializeField] private IntroScript introScript;
+	[SerializeField] private SharedVar shared;
+	[SerializeField] private FlashlightManager flashLightManager;
 	public Transform player;
 
 	public PlayerScript view;
@@ -149,7 +151,7 @@ public class LoseScript : MonoBehaviour
 	private void FixedUpdate()
 	{
 		base.transform.parent.position = new Vector3(0f, -180f, 0f);
-		if (introScript.timer == 1599 && view.daytime)
+		if (introScript.timer == 1599 && shared.daytime)
 		{
 			RenderSettings.skybox = daysky;
 		}
@@ -222,13 +224,13 @@ public class LoseScript : MonoBehaviour
 		if (timeleft == 251 && view.pages >= 8)
 		{
 			onthistime = false;
-			if (view.daytime)
+			if (shared.daytime)
 			{
                 // Disable skybox
                 RenderSettings.skybox = null;
                 DynamicGI.UpdateEnvironment();
 
-                view.torch.enabled = true;
+                flashLightManager.torch.enabled = true;
 				sun.enabled = false;
 			}
 			else
@@ -246,14 +248,14 @@ public class LoseScript : MonoBehaviour
 					MedalsManager.medalsManager.UnlockAchievement(Achievements.achievements.THE_EIGHT_PAGES);
 				}
 			}
-			if (view.dustyair && view.daytime)
+			if (shared.dustyair && shared.daytime)
 			{
 				view.dust.Play();
 			}
 			original.enabled = true;
 			base.transform.parent.GetComponent<Camera>().enabled = false;
 			player.position = oldposition;
-			player.LookAt(new Vector3(view.endfix.position.x, player.position.y, view.endfix.position.z));
+			player.LookAt(new Vector3(shared.endfix.position.x, player.position.y, shared.endfix.position.z));
 		}
 		if (timeleft >= 950 && view.pages >= 8)
 		{
