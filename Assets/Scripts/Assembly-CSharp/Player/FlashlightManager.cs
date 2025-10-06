@@ -5,6 +5,7 @@ public class FlashlightManager : MonoBehaviour
     [Header("Scripts")]
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PauseManager pauseManager;
+    [SerializeField] private StaminaManager staminaManager;
     [SerializeField] private IntroScript introScript;
     [SerializeField] private LoseScript loseScript;
     [SerializeField] private SharedVar shared;
@@ -20,6 +21,7 @@ public class FlashlightManager : MonoBehaviour
 	public float battery = 1f;
 	public bool torchdying;
     private bool cranking;
+    public LayerMask mask;
 
     private void Update()
     {
@@ -48,6 +50,7 @@ public class FlashlightManager : MonoBehaviour
                     if (battery <= 0.15f)
                     {
                         battery = 0f;
+                        Debug.Log("Flashlight battery dead");
                         torch.enabled = false;
                     }
                     if (eyes.range > 30f)
@@ -110,13 +113,13 @@ public class FlashlightManager : MonoBehaviour
                         {
                             RaycastHit hitInfo;
                             Quaternion to2 = ((shared.nearpage == null) ? Quaternion.LookRotation(flup.position - torch.transform.position) : ((!Physics.Raycast(base.transform.position, (shared.nearpage.position - base.transform.position).normalized, out hitInfo, 2f, mask)) ? Quaternion.LookRotation(flup.position - torch.transform.position) : ((!(hitInfo.collider.gameObject == shared.nearpage.gameObject)) ? Quaternion.LookRotation(flup.position - torch.transform.position) : Quaternion.LookRotation(shared.nearpage.position - torch.transform.position))));
-                            if (sprintcooldown <= 0)
+                            if (staminaManager.sprintcooldown <= 0)
                             {
                                 torch.transform.rotation = Quaternion.Slerp(torch.transform.rotation, to2, Time.deltaTime * 8f);
                             }
                             else
                             {
-                                torch.transform.rotation = Quaternion.Slerp(torch.transform.rotation, to2, Time.deltaTime * (2f + (60f - (float)sprintcooldown) / 10f));
+                                torch.transform.rotation = Quaternion.Slerp(torch.transform.rotation, to2, Time.deltaTime * (2f + (60f - (float)staminaManager.sprintcooldown) / 10f));
                             }
                         }
                     }
@@ -129,13 +132,18 @@ public class FlashlightManager : MonoBehaviour
                 {
                     if (shared.daytime)
                     {
+                        Debug.Log("Flashlight disabled by daytime");
                         torch.enabled = false;
                     }
                 }
             }
-
+            if (!shared.lost)
+            {
+                return;
+            }
             if (loseScript.timeleft < 250)
             {
+                Debug.Log("Flashlight disabled");
                 torch.enabled = false;
                 return;
             }
@@ -147,6 +155,7 @@ public class FlashlightManager : MonoBehaviour
         {
             if (torch.enabled)
             {
+                Debug.Log("Flashlight off");
                 torch.enabled = false;
             }
             else if (battery > 0f)

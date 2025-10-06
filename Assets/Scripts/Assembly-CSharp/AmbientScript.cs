@@ -35,7 +35,7 @@ public class AmbientScript : MonoBehaviour
 
 	private void Update()
 	{
-		if ((intro.gamestarted && loser.timeleft == 0 && (!playerScript.mh || (intro.timer >= 1600 && playerScript.mh))) || (loser.timeleft > 250 && loser.timeleft < 900 && playerScript.pages >= 8))
+		if ((intro.gamestarted && loser.timeleft == 0 && (!playerScript.mh || (intro.timer >= 1600 && playerScript.mh))) || (loser.timeleft > 250 && loser.timeleft < 900 && shared.pages >= 8))
 		{
 			if (!pauseManager.paused)
 			{
@@ -51,7 +51,7 @@ public class AmbientScript : MonoBehaviour
                 {
                     case 1:
                     case 2:
-                        if ((!playerScript.lost && !shared.daytime) || (playerScript.lost && shared.daytime))
+                        if ((!shared.lost && !shared.daytime) || (shared.lost && shared.daytime))
                         {
                             AudioSource.PlayClipAtPoint(fs1, base.transform.position, 1f);
                         }
@@ -62,7 +62,7 @@ public class AmbientScript : MonoBehaviour
                         break;
                     case 3:
                     case 4:
-                        if ((!playerScript.lost && !shared.daytime) || (playerScript.lost && shared.daytime))
+                        if ((!shared.lost && !shared.daytime) || (shared.lost && shared.daytime))
                         {
                             AudioSource.PlayClipAtPoint(fs2, base.transform.position, 1f);
                         }
@@ -73,7 +73,7 @@ public class AmbientScript : MonoBehaviour
                         break;
                     case 5:
                     case 6:
-                        if ((!playerScript.lost && !shared.daytime) || (playerScript.lost && shared.daytime))
+                        if ((!shared.lost && !shared.daytime) || (shared.lost && shared.daytime))
                         {
                             AudioSource.PlayClipAtPoint(fs3, base.transform.position, 1f);
                         }
@@ -84,7 +84,7 @@ public class AmbientScript : MonoBehaviour
                         break;
                     case 7:
                     case 8:
-                        if ((!playerScript.lost && !shared.daytime) || (playerScript.lost && shared.daytime))
+                        if ((!shared.lost && !shared.daytime) || (shared.lost && shared.daytime))
                         {
                             AudioSource.PlayClipAtPoint(fs4, base.transform.position, 1f);
                         }

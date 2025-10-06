@@ -3,9 +3,12 @@ using UnityEngine;
 public class SanityManager : MonoBehaviour
 {
     [Header("Scripts")]
+    [SerializeField] private PlayerController playerController;
     [SerializeField] private PauseManager pauseManager;
     [SerializeField] private IntroScript introScript;
     [SerializeField] private LoseScript loseScript;
+    [SerializeField] private SlenderMan slenderMan;
+    [SerializeField] private SharedVar shared;
 
     [Header("Sanity Manager")]
     public AudioSource san1;
@@ -39,7 +42,7 @@ public class SanityManager : MonoBehaviour
             {
                 playerController.mouseLook.enabled = false;
                 playerController.cm.canControl = false;
-                Vector3 vector = new Vector3(SM.transform.position.x, SM.transform.position.y + 1f, SM.transform.position.z);
+                Vector3 vector = new Vector3(slenderMan.SM.transform.position.x, slenderMan.SM.transform.position.y + 1f, slenderMan.SM.transform.position.z);
                 Quaternion to = Quaternion.LookRotation(vector - base.transform.parent.transform.position);
                 base.transform.parent.transform.rotation = Quaternion.Slerp(base.transform.parent.transform.rotation, to, Time.deltaTime * 2f);
             }

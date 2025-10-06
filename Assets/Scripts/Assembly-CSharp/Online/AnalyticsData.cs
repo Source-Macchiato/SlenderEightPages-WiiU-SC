@@ -192,12 +192,12 @@ public class AnalyticsData : MonoBehaviour
 
     public int GetPages()
     {
-        PlayerScript playerScript = FindObjectOfType<PlayerScript>();
+        SharedVar shared = FindObjectOfType<SharedVar>();
         int pages = 0;
 
-        if (playerScript != null)
+        if (shared != null)
         {
-            pages = playerScript.pages;
+            pages = shared.pages;
         }
 
         return pages;

@@ -7,10 +7,11 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] public ZoomManager zoomManager;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PauseManager pauseManager;
+    [SerializeField] private SharedVar shared;
 
 
     // OLD REFERENCES //
-    public int pages;
+    // public int pages;
 
     public int level;
 
@@ -146,17 +147,19 @@ public class PlayerScript : MonoBehaviour
 
     public Vector2 direction = Vector2.zero;
 
+    
+
     private void OnGUI()
     {
         if (!pauseManager.paused && fadeoutgui < 400 && !mh)
         {
-            if (pages == 0)
+            if (shared.pages == 0)
             {
                 GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Collect all 8 pages", hint);
             }
             else
             {
-                GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Pages " + pages + "/8", hint);
+                GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "pages " + shared.pages + "/8", hint);
             }
         }
     }
@@ -204,18 +207,18 @@ public class PlayerScript : MonoBehaviour
             }
 
 
-            if (toolong > 0 && introScript.introEnded && pages < 8)
+            if (toolong > 0 && introScript.introEnded && shared.pages < 8)
             {
                 toolong--;
                 if (toolong <= 0)
                 {
                     toolong = 12000;
-                    if (pages + level < 9)
+                    if (shared.pages + level < 9)
                     {
                         level++;
-                        maxrange = 100 - (pages + level) * 11;
-                        minrange = 80 - (pages + level) * 10;
-                        if (pages + level == 1 || pages + level == 3 || pages + level == 5 || pages + level == 7)
+                        maxrange = 100 - (shared.pages + level) * 11;
+                        minrange = 80 - (shared.pages + level) * 10;
+                        if (shared.pages + level == 1 || shared.pages + level == 3 || shared.pages + level == 5 || shared.pages + level == 7)
                         {
                             fadeinmusic = 0f;
                         }
@@ -223,13 +226,13 @@ public class PlayerScript : MonoBehaviour
                 }
             }
 
-            if (pages >= 8)
+            if (shared.pages >= 8)
             {
                 dust.startColor = new Color(0.5f, 0.5f, 0.5f, 0.125f);
             }
             else
             {
-                dust.startColor = new Color(0.5f, 0.5f, 0.5f, 0.0625f + (float)(pages + level) * 0.045f);
+                dust.startColor = new Color(0.5f, 0.5f, 0.5f, 0.0625f + (float)(shared.pages + level) * 0.045f);
             }
             /**if (caught && !lost)
             {
@@ -346,24 +349,24 @@ public class PlayerScript : MonoBehaviour
                     {
                         tentacles.localScale = new Vector3(0.8f, 0.8f, 0.5f);
                     }
-                    if (pages + level > 0 && loseScript.timeleft == 0 && !mh)
+                    if (shared.pages + level > 0 && loseScript.timeleft == 0 && !mh)
                     {
-                        if (pages + level < 3)
+                        if (shared.pages + level < 3)
                         {
                             music1.volume = fadeinmusic;
                         }
-                        else if (pages + level < 5)
+                        else if (shared.pages + level < 5)
                         {
                             music1.volume = 2f - fadeinmusic;
                             music2.volume = fadeinmusic;
                         }
-                        else if (pages + level < 7)
+                        else if (shared.pages + level < 7)
                         {
                             music1.volume = 0f;
                             music2.volume = 2f - fadeinmusic;
                             music3.volume = fadeinmusic;
                         }
-                        else if (pages + level < 8)
+                        else if (shared.pages + level < 8)
                         {
                             music1.volume = 0f;
                             music2.volume = 0f;
@@ -676,7 +679,7 @@ public class PlayerScript : MonoBehaviour
                 playerController.cm.canControl = false;
                 playerController.mouseLook.enabled = false;
             }
-            if (pages < 8 || loseScript.timeleft < 1000 + loseScript.mhdelay)
+            if (shared.pages < 8 || loseScript.timeleft < 1000 + loseScript.mhdelay)
             {
                 return;
             }

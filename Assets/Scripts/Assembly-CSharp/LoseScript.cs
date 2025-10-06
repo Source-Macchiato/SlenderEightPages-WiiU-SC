@@ -60,7 +60,7 @@ public class LoseScript : MonoBehaviour
 
 	private void OnGUI()
 	{
-		if (view.pages >= 8)
+		if (shared.pages >= 8)
 		{
 			if (view.mh)
 			{
@@ -97,9 +97,9 @@ public class LoseScript : MonoBehaviour
 				GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "But I intend to find out.", credits);
 			}
 		}
-		if (view.pages < 8 && timeleft >= 250 + mhdelay && !quitted)
+		if (shared.pages < 8 && timeleft >= 250 + mhdelay && !quitted)
 		{
-			GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 75, 600f, 50f), "Pages: " + view.pages + "/8", credits);
+			GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 75, 600f, 50f), "Pages: " + shared.pages + "/8", credits);
             GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 + 25, 600f, 50f), new GUIContent(" Press to continue", aIcon), credits);
         }
 	}
@@ -211,7 +211,7 @@ public class LoseScript : MonoBehaviour
 			san2.volume = 0f;
 			san3.volume = 0f;
 		}
-		if (timeleft < 250 + mhdelay || (timeleft < 2700 + mhdelay && view.pages >= 8))
+		if (timeleft < 250 + mhdelay || (timeleft < 2700 + mhdelay && shared.pages >= 8))
 		{
 			timeleft++;
 		}
@@ -221,7 +221,7 @@ public class LoseScript : MonoBehaviour
 			san2.volume = 0f;
 			san3.volume = 0f;
 		}
-		if (timeleft == 251 && view.pages >= 8)
+		if (timeleft == 251 && shared.pages >= 8)
 		{
 			onthistime = false;
 			if (shared.daytime)
@@ -257,7 +257,7 @@ public class LoseScript : MonoBehaviour
 			player.position = oldposition;
 			player.LookAt(new Vector3(shared.endfix.position.x, player.position.y, shared.endfix.position.z));
 		}
-		if (timeleft >= 950 && view.pages >= 8)
+		if (timeleft >= 950 && shared.pages >= 8)
 		{
 			original.enabled = false;
 			base.transform.parent.GetComponent<Camera>().enabled = true;
@@ -274,7 +274,7 @@ public class LoseScript : MonoBehaviour
             quitted = true;
             SceneManager.LoadScene("Credits");
         }
-		if (timeleft > 250 && view.pages >= 8)
+		if (timeleft > 250 && shared.pages >= 8)
 		{
 			if (view.mh)
 			{
@@ -304,16 +304,16 @@ public class LoseScript : MonoBehaviour
 				san3.volume = 0f;
 			}
 		}
-		if (timeleft >= 2700 + mhdelay && view.pages >= 8)
+		if (timeleft >= 2700 + mhdelay && shared.pages >= 8)
 		{
 			quitted = true;
 			SceneManager.LoadScene("MainMenu");
 		}
-		if (timeleft == 250 + mhdelay && view.pages >= 8)
+		if (timeleft == 250 + mhdelay && shared.pages >= 8)
 		{
 			view.fadeinmusic = 0f;
 		}
-		if (timeleft == 2500 + mhdelay && view.pages >= 8)
+		if (timeleft == 2500 + mhdelay && shared.pages >= 8)
 		{
 			view.fadeinmusic = 0f;
 		}
@@ -321,7 +321,7 @@ public class LoseScript : MonoBehaviour
 
 	private void GameOver()
 	{
-        if (view.pages < 8 && timeleft >= 250)
+        if (shared.pages < 8 && timeleft >= 250)
         {
             quitted = true;
             SceneManager.LoadScene("MainMenu");

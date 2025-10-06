@@ -5,8 +5,9 @@ public class SlenderMan : MonoBehaviour
 	[Header("Scripts")]
 	[SerializeField] private PauseManager pauseManager;
 	[SerializeField] private FlashlightManager flashLightManager;
+	[SerializeField] private SharedVar shared;
 	public Transform player;
-
+	public GameObject SM;
 	public PlayerScript view;
 
 	public AudioSource dramatic;
@@ -47,7 +48,7 @@ public class SlenderMan : MonoBehaviour
 	{
 		Vector3 vector = new Vector3(base.transform.position.x, base.transform.position.y + 1.33f, base.transform.position.z);
 		float num = Vector3.Distance(vector, player.position);
-		float drain = (view.daytime ? Mathf.Pow(2f, (0f - num / 1.5f) / 10f) : ((!flashLightManager.torch.enabled) ? Mathf.Pow(2f, (0f - num * 2f) / 10f) : Mathf.Pow(2f, (0f - num) / 10f)));
+		float drain = (shared.daytime ? Mathf.Pow(2f, (0f - num / 1.5f) / 10f) : ((!flashLightManager.torch.enabled) ? Mathf.Pow(2f, (0f - num * 2f) / 10f) : Mathf.Pow(2f, (0f - num) / 10f)));
 		view.cansee = false;
 		RaycastHit hitInfo;
 		if (Physics.Raycast(player.position, (vector - player.position).normalized, out hitInfo) && hitInfo.collider.gameObject == base.gameObject)
@@ -140,14 +141,14 @@ public class SlenderMan : MonoBehaviour
 				view.flicker = 3;
 			}
 		}
-		if (view.pages + view.level > 0 && loser.timeleft == 0)
+		if (shared.pages + view.level > 0 && loser.timeleft == 0)
 		{
 			Vector3 vector = new Vector3(base.transform.position.x, base.transform.position.y + 0.99f, base.transform.position.z);
 			float num5 = Vector3.Distance(vector, player.position);
 			RaycastHit hitInfo;
 			if (Physics.Raycast(player.position, (vector - player.position).normalized, out hitInfo) && hitInfo.collider.gameObject == base.gameObject && num5 <= 2f)
 			{
-				if (view.pages >= 8 && !model.enabled)
+				if (shared.pages >= 8 && !model.enabled)
 				{
 					model.enabled = true;
 					view.flicker = 3;
@@ -175,9 +176,9 @@ public class SlenderMan : MonoBehaviour
 					busymove = 4;
 				}
 			}
-			else if ((!view.cansee || view.pages + view.level >= 6) && !view.caught)
+			else if ((!view.cansee || shared.pages + view.level >= 6) && !view.caught)
 			{
-				if (model.isVisible && view.pages + view.level < 6)
+				if (model.isVisible && shared.pages + view.level < 6)
 				{
 					mightport++;
 					if ((mightport > 100 && (double)Random.value <= 0.001) || mightport >= 1100)
@@ -193,10 +194,10 @@ public class SlenderMan : MonoBehaviour
 				{
 					mightport = 0;
 					makejump++;
-					if (makejump >= 550 - (view.pages + view.level) * 50 && (!chasing || (num5 > 10f && (double)Random.value <= 0.2)))
+					if (makejump >= 550 - (shared.pages + view.level) * 50 && (!chasing || (num5 > 10f && (double)Random.value <= 0.2)))
 					{
 						makejump = 0;
-						if (view.pages >= 8)
+						if (shared.pages >= 8)
 						{
 							busymove = 3;
 						}
@@ -217,7 +218,7 @@ public class SlenderMan : MonoBehaviour
 				{
 					if (tos.valid)
 					{
-						if (tos.hidden || view.pages + view.level >= 6 || !view.flraised)
+						if (tos.hidden || shared.pages + view.level >= 6 || !view.flraised)
 						{
 							vector2 = testobj.position;
 							vector2.y = 1f;
@@ -246,7 +247,7 @@ public class SlenderMan : MonoBehaviour
 				{
 					if (tos.valid)
 					{
-						if ((view.pages + view.level <= 5 && (tos.hidden || !view.flraised)) || view.pages + view.level == 6 || view.pages >= 8 || (!tos.hidden && view.pages + view.level == 7))
+						if ((shared.pages + view.level <= 5 && (tos.hidden || !view.flraised)) || shared.pages + view.level == 6 || shared.pages >= 8 || (!tos.hidden && shared.pages + view.level == 7))
 						{
 							vector2 = testobj.position;
 							vector2.y = 1f;
@@ -283,7 +284,7 @@ public class SlenderMan : MonoBehaviour
 						float num8 = Vector3.Distance(player.position, vector2);
 						if (vector2.x < num && vector2.x > num2 && vector2.z < num3 && vector2.z > num4)
 						{
-							if (view.pages >= 8 || (!flashLightManager.torch.enabled && !view.daytime))
+							if (shared.pages >= 8 || (!flashLightManager.torch.enabled && !shared.daytime))
 							{
 								if (num5 > 30f)
 								{
@@ -385,7 +386,7 @@ public class SlenderMan : MonoBehaviour
 					rotation4.x = 0f;
 					rotation4.z = 0f;
 					base.transform.rotation = rotation4;
-					base.transform.Translate(base.transform.forward * ((float)(view.pages + view.level) * -0.5f + 0.5f) * Time.deltaTime, Space.World);
+					base.transform.Translate(base.transform.forward * ((float)(shared.pages + view.level) * -0.5f + 0.5f) * Time.deltaTime, Space.World);
 					if (Vector3.Distance(vector, chaser) <= 0.75f)
 					{
 						chasing = false;
@@ -412,7 +413,7 @@ public class SlenderMan : MonoBehaviour
 				}
 			}
 		}
-		if (view.pages >= 8 && ((!view.caught && model.enabled) || loser.timeleft > 1))
+		if (shared.pages >= 8 && ((!view.caught && model.enabled) || loser.timeleft > 1))
 		{
 			if (view.cansee)
 			{
