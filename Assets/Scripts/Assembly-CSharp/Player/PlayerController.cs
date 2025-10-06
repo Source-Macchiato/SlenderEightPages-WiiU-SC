@@ -31,12 +31,13 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        direction = Vector2.zero;
+        direction = Vector2.zero; // Prevent player from sliding on the ground
 
+        // Wii U //
         WiiU.GamePadState gamePadState = gamePad.state;
         WiiU.RemoteState remoteState = remote.state;
 
-        // Gamepad
+        // Gamepad //
         if (gamePadState.gamePadErr == WiiU.GamePadError.None)
         {
             Vector2 leftStickGamepad = gamePadState.lStick;
@@ -122,7 +123,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // Remotes
+        // Remotes Controller //
         switch (remoteState.devType)
         {
             case WiiU.RemoteDevType.ProController:
@@ -372,9 +373,8 @@ public class PlayerController : MonoBehaviour
                 }
                 break;
         }
-
-        if (Application.isEditor)
-        {
+        // Editor //
+        #if UNITY_EDITOR
             // Y axis
             if (Input.GetKey(KeyCode.W))
             {
@@ -448,7 +448,7 @@ public class PlayerController : MonoBehaviour
 
                 introScript.SkipIntro();
             }
-        }
+        #endif
     }
 
     private void FixedUpdate()

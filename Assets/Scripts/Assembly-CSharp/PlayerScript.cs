@@ -13,7 +13,7 @@ public class PlayerScript : MonoBehaviour
     // OLD REFERENCES //
     // public int pages;
 
-    public int level;
+    // public int level;
 
     public int toolong = 12000;
 
@@ -55,7 +55,7 @@ public class PlayerScript : MonoBehaviour
 
     public AudioSource music4;
 
-    public AudioSource breathing;
+    // public AudioSource breathing;
 
     public AudioClip s1;
 
@@ -99,13 +99,13 @@ public class PlayerScript : MonoBehaviour
 
     public bool flraised = true;
 
-    public Transform flup;
+    // public Transform flup;
 
     public Transform fldown;
 
     public int laststep;
 
-    public int stepcd = 120;
+    // public int stepcd = 120;
 
     public GameObject SM;
 
@@ -121,7 +121,7 @@ public class PlayerScript : MonoBehaviour
 
     public Transform statscale;
 
-    public AudioSource zsound;
+    //public AudioSource zsound;
 
     public LoseScript loseScript;
 
@@ -135,17 +135,17 @@ public class PlayerScript : MonoBehaviour
 
     public ParticleSystem dust;
 
-    public int sprintcooldown;
+    //public int sprintcooldown;
 
-    public SprintScript sprscr;
+    //public SprintScript sprscr;
 
     public float targetfog = 0.02f;
 
-    public bool amrunning;
+    //public bool amrunning;
 
-    public bool cranking;
+    //public bool cranking;
 
-    public Vector2 direction = Vector2.zero;
+    //public Vector2 direction = Vector2.zero;
 
     
 
@@ -213,12 +213,12 @@ public class PlayerScript : MonoBehaviour
                 if (toolong <= 0)
                 {
                     toolong = 12000;
-                    if (shared.pages + level < 9)
+                    if (shared.pages + shared.level < 9)
                     {
-                        level++;
-                        maxrange = 100 - (shared.pages + level) * 11;
-                        minrange = 80 - (shared.pages + level) * 10;
-                        if (shared.pages + level == 1 || shared.pages + level == 3 || shared.pages + level == 5 || shared.pages + level == 7)
+                        shared.level++;
+                        maxrange = 100 - (shared.pages + shared.level) * 11;
+                        minrange = 80 - (shared.pages + shared.level) * 10;
+                        if (shared.pages + shared.level == 1 || shared.pages + shared.level == 3 || shared.pages + shared.level == 5 || shared.pages + shared.level == 7)
                         {
                             fadeinmusic = 0f;
                         }
@@ -232,7 +232,7 @@ public class PlayerScript : MonoBehaviour
             }
             else
             {
-                dust.startColor = new Color(0.5f, 0.5f, 0.5f, 0.0625f + (float)(shared.pages + level) * 0.045f);
+                dust.startColor = new Color(0.5f, 0.5f, 0.5f, 0.0625f + (float)(shared.pages + shared.level) * 0.045f);
             }
             /**if (caught && !lost)
             {
@@ -349,24 +349,24 @@ public class PlayerScript : MonoBehaviour
                     {
                         tentacles.localScale = new Vector3(0.8f, 0.8f, 0.5f);
                     }
-                    if (shared.pages + level > 0 && loseScript.timeleft == 0 && !mh)
+                    if (shared.pages + shared.level > 0 && loseScript.timeleft == 0 && !mh)
                     {
-                        if (shared.pages + level < 3)
+                        if (shared.pages + shared.level < 3)
                         {
                             music1.volume = fadeinmusic;
                         }
-                        else if (shared.pages + level < 5)
+                        else if (shared.pages + shared.level < 5)
                         {
                             music1.volume = 2f - fadeinmusic;
                             music2.volume = fadeinmusic;
                         }
-                        else if (shared.pages + level < 7)
+                        else if (shared.pages + shared.level < 7)
                         {
                             music1.volume = 0f;
                             music2.volume = 2f - fadeinmusic;
                             music3.volume = fadeinmusic;
                         }
-                        else if (shared.pages + level < 8)
+                        else if (shared.pages + shared.level < 8)
                         {
                             music1.volume = 0f;
                             music2.volume = 0f;
@@ -392,7 +392,7 @@ public class PlayerScript : MonoBehaviour
                     } **/
 
                     // STAMINA //
-                    if (playerController.canRun && direction.y > 0f)
+                    /** if (playerController.canRun && direction.y > 0f)
                     {
                         if (!amrunning && stamina >= 10f)
                         {
@@ -489,7 +489,7 @@ public class PlayerScript : MonoBehaviour
                     else
                     {
                         breathing.volume = 0f;
-                    }
+                    } **/
 
                     // FOOTSTEPS SOUND //
                     if (stepcd <= 0 && loseScript.timeleft < 950)
