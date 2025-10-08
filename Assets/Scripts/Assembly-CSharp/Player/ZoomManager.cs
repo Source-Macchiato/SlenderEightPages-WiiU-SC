@@ -11,11 +11,10 @@ public class ZoomManager : MonoBehaviour
 	public bool zoomOut;
     public float zoom = 60f;
 
-    private void Start()
+    private void Update()
     {
-
-    }
-    
+        ZoomToggle();
+    }    
     // ZoomSystem //
     public void ZoomToggle()
     {

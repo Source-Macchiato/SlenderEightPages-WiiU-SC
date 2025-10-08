@@ -30,8 +30,8 @@ public class PauseManager : MonoBehaviour
                 return;
             }  
 
-            // Only pause when playerScript.sanity is full otherwise trigger playerScript.flicker
-            if (Mathf.Approximately(playerScript.sanity, 100f))
+            // Only pause when sanity is full otherwise trigger playerScript.flicker
+            if (Mathf.Approximately(sanityManager.sanity, 100f))
             {
                 paused = true;
                 Time.timeScale = 0f;

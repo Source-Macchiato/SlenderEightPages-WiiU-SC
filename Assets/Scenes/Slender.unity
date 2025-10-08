@@ -53471,6 +53471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseManager: {fileID: 107483800}
+  sprscr: {fileID: 1391}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
@@ -53510,6 +53511,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseManager: {fileID: 107483800}
+  sprscr: {fileID: 1391}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
@@ -53545,6 +53547,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseManager: {fileID: 107483800}
+  sprscr: {fileID: 1391}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
@@ -53608,6 +53611,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseManager: {fileID: 107483800}
+  sprscr: {fileID: 1391}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
@@ -53737,6 +53741,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseManager: {fileID: 107483800}
+  sprscr: {fileID: 1391}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
@@ -53759,6 +53764,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseManager: {fileID: 107483800}
+  sprscr: {fileID: 1391}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
@@ -53974,6 +53980,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseManager: {fileID: 107483800}
+  sprscr: {fileID: 1391}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
@@ -54013,16 +54020,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 516bdecd537eb8f2da6ff511f080f12e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  staminaManager: {fileID: 1717639347}
   zoomManager: {fileID: 1119387458}
   playerController: {fileID: 1236}
   pauseManager: {fileID: 107483800}
   shared: {fileID: 1733396394}
-  level: 0
   toolong: 15000
   sanity: 100
   stamina: 100
   maxstam: 100
-  scared: 0
   cansee: 0
   justsaw: 0
   drain: 0
@@ -54038,7 +54044,6 @@ MonoBehaviour:
   music2: {fileID: 1287}
   music3: {fileID: 1293}
   music4: {fileID: 1301}
-  breathing: {fileID: 1297}
   s1: {fileID: 8300000, guid: d6977d86095e64a41b1ef626eae46b6f, type: 3}
   s2: {fileID: 8300000, guid: d6d91ad151b7e9842a753f31b843cb0a, type: 3}
   s3: {fileID: 8300000, guid: d0c43a0f87f8edf4ba446e1cb2ff770d, type: 3}
@@ -54060,10 +54065,8 @@ MonoBehaviour:
   t7: {fileID: 8300000, guid: 0d4456524f4eec945bd60b750bd4cf36, type: 3}
   climbfence: {fileID: 1289}
   flraised: 0
-  flup: {fileID: 484}
   fldown: {fileID: 661}
   laststep: 0
-  stepcd: 30
   SM: {fileID: 250}
   hint:
     m_Name: 
@@ -54137,19 +54140,13 @@ MonoBehaviour:
   endflicker: 0
   lastflicker: 0
   statscale: {fileID: 589}
-  zsound: {fileID: 1288}
   loseScript: {fileID: 1380}
   introScript: {fileID: 1374}
   chasetest: {fileID: 518}
   tentacles: {fileID: 616}
   mh: 0
   dust: {fileID: 1351}
-  sprintcooldown: 0
-  sprscr: {fileID: 1391}
   targetfog: 0.02
-  amrunning: 0
-  cranking: 0
-  direction: {x: 0, y: 0}
 --- !u!114 &1387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54256,6 +54253,7 @@ MonoBehaviour:
   runSpeed: 5.5
   jogSpeed: 3.5
   view: {fileID: 1386}
+  shared: {fileID: 1733396394}
 --- !u!114 &1392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54280,6 +54278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseManager: {fileID: 107483800}
+  sprscr: {fileID: 1391}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
@@ -57663,7 +57662,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d856104764ccea49a9d70871c20eaac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 1236}
+  pauseManager: {fileID: 107483800}
+  introScript: {fileID: 1374}
+  loseScript: {fileID: 1380}
+  shared: {fileID: 1733396394}
+  zoomManager: {fileID: 1119387458}
+  sprscr: {fileID: 1391}
   sprintcooldown: 0
+  amrunning: 0
+  flraised: 0
+  cranking: 0
+  stamina: 100
+  maxstam: 100
+  statscale: {fileID: 589}
+  breathing: {fileID: 1297}
+  stepcd: 120
 --- !u!1 &1733396393
 GameObject:
   m_ObjectHideFlags: 0
@@ -57697,6 +57711,7 @@ MonoBehaviour:
   nearpage: {fileID: 0}
   finaldelay: 0
   lost: 0
+  scared: 0
   pages: 0
   level: 0
 --- !u!4 &1733396395

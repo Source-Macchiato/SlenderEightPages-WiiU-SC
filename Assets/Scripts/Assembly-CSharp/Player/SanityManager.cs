@@ -22,7 +22,6 @@ public class SanityManager : MonoBehaviour
     public float sanity = 100f;
     public bool cansee;
     public bool justsaw;
-    public bool caught;
     public float drain;
     public int flicker;
     public bool endflicker;
@@ -35,10 +34,21 @@ public class SanityManager : MonoBehaviour
 
     private void Update()
     {
+        // Flicker //
+        if (endflicker)
+        {
+            endflicker = false;
+            lastflicker = true;
+        }
 
         if (!pauseManager.paused)
         {
-            if (caught && !shared.lost)
+            music1.volume = 0f;
+            music2.volume = 0f;
+            music3.volume = 0f;
+            music4.volume = 0f;
+
+            if (shared.caught && !shared.lost)
             {
                 playerController.mouseLook.enabled = false;
                 playerController.cm.canControl = false;
@@ -46,12 +56,12 @@ public class SanityManager : MonoBehaviour
                 Quaternion to = Quaternion.LookRotation(vector - base.transform.parent.transform.position);
                 base.transform.parent.transform.rotation = Quaternion.Slerp(base.transform.parent.transform.rotation, to, Time.deltaTime * 2f);
             }
-            
+
             if (!shared.lost || loseScript.timeleft > 250)
             {
                 if (introScript.introEnded)
                 {
-                    if (caught)
+                    if (shared.caught)
                     {
                         sanity -= 1f;
                         if (sanity < 0f)
@@ -59,7 +69,7 @@ public class SanityManager : MonoBehaviour
                             shared.lost = true;
                         }
                     }
-                    if (!cansee && !caught)
+                    if (!cansee && !shared.caught)
                     {
                         if (sanity <= 100f)
                         {
@@ -72,7 +82,7 @@ public class SanityManager : MonoBehaviour
                     }
                     else if (drain > 0f)
                     {
-                        if (!caught)
+                        if (!shared.caught)
                         {
                             sanity -= drain;
                         }

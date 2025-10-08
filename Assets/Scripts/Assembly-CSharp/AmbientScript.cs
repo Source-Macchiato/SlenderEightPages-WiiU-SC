@@ -4,6 +4,7 @@ public class AmbientScript : MonoBehaviour
 {
     [SerializeField] private PauseManager pauseManager;
     [SerializeField] private SharedVar shared;
+    [SerializeField] private SanityManager sanityManger;
 	public Transform rotateme;
 
 	public int timer = 100;
@@ -21,21 +22,17 @@ public class AmbientScript : MonoBehaviour
 	public AudioClip fs11;
 
 	public AudioSource wind;
-
-    private PlayerScript playerScript;
     public IntroScript intro;
 	public LoseScript loser;
 
 	private void Start()
 	{
-        playerScript = FindObjectOfType<PlayerScript>();
-
 		rotateme.Rotate(new Vector3(0f, Random.value * 360f, 0f));
 	}
 
 	private void Update()
 	{
-		if ((intro.gamestarted && loser.timeleft == 0 && (!playerScript.mh || (intro.timer >= 1600 && playerScript.mh))) || (loser.timeleft > 250 && loser.timeleft < 900 && shared.pages >= 8))
+		if ((intro.gamestarted && loser.timeleft == 0 && (!sanityManger.mh || (intro.timer >= 1600 && sanityManger.mh))) || (loser.timeleft > 250 && loser.timeleft < 900 && shared.pages >= 8))
 		{
 			if (!pauseManager.paused)
 			{

@@ -4,6 +4,8 @@ using WiiU = UnityEngine.WiiU;
 
 public class LoseScript : MonoBehaviour
 {
+	[SerializeField] private FogManager fogManager;
+	[SerializeField] private SanityManager sanityManger;
 	[SerializeField] private IntroScript introScript;
 	[SerializeField] private SharedVar shared;
 	[SerializeField] private FlashlightManager flashLightManager;
@@ -62,7 +64,7 @@ public class LoseScript : MonoBehaviour
 	{
 		if (shared.pages >= 8)
 		{
-			if (view.mh)
+			if (sanityManger.mh)
 			{
 				if (timeleft >= 1100 && timeleft < 1350)
 				{
@@ -80,7 +82,7 @@ public class LoseScript : MonoBehaviour
 				}
 			}
 		}
-		if (view.mh)
+		if (sanityManger.mh)
 		{
 			if (timeleft >= 300 && timeleft < 550)
 			{
@@ -155,7 +157,7 @@ public class LoseScript : MonoBehaviour
 		{
 			RenderSettings.skybox = daysky;
 		}
-		if (!view.lost)
+		if (!shared.lost)
 		{
 			return;
 		}
@@ -176,7 +178,7 @@ public class LoseScript : MonoBehaviour
             DynamicGI.UpdateEnvironment();
 
             sun.enabled = false;
-			if (view.mh)
+			if (sanityManger.mh)
 			{
 				mhdelay = 1400;
 			}
@@ -236,7 +238,7 @@ public class LoseScript : MonoBehaviour
 			else
 			{
 				// Disable the fog
-				view.targetfog = 0f;
+				fogManager.targetfog = 0f;
 
                 // Disable skybox
                 RenderSettings.skybox = daysky;
@@ -276,7 +278,7 @@ public class LoseScript : MonoBehaviour
         }
 		if (timeleft > 250 && shared.pages >= 8)
 		{
-			if (view.mh)
+			if (sanityManger.mh)
 			{
 				if ((float)timeleft < 425f)
 				{

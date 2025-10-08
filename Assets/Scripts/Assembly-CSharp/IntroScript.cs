@@ -3,6 +3,7 @@ using UnityEngine;
 public class IntroScript : MonoBehaviour
 {
 	// NEW REFERENCES //
+	[SerializeField] private SanityManager sanityManger;
 	[SerializeField] private PauseManager pauseManager;
 	[SerializeField] private AudioSource climbfence;
 	[SerializeField] private SharedVar shared;
@@ -145,26 +146,26 @@ public class IntroScript : MonoBehaviour
 			if (PlayerPrefs.GetInt("currentm") == 1 && PlayerPrefs.GetInt("daytime") == 1)
 			{
 				modeoff = false;
-				view.mh = true;
+				sanityManger.mh = true;
 				shared.daytime = false;
 			}
 			else if (PlayerPrefs.GetInt("currentm") == 2 && PlayerPrefs.GetInt("daytime") == 1)
 			{
 				modeoff = false;
-				view.mh = false;
+				sanityManger.mh = false;
 				shared.daytime = true;
 			}
 			else if (PlayerPrefs.GetInt("currentm") == 3)
 			{
 				modeoff = false;
-				view.mh = true;
+				sanityManger.mh = true;
 				shared.daytime = false;
 				PlayerPrefs.SetInt("currentm", 0);
 			}
 			else
 			{
 				modeoff = true;
-				view.mh = false;
+				sanityManger.mh = false;
 				shared.daytime = false;
 			}
 		}
@@ -172,7 +173,7 @@ public class IntroScript : MonoBehaviour
 		{
 			PlayerPrefs.SetInt("currentm", 0);
 			modeoff = true;
-			view.mh = false;
+			sanityManger.mh = false;
 			shared.daytime = false;
 		}
 		if (PlayerPrefs.HasKey("fltype"))
@@ -203,7 +204,7 @@ public class IntroScript : MonoBehaviour
 
 	private void OnGUI()
 	{
-		/*if (view.mh)
+		/*if (sanityManger.mh)
 		{
 			if (timer >= 300 && timer < 500)
 			{
@@ -221,7 +222,7 @@ public class IntroScript : MonoBehaviour
 			}
 		}*/
 
-		if (!view.mh)
+		if (!sanityManger.mh)
 		{
 			if (timer >= 50 && timer < 400)
 			{
@@ -248,7 +249,7 @@ public class IntroScript : MonoBehaviour
 				gamestarted = true;
 				Screen.lockCursor = false;
 				entry = Random.Range(4, 16);
-				if (view.mh)
+				if (sanityManger.mh)
 				{
 					timer = 200;
 				}
@@ -310,7 +311,7 @@ public class IntroScript : MonoBehaviour
 			{
 				thememusic.Stop();
 				view.flashlight.Play();
-				view.mh = false;
+				sanityManger.mh = false;
 				view.lost = true;
 				view.pages = 8;
 				view.endgame.timeleft = 950;
@@ -417,21 +418,21 @@ public class IntroScript : MonoBehaviour
 				if (modeoff)
 				{
 					view.flashlight.Play();
-					view.mh = false;
+					sanityManger.mh = false;
 					shared.daytime = false;
 					PlayerPrefs.SetInt("currentm", 0);
 				}
 			}
 			if (sunup)
 			{
-				if (view.mh)
+				if (sanityManger.mh)
 				{
 					GUI.Toggle(new Rect(210f, 75f, 180f, 20f), true, "Marble Hornets Mode");
 				}
 				else
 				{
-					view.mh = GUI.Toggle(new Rect(210f, 75f, 180f, 20f), false, "Marble Hornets Mode");
-					if (view.mh)
+					sanityManger.mh = GUI.Toggle(new Rect(210f, 75f, 180f, 20f), false, "Marble Hornets Mode");
+					if (sanityManger.mh)
 					{
 						view.flashlight.Play();
 						modeoff = false;
@@ -450,7 +451,7 @@ public class IntroScript : MonoBehaviour
 					{
 						view.flashlight.Play();
 						modeoff = false;
-						view.mh = false;
+						sanityManger.mh = false;
 						PlayerPrefs.SetInt("currentm", 2);
 					}
 				}
@@ -593,7 +594,7 @@ public class IntroScript : MonoBehaviour
 
 		timer++;
 
-		if (timer >= 700 && timer < 1700 && !view.mh)
+		if (timer >= 700 && timer < 1700 && !sanityManger.mh)
 		{
 			spotlight.Rotate(new Vector3(0f, base.transform.rotation.x + Time.deltaTime * 5f, 0f));
 		}
@@ -612,7 +613,7 @@ public class IntroScript : MonoBehaviour
 		view.fadeoutgui = 0;
 		if (!shared.daytime)
 		{
-			if (!view.mh)
+			if (!sanityManger.mh)
 			{
 				flashlight.Play();
 			}
@@ -628,7 +629,7 @@ public class IntroScript : MonoBehaviour
 		gamestarted = true;
 		Cursor.lockState = CursorLockMode.None;
 		entry = Random.Range(4, 16);
-		if (view.mh)
+		if (sanityManger.mh)
 		{
 			timer = 200;
 		}

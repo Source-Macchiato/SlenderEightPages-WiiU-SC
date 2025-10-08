@@ -11,5 +11,7 @@ public class SharedVar : MonoBehaviour
     public int scared;
     public int pages;
     public int level;
+    public bool caught;
+    public bool flraised = true;
 
 }
