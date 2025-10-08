@@ -54,7 +54,7 @@ public class SlenderMan : MonoBehaviour
 		if (Physics.Raycast(player.position, (vector - player.position).normalized, out hitInfo) && hitInfo.collider.gameObject == base.gameObject)
 		{
 			view.cansee = true;
-			if (!view.justsaw && num < 10f && view.scared <= 0)
+			if (!view.justsaw && num < 10f && shared.scared <= 0)
 			{
 				if (!view.mh)
 				{
@@ -65,7 +65,7 @@ public class SlenderMan : MonoBehaviour
 					view.flicker = 3;
 				}
 				view.justsaw = true;
-				view.scared = 600;
+				shared.scared = 600;
 				view.stamina += 15f;
 				if (view.stamina > view.maxstam)
 				{
@@ -77,7 +77,7 @@ public class SlenderMan : MonoBehaviour
 		if (!view.cansee && Physics.Raycast(player.position, (lhand.position - player.position).normalized, out hitInfo) && hitInfo.collider.gameObject == base.gameObject)
 		{
 			view.cansee = true;
-			if (!view.justsaw && num < 10f && view.scared <= 0)
+			if (!view.justsaw && num < 10f && shared.scared <= 0)
 			{
 				if (!view.mh)
 				{
@@ -88,7 +88,7 @@ public class SlenderMan : MonoBehaviour
 					view.flicker = 3;
 				}
 				view.justsaw = true;
-				view.scared = 600;
+				shared.scared = 600;
 				view.stamina += 15f;
 				if (view.stamina > view.maxstam)
 				{
@@ -102,7 +102,7 @@ public class SlenderMan : MonoBehaviour
 			return;
 		}
 		view.cansee = true;
-		if (!view.justsaw && num < 10f && view.scared <= 0)
+		if (!view.justsaw && num < 10f && shared.scared <= 0)
 		{
 			if (!view.mh)
 			{
@@ -113,7 +113,7 @@ public class SlenderMan : MonoBehaviour
 				view.flicker = 3;
 			}
 			view.justsaw = true;
-			view.scared = 600;
+			shared.scared = 600;
 			view.stamina += 15f;
 			if (view.stamina > view.maxstam)
 			{
@@ -141,7 +141,7 @@ public class SlenderMan : MonoBehaviour
 				view.flicker = 3;
 			}
 		}
-		if (shared.pages + view.level > 0 && loser.timeleft == 0)
+		if (shared.pages + shared.level > 0 && loser.timeleft == 0)
 		{
 			Vector3 vector = new Vector3(base.transform.position.x, base.transform.position.y + 0.99f, base.transform.position.z);
 			float num5 = Vector3.Distance(vector, player.position);
@@ -176,9 +176,9 @@ public class SlenderMan : MonoBehaviour
 					busymove = 4;
 				}
 			}
-			else if ((!view.cansee || shared.pages + view.level >= 6) && !view.caught)
+			else if ((!view.cansee || shared.pages + shared.level >= 6) && !view.caught)
 			{
-				if (model.isVisible && shared.pages + view.level < 6)
+				if (model.isVisible && shared.pages + shared.level < 6)
 				{
 					mightport++;
 					if ((mightport > 100 && (double)Random.value <= 0.001) || mightport >= 1100)
@@ -194,7 +194,7 @@ public class SlenderMan : MonoBehaviour
 				{
 					mightport = 0;
 					makejump++;
-					if (makejump >= 550 - (shared.pages + view.level) * 50 && (!chasing || (num5 > 10f && (double)Random.value <= 0.2)))
+					if (makejump >= 550 - (shared.pages + shared.level) * 50 && (!chasing || (num5 > 10f && (double)Random.value <= 0.2)))
 					{
 						makejump = 0;
 						if (shared.pages >= 8)
@@ -218,7 +218,7 @@ public class SlenderMan : MonoBehaviour
 				{
 					if (tos.valid)
 					{
-						if (tos.hidden || shared.pages + view.level >= 6 || !view.flraised)
+						if (tos.hidden || shared.pages + shared.level >= 6 || !view.flraised)
 						{
 							vector2 = testobj.position;
 							vector2.y = 1f;
@@ -247,7 +247,7 @@ public class SlenderMan : MonoBehaviour
 				{
 					if (tos.valid)
 					{
-						if ((shared.pages + view.level <= 5 && (tos.hidden || !view.flraised)) || shared.pages + view.level == 6 || shared.pages >= 8 || (!tos.hidden && shared.pages + view.level == 7))
+						if ((shared.pages + shared.level <= 5 && (tos.hidden || !view.flraised)) || shared.pages + shared.level == 6 || shared.pages >= 8 || (!tos.hidden && shared.pages + shared.level == 7))
 						{
 							vector2 = testobj.position;
 							vector2.y = 1f;
@@ -386,7 +386,7 @@ public class SlenderMan : MonoBehaviour
 					rotation4.x = 0f;
 					rotation4.z = 0f;
 					base.transform.rotation = rotation4;
-					base.transform.Translate(base.transform.forward * ((float)(shared.pages + view.level) * -0.5f + 0.5f) * Time.deltaTime, Space.World);
+					base.transform.Translate(base.transform.forward * ((float)(shared.pages + shared.level) * -0.5f + 0.5f) * Time.deltaTime, Space.World);
 					if (Vector3.Distance(vector, chaser) <= 0.75f)
 					{
 						chasing = false;

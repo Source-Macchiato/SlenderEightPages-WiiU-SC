@@ -4,6 +4,7 @@ using WiiU = UnityEngine.WiiU;
 public class PickupPage : MonoBehaviour
 {
     [SerializeField] private PauseManager pauseManager;
+    [SerializeField] private SprintScript sprscr;
     [SerializeField] private SharedVar shared;
 	public Transform player;
 
@@ -25,12 +26,16 @@ public class PickupPage : MonoBehaviour
     private WiiU.GamePad gamePad;
     private WiiU.Remote remote;
 
+    private Renderer pageRenderer;
+
     private void Start()
     {
         gamePad = WiiU.GamePad.access;
         remote = WiiU.Remote.Access(0);
 
         pagesManager = FindObjectOfType<PagesManager>();
+
+        pageRenderer = GetComponent<Renderer>();
     }
 
 	private void Update()
@@ -79,8 +84,9 @@ public class PickupPage : MonoBehaviour
         }
 
         // Detect player looking at pages
-        if (base.GetComponent<Renderer>().isVisible)
+        if (pageRenderer.isVisible)
         {
+            Debug.Log("Visible");
             if ((double)Vector3.Distance(base.transform.position, player.position) <= 2.0)
             {
                 if (Physics.Raycast(player.position, (base.transform.position - player.position).normalized, out hitInfo, 2f, mask))
@@ -108,7 +114,7 @@ public class PickupPage : MonoBehaviour
 	{
         if (!pauseManager.paused && withinrange && Physics.Raycast(player.position, (base.transform.position - player.position).normalized, out hitInfo, 2f, mask) && hitInfo.collider.gameObject == base.gameObject)
 		{
-            if ((shared.pages == 0 || shared.pages == 2 || shared.pages == 4 || shared.pages == 6 || shared.pages == 7) && view.level == 0)
+            if ((shared.pages == 0 || shared.pages == 2 || shared.pages == 4 || shared.pages == 6 || shared.pages == 7) && shared.level == 0)
             {
                 view.fadeinmusic = 0f;
             }
@@ -116,7 +122,7 @@ public class PickupPage : MonoBehaviour
             view.fadeoutgui = 0;
             shared.nearpage = null;
             view.toolong = 15000;
-            view.sprscr.jogSpeed = 3.5f + (float)shared.pages * 0.1f;
+            sprscr.jogSpeed = 3.5f + (float)shared.pages * 0.1f;
             if (shared.pages < 8)
             {
                 view.targetfog = 0.02f + (float)shared.pages * 0.01f;
@@ -125,15 +131,15 @@ public class PickupPage : MonoBehaviour
             {
                 view.targetfog = 0.01f;
             }
-            if (view.level > 0)
+            if (shared.level > 0)
             {
-                view.level--;
+                shared.level--;
             }
             AudioSource.PlayClipAtPoint(pagesound, base.transform.position);
             if (shared.pages < 8)
             {
-                view.maxrange = 100 - (shared.pages + view.level) * 11;
-                view.minrange = 80 - (shared.pages + view.level) * 10;
+                view.maxrange = 100 - (shared.pages + shared.level) * 11;
+                view.minrange = 80 - (shared.pages + shared.level) * 10;
             }
             else
             {

@@ -4,6 +4,7 @@ using WiiU = UnityEngine.WiiU;
 public class PlayerScript : MonoBehaviour
 {
     // TEMPORARY NEW REFERENCES, DO NOT DELETE //
+    [SerializeField] private StaminaManager staminaManager;
     [SerializeField] public ZoomManager zoomManager;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PauseManager pauseManager;
@@ -23,7 +24,7 @@ public class PlayerScript : MonoBehaviour
 
     public float maxstam = 100f;
 
-    public int scared;
+    // public int scared;
 
     public bool cansee;
 
@@ -55,7 +56,7 @@ public class PlayerScript : MonoBehaviour
 
     public AudioSource music4;
 
-    // public AudioSource breathing;
+    // public AudioSource staminaManager.breathing;
 
     public AudioClip s1;
 
@@ -105,7 +106,7 @@ public class PlayerScript : MonoBehaviour
 
     public int laststep;
 
-    // public int stepcd = 120;
+    // public int staminaManager.stepcd = 120;
 
     public GameObject SM;
 
@@ -121,7 +122,7 @@ public class PlayerScript : MonoBehaviour
 
     public Transform statscale;
 
-    //public AudioSource zsound;
+    //public AudioSource zoomManager.zsound;
 
     public LoseScript loseScript;
 
@@ -409,11 +410,11 @@ public class PlayerScript : MonoBehaviour
                             if (stamina < 10f)
                             {
                                 stamina = 0f;
-                                stepcd -= 4;
+                                staminaManager.stepcd -= 4;
                             }
                             else
                             {
-                                stepcd -= 6;
+                                staminaManager.stepcd -= 6;
                                 maxstam -= 0.009f;
                                 if (maxstam <= 45f)
                                 {
@@ -427,11 +428,11 @@ public class PlayerScript : MonoBehaviour
                             if (stamina < 10f)
                             {
                                 stamina = 0f;
-                                stepcd -= 4;
+                                staminaManager.stepcd -= 4;
                             }
                             else
                             {
-                                stepcd -= 5;
+                                staminaManager.stepcd -= 5;
                             }
                         }
                     }
@@ -473,28 +474,28 @@ public class PlayerScript : MonoBehaviour
                         }
                         if (direction.y != 0f || direction.x != 0f)
                         {
-                            stepcd -= 4;
+                            staminaManager.stepcd -= 4;
                         }
                         else
                         {
-                            stepcd = 120;
+                            staminaManager.stepcd = 120;
                         }
                     }
 
                     statscale.localScale = new Vector3((zoomManager.zoom - 2.5f) / 57.5f, (zoomManager.zoom - 2.5f) / 57.5f, (zoomManager.zoom - 2.5f) / 57.5f);
                     if (stamina < 30f)
                     {
-                        breathing.volume = (30f - stamina) / 20f;
+                        staminaManager.breathing.volume = (30f - stamina) / 20f;
                     }
                     else
                     {
-                        breathing.volume = 0f;
+                        staminaManager.breathing.volume = 0f;
                     } **/
 
                     // FOOTSTEPS SOUND //
-                    if (stepcd <= 0 && loseScript.timeleft < 950)
+                    if (staminaManager.stepcd <= 0 && loseScript.timeleft < 950)
                     {
-                        stepcd = 120;
+                        staminaManager.stepcd = 120;
                         int num = 0;
                         if (base.transform.parent.transform.position.y <= 2.051f)
                         {
@@ -586,10 +587,10 @@ public class PlayerScript : MonoBehaviour
                     }
                     else
                     {
-                        stepcd -= 4;
-                        if (stepcd <= 0)
+                        staminaManager.stepcd -= 4;
+                        if (staminaManager.stepcd <= 0)
                         {
-                            stepcd = 120;
+                            staminaManager.stepcd = 120;
                             int num2 = 0;
                             do
                             {
@@ -641,7 +642,7 @@ public class PlayerScript : MonoBehaviour
                 }
                 else if (introScript.timer == 950)
                 {
-                    stepcd = 120;
+                    staminaManager.stepcd = 120;
                     if (!mh)
                     {
                         climbfence.Play();
@@ -663,8 +664,8 @@ public class PlayerScript : MonoBehaviour
             music4.volume = 0f;
             if (loseScript.timeleft < 250)
             {
-                breathing.volume = 0f;
-                zsound.volume = 0f;
+                staminaManager.breathing.volume = 0f;
+                zoomManager.zsound.volume = 0f;
                 return;
             }
             if (loseScript.timeleft >= 250)
@@ -674,8 +675,8 @@ public class PlayerScript : MonoBehaviour
             }
             if (loseScript.timeleft >= 950)
             {
-                breathing.volume = 0f;
-                zsound.volume = 0f;
+                staminaManager.breathing.volume = 0f;
+                zoomManager.zsound.volume = 0f;
                 playerController.cm.canControl = false;
                 playerController.mouseLook.enabled = false;
             }

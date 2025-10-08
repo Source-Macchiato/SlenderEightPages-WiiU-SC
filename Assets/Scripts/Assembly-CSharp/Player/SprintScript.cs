@@ -19,6 +19,7 @@ public class SprintScript : MonoBehaviour
 	private float dist;
 
 	private PlayerController playerController;
+	[SerializeField] private SharedVar shared;
 
     private void Start()
 	{
@@ -35,7 +36,7 @@ public class SprintScript : MonoBehaviour
 		float maxForwardSpeed = walkSpeed;
 		if (playerController.canRun && chMotor.grounded && view.stamina > 10f)
 		{
-			maxForwardSpeed = ((view.scared <= 0) ? jogSpeed : runSpeed);
+			maxForwardSpeed = ((shared.scared <= 0) ? jogSpeed : runSpeed);
 		}
 		chMotor.movement.maxForwardSpeed = maxForwardSpeed;
 		float y = tr.localScale.y;

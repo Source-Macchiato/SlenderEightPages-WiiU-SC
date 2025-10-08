@@ -24,17 +24,21 @@ public class MouseLook : MonoBehaviour
     private WiiU.Remote remote;
 
     private void Start()
-	{
-		if ((bool)base.GetComponent<Rigidbody>())
-		{
-			base.GetComponent<Rigidbody>().freezeRotation = true;
-		}
+    {
+        if ((bool)base.GetComponent<Rigidbody>())
+        {
+            base.GetComponent<Rigidbody>().freezeRotation = true;
+        }
 
         gamePad = WiiU.GamePad.access;
         remote = WiiU.Remote.Access(0);
 
         currentRotation.x = playerTransform.localEulerAngles.y;
         currentRotation.y = transform.localEulerAngles.x;
+
+        // Lock cursor
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void Update()

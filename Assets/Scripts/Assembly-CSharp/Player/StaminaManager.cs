@@ -24,7 +24,7 @@ public class StaminaManager : MonoBehaviour
 
         if (!pauseManager.paused)
         {
-            if (!lost || loseScript.timeleft > 250)
+            if (!shared.lost || loseScript.timeleft > 250)
             {
                 if (introScript.introEnded)
                 {
@@ -39,7 +39,7 @@ public class StaminaManager : MonoBehaviour
                         {
                             flraised = false;
                         }
-                        if (scared > 0)
+                        if (shared.scared > 0)
                         {
                             stamina -= 0.1125f;
                             if (stamina < 10f)

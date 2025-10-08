@@ -8,6 +8,7 @@ public class SharedVar : MonoBehaviour
     public Transform nearpage;
     public int finaldelay;
     public bool lost;
+    public int scared;
     public int pages;
     public int level;
 
