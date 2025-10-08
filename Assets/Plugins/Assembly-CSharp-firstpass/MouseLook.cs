@@ -65,7 +65,23 @@ public class MouseLook : MonoBehaviour
                 pointerPosition.x = ((pointerPosition.x + 1.0f) / 2.0f) * WiiU.Core.GetScreenWidth(WiiU.DisplayIndex.TV);
                 pointerPosition.y = WiiU.Core.GetScreenHeight(WiiU.DisplayIndex.TV) - ((pointerPosition.y + 1.0f) / 2.0f) * WiiU.Core.GetScreenHeight(WiiU.DisplayIndex.TV);
 
+                if (pointerPosition.x < 300f)
+                {
+                    input.x = -1f;
+                }
+                else if (pointerPosition.x > WiiU.Core.GetScreenWidth(WiiU.DisplayIndex.TV) - 300f)
+                {
+                    input.x = 1f;
+                }
 
+                if (pointerPosition.y < 200f)
+                {
+                    input.y = -1f;
+                }
+                else if (pointerPosition.y > WiiU.Core.GetScreenHeight(WiiU.DisplayIndex.TV) - 200f)
+                {
+                    input.y = 1f;
+                }
                 break;
         }
 
