@@ -1653,7 +1653,7 @@ GameObject:
   - component: {fileID: 1034}
   - component: {fileID: 1287}
   m_Layer: 0
-  m_Name: SoundObj4
+  m_Name: Music2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2520,7 +2520,7 @@ GameObject:
   - component: {fileID: 1074}
   - component: {fileID: 1293}
   m_Layer: 0
-  m_Name: SoundObj3
+  m_Name: Music3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3209,7 +3209,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &206
 GameObject:
   m_ObjectHideFlags: 0
@@ -4373,7 +4373,7 @@ GameObject:
   - component: {fileID: 1168}
   - component: {fileID: 1296}
   m_Layer: 0
-  m_Name: SoundObj2
+  m_Name: Music1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5378,7 +5378,7 @@ GameObject:
   - component: {fileID: 1218}
   - component: {fileID: 1301}
   m_Layer: 0
-  m_Name: SoundObj1
+  m_Name: Music4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22240,7 +22240,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: c1c95af2023f1b944ae822cc2e73b01e, type: 2}
+  m_audioClip: {fileID: 8300000, guid: 0d71d55bf21274c4dba7fe48f3f556cd, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0
   m_Pitch: 1
@@ -23716,7 +23716,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 1755511982
+  randomSeed: 1708487756
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -33502,7 +33502,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 421707563
+  randomSeed: 1024657496
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -43264,7 +43264,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 1256589567
+  randomSeed: -901372925
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -49788,7 +49788,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 1301567549
+  randomSeed: 298403012
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -53470,6 +53470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7450a6c8cd3dd13671f827088f61b8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fogManager: {fileID: 1060037520}
   pauseManager: {fileID: 107483800}
   sprscr: {fileID: 1391}
   shared: {fileID: 1733396394}
@@ -53510,6 +53511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7450a6c8cd3dd13671f827088f61b8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fogManager: {fileID: 1060037520}
   pauseManager: {fileID: 107483800}
   sprscr: {fileID: 1391}
   shared: {fileID: 1733396394}
@@ -53533,6 +53535,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05eae136b2d5afb17c24369fb2513a44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sanityManager: {fileID: 2044652086}
   SM: {fileID: 1383}
   view: {fileID: 1386}
 --- !u!114 &1370
@@ -53546,6 +53549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7450a6c8cd3dd13671f827088f61b8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fogManager: {fileID: 1060037520}
   pauseManager: {fileID: 107483800}
   sprscr: {fileID: 1391}
   shared: {fileID: 1733396394}
@@ -53571,6 +53575,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseManager: {fileID: 107483800}
   shared: {fileID: 1733396394}
+  sanityManger: {fileID: 0}
   rotateme: {fileID: 483}
   timer: 100
   fs1: {fileID: 8300000, guid: bacb9259ef45c1340af830cf4d3a1709, type: 3}
@@ -53610,6 +53615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7450a6c8cd3dd13671f827088f61b8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fogManager: {fileID: 1060037520}
   pauseManager: {fileID: 107483800}
   sprscr: {fileID: 1391}
   shared: {fileID: 1733396394}
@@ -53633,6 +53639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f022e3e0d49046a26f0594e39fb0aba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sanityManger: {fileID: 0}
   pauseManager: {fileID: 107483800}
   climbfence: {fileID: 1289}
   shared: {fileID: 1733396394}
@@ -53740,6 +53747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7450a6c8cd3dd13671f827088f61b8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fogManager: {fileID: 1060037520}
   pauseManager: {fileID: 107483800}
   sprscr: {fileID: 1391}
   shared: {fileID: 1733396394}
@@ -53763,6 +53771,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7450a6c8cd3dd13671f827088f61b8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fogManager: {fileID: 1060037520}
   pauseManager: {fileID: 107483800}
   sprscr: {fileID: 1391}
   shared: {fileID: 1733396394}
@@ -53822,6 +53831,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62e329f98519f6464b3610e657f2ff28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fogManager: {fileID: 1060037520}
+  sanityManger: {fileID: 2044652086}
   introScript: {fileID: 1374}
   shared: {fileID: 1733396394}
   flashLightManager: {fileID: 2045855546}
@@ -53920,7 +53931,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c0c10af027563e7db15d0d2fdb40e44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  view: {fileID: 1386}
+  shared: {fileID: 1733396394}
+  sanityManager: {fileID: 2044652086}
   final: {fileID: 1380}
 --- !u!114 &1382
 MonoBehaviour:
@@ -53945,11 +53957,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62266fc5087cc32983003392eb34a82e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sanityManager: {fileID: 2044652086}
+  staminaManager: {fileID: 1717639347}
   pauseManager: {fileID: 107483800}
   flashLightManager: {fileID: 2045855546}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
-  SM: {fileID: 0}
+  SM: {fileID: 250}
   view: {fileID: 1386}
   dramatic: {fileID: 1295}
   makejump: 0
@@ -53979,6 +53993,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7450a6c8cd3dd13671f827088f61b8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fogManager: {fileID: 1060037520}
   pauseManager: {fileID: 107483800}
   sprscr: {fileID: 1391}
   shared: {fileID: 1733396394}
@@ -54026,46 +54041,29 @@ MonoBehaviour:
   pauseManager: {fileID: 107483800}
   shared: {fileID: 1733396394}
   toolong: 15000
-  sanity: 100
-  stamina: 100
-  maxstam: 100
-  cansee: 0
-  justsaw: 0
-  drain: 0
-  lost: 0
-  caught: 0
   maxrange: 100
   minrange: 80
   fadeinmusic: 1
-  san1: {fileID: 1299}
-  san2: {fileID: 1298}
-  san3: {fileID: 1294}
-  music1: {fileID: 1296}
-  music2: {fileID: 1287}
-  music3: {fileID: 1293}
-  music4: {fileID: 1301}
-  s1: {fileID: 8300000, guid: d6977d86095e64a41b1ef626eae46b6f, type: 3}
-  s2: {fileID: 8300000, guid: d6d91ad151b7e9842a753f31b843cb0a, type: 3}
-  s3: {fileID: 8300000, guid: d0c43a0f87f8edf4ba446e1cb2ff770d, type: 3}
-  s4: {fileID: 8300000, guid: d28641f277a2d664c997e0ee5ed6232e, type: 3}
-  s5: {fileID: 8300000, guid: 50c299f9dda2ed241821557ec8787227, type: 3}
-  s6: {fileID: 8300000, guid: b646f72822b4821408f9eb8aefdc5b29, type: 3}
-  s7: {fileID: 8300000, guid: 1555e06f8c1c3dc42a3af0b9310ffa56, type: 3}
-  s8: {fileID: 8300000, guid: 172354e706dfc214fa6d763dfe8b25da, type: 3}
-  s9: {fileID: 8300000, guid: 9768ad6622040d948bba0cdb225fa9d7, type: 3}
-  s10: {fileID: 8300000, guid: 89a4a0f48f7d40a48a640c19f796845a, type: 3}
-  s11: {fileID: 8300000, guid: a1323745970d6614b9c92f5de08a5bd7, type: 3}
-  s12: {fileID: 8300000, guid: b14c6bbcacf32254ba3fe301f1362866, type: 3}
-  t1: {fileID: 8300000, guid: 997872408ff42bc4fa9e5dc6194ffc17, type: 3}
-  t2: {fileID: 8300000, guid: ee4fa3359c76a6c49a52cc40cb3548ba, type: 3}
-  t3: {fileID: 8300000, guid: cc18f3be026f15644b330cd9d969b15d, type: 3}
-  t4: {fileID: 8300000, guid: e2cbc726ad844314c877cd62175f4905, type: 3}
-  t5: {fileID: 8300000, guid: 27f2e46abba15db4883b46c6f96c5e7c, type: 3}
-  t6: {fileID: 8300000, guid: 337f1b0fbf2144d4c92fa2b3e2d39584, type: 3}
-  t7: {fileID: 8300000, guid: 0d4456524f4eec945bd60b750bd4cf36, type: 3}
+  s1: {fileID: 0}
+  s2: {fileID: 0}
+  s3: {fileID: 0}
+  s4: {fileID: 0}
+  s5: {fileID: 0}
+  s6: {fileID: 0}
+  s7: {fileID: 0}
+  s8: {fileID: 0}
+  s9: {fileID: 0}
+  s10: {fileID: 0}
+  s11: {fileID: 0}
+  s12: {fileID: 0}
+  t1: {fileID: 0}
+  t2: {fileID: 0}
+  t3: {fileID: 0}
+  t4: {fileID: 0}
+  t5: {fileID: 0}
+  t6: {fileID: 0}
+  t7: {fileID: 0}
   climbfence: {fileID: 1289}
-  flraised: 0
-  fldown: {fileID: 661}
   laststep: 0
   SM: {fileID: 250}
   hint:
@@ -54136,17 +54134,11 @@ MonoBehaviour:
     m_StretchWidth: 1
     m_StretchHeight: 0
   fadeoutgui: 0
-  flicker: 0
-  endflicker: 0
-  lastflicker: 0
-  statscale: {fileID: 589}
   loseScript: {fileID: 1380}
   introScript: {fileID: 1374}
   chasetest: {fileID: 518}
   tentacles: {fileID: 616}
-  mh: 0
   dust: {fileID: 1351}
-  targetfog: 0.02
 --- !u!114 &1387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54248,6 +54240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a5d49f94c2f45f0dc34ea0ca2c64930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  staminaManager: {fileID: 1717639347}
   walkSpeed: 2
   crchSpeed: 1
   runSpeed: 5.5
@@ -54277,6 +54270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7450a6c8cd3dd13671f827088f61b8c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fogManager: {fileID: 1060037520}
   pauseManager: {fileID: 107483800}
   sprscr: {fileID: 1391}
   shared: {fileID: 1733396394}
@@ -54350,7 +54344,7 @@ MonoBehaviour:
   menuManager: {fileID: 780895475}
   introScript: {fileID: 1374}
   playerController: {fileID: 1236}
-  playerScript: {fileID: 1386}
+  sanityManager: {fileID: 2044652086}
   shared: {fileID: 1733396394}
   paused: 0
   backedup: 0
@@ -56573,6 +56567,48 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1039316175}
+--- !u!1 &1060037518
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1060037519}
+  - component: {fileID: 1060037520}
+  m_Layer: 0
+  m_Name: FogManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1060037519
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1060037518}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1360401515}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1060037520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1060037518}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c04876c151c96fe499950277834f9a42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetfog: 0.02
+  pauseManager: {fileID: 107483800}
 --- !u!1001 &1065282505
 Prefab:
   m_ObjectHideFlags: 0
@@ -57098,6 +57134,7 @@ Transform:
   - {fileID: 2044652085}
   - {fileID: 2045855545}
   - {fileID: 1717639346}
+  - {fileID: 1060037519}
   m_Father: {fileID: 0}
   m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -57714,6 +57751,14 @@ MonoBehaviour:
   scared: 0
   pages: 0
   level: 0
+  mh: 0
+  caught: 0
+  flraised: 1
+  music1: {fileID: 1296}
+  music2: {fileID: 1287}
+  music3: {fileID: 1293}
+  music4: {fileID: 1301}
+  fadeinmusic: 0
 --- !u!4 &1733396395
 Transform:
   m_ObjectHideFlags: 0
@@ -58241,22 +58286,13 @@ MonoBehaviour:
   san2: {fileID: 1298}
   san3: {fileID: 1294}
   tentacles: {fileID: 616}
-  music1: {fileID: 1296}
-  music2: {fileID: 1287}
-  music3: {fileID: 1293}
-  music4: {fileID: 1301}
   sanity: 100
   cansee: 0
   justsaw: 0
-  caught: 0
   drain: 0
   flicker: 0
   endflicker: 0
   lastflicker: 0
-  mh: 0
-  scared: 0
-  pages: 0
-  level: 0
 --- !u!1 &2045855544
 GameObject:
   m_ObjectHideFlags: 0
