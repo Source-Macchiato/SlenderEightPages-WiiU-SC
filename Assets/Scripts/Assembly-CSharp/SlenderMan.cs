@@ -8,421 +8,444 @@ public class SlenderMan : MonoBehaviour
 	[SerializeField] private PauseManager pauseManager;
 	[SerializeField] private FlashlightManager flashLightManager;
 	[SerializeField] private SharedVar shared;
+
+	[Header("Slender Man")]
 	public Transform player;
 	public GameObject SM;
 	public PlayerScript view;
-
 	public AudioSource dramatic;
-
 	public int makejump;
-
 	public int mightport;
-
 	public bool justmoved;
-
 	public Renderer model;
-
-	public Vector3 chaser = new Vector3(0f, 0f, 0f);
-
+	public Vector3 chaser = Vector3.zero;
 	public bool chasing;
-
 	public Transform lhand;
-
 	public Transform rhand;
-
 	public Transform testobj;
-
 	public TestScript tos;
-
 	public int busymove;
-
 	public float maxdeviation = 4f;
-
 	public IntroScript startgame;
-
 	public Transform playleft;
-
 	public Transform playright;
-
 	public LoseScript loser;
 
-	public void CheckSanity()
+	// Constants //
+	private const float BOUNDS_MAX = 149f;			// - Maximum boundary for Slender's movement
+	private const float BOUNDS_MIN = -149f;			// - Minimum boundary for Slender's movement
+	private const float SCARE_DISTANCE = 10f;		// - Distance within which a scare can be triggered
+	private const float CATCH_DISTANCE = 2f;		// - Distance within which the player is caught
+	private const float CHASE_TRIGGER_DIST = 30f;	// - Distance to trigger chase behavior
+	private const float STAMINA_BOOST = 15f;		// - Stamina boost on first sighting
+	private const int SCARE_DURATION = 600;			// - Duration of scare effect in frames
+	
+	// Private Variables cache //
+	private Vector3 _cachedPosition;	// Cached position of Slender
+	private Vector3 _slenderViewPoint;	// Viewpoint for sanity checks
+	private float _distToPlayer;		// Distance to player
+	private Transform _transform;		// Cached transform
+	private int _totalProgress;         // Total game progress (pages + level)
+
+	private void Awake()
 	{
-		Vector3 vector = new Vector3(base.transform.position.x, base.transform.position.y + 1.33f, base.transform.position.z);
-		float num = Vector3.Distance(vector, player.position);
-		float drain = (shared.daytime ? Mathf.Pow(2f, (0f - num / 1.5f) / 10f) : ((!flashLightManager.torch.enabled) ? Mathf.Pow(2f, (0f - num * 2f) / 10f) : Mathf.Pow(2f, (0f - num) / 10f)));
-		sanityManager.cansee = false;
-		RaycastHit hitInfo;
-		if (Physics.Raycast(player.position, (vector - player.position).normalized, out hitInfo) && hitInfo.collider.gameObject == base.gameObject)
-		{
-			sanityManager.cansee = true;
-			if (!sanityManager.justsaw && num < 10f && shared.scared <= 0)
-			{
-				if (!shared.mh)
-				{
-					dramatic.Play();
-				}
-				else
-				{
-					sanityManager.flicker = 3;
-				}
-				sanityManager.justsaw = true;
-				shared.scared = 600;
-				staminaManager.stamina += 15f;
-				if (staminaManager.stamina > staminaManager.maxstam)
-				{
-					staminaManager.stamina = staminaManager.maxstam;
-				}
-			}
-			sanityManager.drain = drain;
-		}
-		if (!sanityManager.cansee && Physics.Raycast(player.position, (lhand.position - player.position).normalized, out hitInfo) && hitInfo.collider.gameObject == base.gameObject)
-		{
-			sanityManager.cansee = true;
-			if (!sanityManager.justsaw && num < 10f && shared.scared <= 0)
-			{
-				if (!shared.mh)
-				{
-					dramatic.Play();
-				}
-				else
-				{
-					sanityManager.flicker = 3;
-				}
-				sanityManager.justsaw = true;
-				shared.scared = 600;
-				staminaManager.stamina += 15f;
-				if (staminaManager.stamina > staminaManager.maxstam)
-				{
-					staminaManager.stamina = staminaManager.maxstam;
-				}
-			}
-			sanityManager.drain = drain;
-		}
-		if (sanityManager.cansee || !Physics.Raycast(player.position, (rhand.position - player.position).normalized, out hitInfo) || !(hitInfo.collider.gameObject == base.gameObject))
-		{
-			return;
-		}
-		sanityManager.cansee = true;
-		if (!sanityManager.justsaw && num < 10f && shared.scared <= 0)
-		{
-			if (!shared.mh)
-			{
-				dramatic.Play();
-			}
-			else
-			{
-				sanityManager.flicker = 3;
-			}
-			sanityManager.justsaw = true;
-			shared.scared = 600;
-			staminaManager.stamina += 15f;
-			if (staminaManager.stamina > staminaManager.maxstam)
-			{
-				staminaManager.stamina = staminaManager.maxstam;
-			}
-		}
-		sanityManager.drain = drain;
+		_transform = transform; // Cache transform reference
 	}
 
 	private void FixedUpdate()
 	{
-		if (pauseManager.paused)
-		{
-			return;
-		}
-		float num = 149f;
-		float num2 = -149f;
-		float num3 = 149f;
-		float num4 = -149f;
+		if (pauseManager.paused) return;
+
+		// Cache position once
+		_cachedPosition = _transform.position;
+		_totalProgress = shared.pages + shared.level;
+
 		if (justmoved)
 		{
 			justmoved = false;
 			if (sanityManager.cansee)
-			{
 				sanityManager.flicker = 3;
-			}
 		}
-		if (shared.pages + shared.level > 0 && loser.timeleft == 0)
+
+		if (_totalProgress <= 0 || loser.timeleft != 0)
 		{
-			Vector3 vector = new Vector3(base.transform.position.x, base.transform.position.y + 0.99f, base.transform.position.z);
-			float num5 = Vector3.Distance(vector, player.position);
-			RaycastHit hitInfo;
-			if (Physics.Raycast(player.position, (vector - player.position).normalized, out hitInfo) && hitInfo.collider.gameObject == base.gameObject && num5 <= 2f)
-			{
-				if (shared.pages >= 8 && !model.enabled)
-				{
-					model.enabled = true;
-					sanityManager.flicker = 3;
-				}
-				shared.caught = true;
-			}
-			if (num5 < 30f)
-			{
-				RaycastHit hitInfo2;
-				if (Physics.Raycast(player.position, (vector - player.position).normalized, out hitInfo2) && hitInfo2.collider.gameObject == base.gameObject && Physics.Raycast(playleft.position, (lhand.position - player.position).normalized, out hitInfo2) && hitInfo2.collider.gameObject == base.gameObject && Physics.Raycast(playright.position, (rhand.position - player.position).normalized, out hitInfo2) && hitInfo2.collider.gameObject == base.gameObject)
-				{
-					chasing = true;
-					chaser = player.position;
-				}
-			}
-			else
-			{
-				chasing = false;
-			}
-			if (shared.finaldelay > 0)
-			{
-				shared.finaldelay--;
-				if (shared.finaldelay <= 0)
-				{
-					busymove = 4;
-				}
-			}
-			else if ((!sanityManager.cansee || shared.pages + shared.level >= 6) && !shared.caught)
-			{
-				if (model.isVisible && shared.pages + shared.level < 6)
-				{
-					mightport++;
-					if ((mightport > 100 && (double)Random.value <= 0.001) || mightport >= 1100)
-					{
-						mightport = 0;
-						if ((double)Random.value <= 0.5)
-						{
-							busymove = 4;
-						}
-					}
-				}
-				else
-				{
-					mightport = 0;
-					makejump++;
-					if (makejump >= 550 - (shared.pages + shared.level) * 50 && (!chasing || (num5 > 10f && (double)Random.value <= 0.2)))
-					{
-						makejump = 0;
-						if (shared.pages >= 8)
-						{
-							busymove = 3;
-						}
-						else if (num5 > view.maxrange || (double)Random.value <= 0.1)
-						{
-							busymove = 4;
-						}
-						else
-						{
-							busymove = 3;
-						}
-					}
-				}
-				bool flag = false;
-				int num6 = 0;
-				Vector3 vector2 = new Vector3(0f, 0f, 0f);
-				if (busymove == 1)
-				{
-					if (tos.valid)
-					{
-						if (tos.hidden || shared.pages + shared.level >= 6 || !shared.flraised)
-						{
-							vector2 = testobj.position;
-							vector2.y = 1f;
-							base.transform.position = vector2;
-							justmoved = true;
-							busymove = 0;
-							chasing = false;
-						}
-						else
-						{
-							busymove = 3;
-							maxdeviation += 0.25f;
-						}
-					}
-					else
-					{
-						busymove = 3;
-						maxdeviation += 0.25f;
-					}
-					testobj.position = new Vector3(0f, -50f, 0f);
-					tos.testing = false;
-					tos.valid = true;
-					tos.hidden = true;
-				}
-				else if (busymove == 2)
-				{
-					if (tos.valid)
-					{
-						if ((shared.pages + shared.level <= 5 && (tos.hidden || !shared.flraised)) || shared.pages + shared.level == 6 || shared.pages >= 8 || (!tos.hidden && shared.pages + shared.level == 7))
-						{
-							vector2 = testobj.position;
-							vector2.y = 1f;
-							base.transform.position = vector2;
-							justmoved = true;
-							busymove = 0;
-							chasing = false;
-						}
-						else
-						{
-							busymove = 4;
-						}
-					}
-					else
-					{
-						busymove = 4;
-					}
-					testobj.position = new Vector3(0f, -50f, 0f);
-					tos.testing = false;
-					tos.valid = true;
-					tos.hidden = true;
-				}
-				else if (busymove == 3)
-				{
-					while (num6 < 30 && !flag)
-					{
-						if (num6 >= 30 || flag)
-						{
-							continue;
-						}
-						Vector2 insideUnitCircle = Random.insideUnitCircle;
-						vector2 = vector + new Vector3(insideUnitCircle.x * 30f, 0f, insideUnitCircle.y * 30f);
-						float num7 = Vector3.Distance(vector, vector2);
-						float num8 = Vector3.Distance(player.position, vector2);
-						if (vector2.x < num && vector2.x > num2 && vector2.z < num3 && vector2.z > num4)
-						{
-							if (shared.pages >= 8 || (!flashLightManager.torch.enabled && !shared.daytime))
-							{
-								if (num5 > 30f)
-								{
-									if (num8 > 2f && num7 + num8 - maxdeviation <= num5 && num7 >= 20f)
-									{
-										flag = true;
-									}
-								}
-								else if (num8 > 2f && num7 + num8 - maxdeviation <= num5 && num7 >= num5 - 10f && num7 <= num5 + 10f)
-								{
-									flag = true;
-								}
-							}
-							else if (num5 > 30f)
-							{
-								if (num8 > 8f && num7 + num8 - maxdeviation <= num5 && num7 >= 20f)
-								{
-									flag = true;
-								}
-							}
-							else if (num8 > 8f && num7 + num8 - maxdeviation <= num5 && num7 >= num5 - 10f && num7 <= num5 + 10f)
-							{
-								flag = true;
-							}
-						}
-						if (!flag)
-						{
-							num6++;
-							maxdeviation += 0.25f;
-						}
-					}
-					if (flag)
-					{
-						testobj.position = vector2;
-						Quaternion rotation = Quaternion.LookRotation(testobj.position - player.position, Vector3.up);
-						rotation.x = 0f;
-						rotation.z = 0f;
-						testobj.rotation = rotation;
-						tos.testing = true;
-						tos.valid = true;
-						tos.hidden = true;
-						busymove = 1;
-					}
-					else
-					{
-						maxdeviation += 0.25f;
-					}
-				}
-				else if (busymove == 4)
-				{
-					while (num6 < 30 && !flag)
-					{
-						if (num6 < 30 && !flag)
-						{
-							Vector2 insideUnitCircle = Random.insideUnitCircle.normalized;
-							vector2 = player.position + new Vector3(insideUnitCircle.x * view.maxrange, 0f, insideUnitCircle.y * view.maxrange);
-							vector2.y = 2.3f;
-							float num8 = Vector3.Distance(player.position, vector2);
-							if (vector2.x < num && vector2.x > num2 && vector2.z < num3 && vector2.z > num4 && num8 > view.minrange)
-							{
-								testobj.position = vector2;
-								Quaternion rotation2 = Quaternion.LookRotation(testobj.position - player.position, Vector3.up);
-								rotation2.x = 0f;
-								rotation2.z = 0f;
-								testobj.rotation = rotation2;
-								tos.testing = true;
-								tos.valid = true;
-								flag = true;
-							}
-							else
-							{
-								num6++;
-							}
-						}
-					}
-					if (flag)
-					{
-						busymove = 2;
-					}
-				}
-				else
-				{
-					maxdeviation = 4f;
-				}
-				if (justmoved)
-				{
-					if (sanityManager.cansee)
-					{
-						sanityManager.flicker = 3;
-					}
-					Quaternion rotation3 = Quaternion.LookRotation(base.transform.position - player.position, Vector3.up);
-					rotation3.x = 0f;
-					rotation3.z = 0f;
-					base.transform.rotation = rotation3;
-				}
-				if (chasing && !model.isVisible && !shared.caught)
-				{
-					Quaternion rotation4 = Quaternion.LookRotation(vector - chaser, Vector3.up);
-					rotation4.x = 0f;
-					rotation4.z = 0f;
-					base.transform.rotation = rotation4;
-					base.transform.Translate(base.transform.forward * ((float)(shared.pages + shared.level) * -0.5f + 0.5f) * Time.deltaTime, Space.World);
-					if (Vector3.Distance(vector, chaser) <= 0.75f)
-					{
-						chasing = false;
-					}
-				}
-				else if (!sanityManager.cansee)
-				{
-					Quaternion rotation5 = Quaternion.LookRotation(base.transform.position - player.position, Vector3.up);
-					rotation5.x = 0f;
-					rotation5.z = 0f;
-					base.transform.rotation = rotation5;
-				}
-			}
-			else
-			{
-				mightport = 0;
-				busymove = 0;
-				if (!sanityManager.cansee)
-				{
-					Quaternion rotation6 = Quaternion.LookRotation(base.transform.position - player.position, Vector3.up);
-					rotation6.x = 0f;
-					rotation6.z = 0f;
-					base.transform.rotation = rotation6;
-				}
-			}
+			HandleIdleState();
+			return;
 		}
+
+		_slenderViewPoint = _cachedPosition + Vector3.up * 0.99f;
+		_distToPlayer = Vector3.Distance(_slenderViewPoint, player.position);
+
+		// Check catch condition
+		if (CheckCatchCondition()) return;
+
+		// Check chase condition
+		UpdateChaseState();
+
+		// Handle final delay
+		if (shared.finaldelay > 0)
+		{
+			if (--shared.finaldelay <= 0)
+				busymove = 4;
+			return;
+		}
+
+		// Main AI logic
+		if (!sanityManager.cansee || _totalProgress >= 6)
+		{
+			if (!shared.caught)
+				ProcessAIBehavior();
+		}
+		else
+		{
+			HandleIdleState();
+		}
+
+		// Handle model visibility for page 8
 		if (shared.pages >= 8 && ((!shared.caught && model.enabled) || loser.timeleft > 1))
 		{
 			if (sanityManager.cansee)
+				sanityManager.flicker = 3;
+			model.enabled = false;
+			_transform.position = new Vector3(0f, -200f, 0f);
+		}
+	}
+
+	// Checks if the player can see Slender and updates sanity accordingly //
+	public void CheckSanity()
+	{
+		_slenderViewPoint = _cachedPosition + Vector3.up * 1.33f;
+		_distToPlayer = Vector3.Distance(_slenderViewPoint, player.position);
+
+		// Calculate drain once
+		float drainMultiplier = shared.daytime ? 1.5f : (flashLightManager.torch.enabled ? 1f : 2f);
+		float drain = Mathf.Pow(2f, -_distToPlayer * drainMultiplier / 10f);
+
+		sanityManager.cansee = false;
+
+		// Check visibility from player to slender parts
+		Vector3[] checkPoints = { _slenderViewPoint, lhand.position, rhand.position };
+		RaycastHit hit;
+
+		for (int i = 0; i < checkPoints.Length; i++)
+		{
+			if (Physics.Raycast(player.position, (checkPoints[i] - player.position).normalized, out hit))
 			{
+				if (hit.collider.gameObject == gameObject)
+				{
+					sanityManager.cansee = true;
+					sanityManager.drain = drain;
+
+					// First sighting logic
+					if (!sanityManager.justsaw && _distToPlayer < SCARE_DISTANCE && shared.scared <= 0)
+					{
+						TriggerScare();
+					}
+					break; // No need to check other points
+				}
+			}
+		}
+	}
+
+	// Triggers a scare event when the player first sees Slender
+	private void TriggerScare()
+	{
+		if (!shared.mh)
+		{
+			dramatic.Play();
+		}
+		else
+		{
+			sanityManager.flicker = 3; // Flicker effect in MH mode
+		}
+		
+		sanityManager.justsaw = true; 	// Mark that player just saw Slender
+		shared.scared = SCARE_DURATION; // Set scare duration
+		staminaManager.stamina = Mathf.Min(staminaManager.stamina + STAMINA_BOOST, staminaManager.maxstam); // Boost stamina
+	}
+
+	// Checks if the player is close enough to be caught by Slender
+	private bool CheckCatchCondition()
+	{
+		RaycastHit hit;
+		// Player within catch distance and has line of sight to Slender
+		if (_distToPlayer <= CATCH_DISTANCE &&
+			Physics.Raycast(player.position, (_slenderViewPoint - player.position).normalized, out hit) &&
+			hit.collider.gameObject == gameObject)
+		{
+			// Reveal model if on final page and hidden
+			if (shared.pages >= 8 && !model.enabled)
+			{
+				model.enabled = true;
 				sanityManager.flicker = 3;
 			}
-			model.enabled = false;
-			base.transform.position = new Vector3(0f, -200f, 0f);
+			shared.caught = true; // Mark player as caught
+			return true;
 		}
+		return false;
+	}
+
+	// Updates chase state based on player proximity and visibility
+	private void UpdateChaseState()
+	{
+		// If player is within chase trigger distance
+		if (_distToPlayer < CHASE_TRIGGER_DIST)
+		{
+			RaycastHit hit;
+			Vector3 dir1 = (_slenderViewPoint - player.position).normalized;
+			Vector3 dir2 = (lhand.position - player.position).normalized;
+			Vector3 dir3 = (rhand.position - player.position).normalized;
+
+			// Require visibility from player to all three key points
+			if (Physics.Raycast(player.position, dir1, out hit) && hit.collider.gameObject == gameObject &&
+				Physics.Raycast(playleft.position, dir2, out hit) && hit.collider.gameObject == gameObject &&
+				Physics.Raycast(playright.position, dir3, out hit) && hit.collider.gameObject == gameObject)
+			{
+				chasing = true;
+				chaser = player.position;
+			}
+		}
+		else
+		{
+			chasing = false;
+		}
+	}
+
+	// Main AI behavior processing //
+	private void ProcessAIBehavior()
+	{
+		// Teleport logic
+		if (model.isVisible && _totalProgress < 6)
+		{
+			mightport++;
+			if ((mightport > 100 && Random.value <= 0.001f) || mightport >= 1100)
+			{
+				mightport = 0;
+				if (Random.value <= 0.5f)
+					busymove = 4;
+			}
+		}
+		else
+		{
+			mightport = 0;
+			makejump++;
+			int jumpThreshold = 550 - _totalProgress * 50;
+
+			if (makejump >= jumpThreshold && (!chasing || (_distToPlayer > 10f && Random.value <= 0.2f)))
+			{
+				makejump = 0;
+				if (shared.pages >= 8)
+					busymove = 3;
+				else if (_distToPlayer > view.maxrange || Random.value <= 0.1f)
+					busymove = 4;
+				else
+					busymove = 3;
+			}
+		}
+
+		// Execute movement
+		ExecuteMovement();
+
+		// Handle rotation
+		UpdateRotation();
+	}
+
+	// Executes the current movement action based on busymove state //
+	private void ExecuteMovement()
+	{
+		switch (busymove)
+		{
+			case 1:
+				ExecuteTeleportFinish();
+				break;
+			case 2:
+				ExecuteFarTeleportFinish();
+				break;
+			case 3:
+				PrepareNearTeleport();
+				break;
+			case 4:
+				PrepareFarTeleport();
+				break;
+			default:
+				maxdeviation = 4f;
+				break;
+		}
+	}
+
+	// Finalizes a near teleport attempt //
+	private void ExecuteTeleportFinish()
+	{
+		if (tos.valid && (tos.hidden || _totalProgress >= 6 || !shared.flraised))
+		{
+			Vector3 newPos = testobj.position;
+			newPos.y = 1f;
+			_transform.position = newPos;
+			justmoved = true;
+			busymove = 0;
+			chasing = false;
+		}
+		else
+		{
+			busymove = 3;
+			maxdeviation += 0.25f;
+		}
+		ResetTestObject();
+	}
+
+	// Finalizes a far teleport attempt //
+	private void ExecuteFarTeleportFinish()
+	{
+		if (tos.valid)
+		{
+			bool canTeleport = (_totalProgress <= 5 && (tos.hidden || !shared.flraised)) ||
+							   _totalProgress == 6 || shared.pages >= 8 ||
+							   (!tos.hidden && _totalProgress == 7);
+
+			if (canTeleport)
+			{
+				Vector3 newPos = testobj.position;
+				newPos.y = 1f;
+				_transform.position = newPos;
+				justmoved = true;
+				busymove = 0;
+				chasing = false;
+			}
+			else
+			{
+				busymove = 4;
+			}
+		}
+		else
+		{
+			busymove = 4;
+		}
+		ResetTestObject();
+	}
+
+	// Prepares a near teleport attempt //
+	private void PrepareNearTeleport()
+	{
+		Vector3 targetPos;
+		bool isNightUnlit = shared.pages >= 8 || (!flashLightManager.torch.enabled && !shared.daytime);
+		float minDist = isNightUnlit ? 2f : 8f;
+		
+		for (int i = 0; i < 30; i++)
+		{
+			Vector2 randomDir = Random.insideUnitCircle;
+			targetPos = _slenderViewPoint + new Vector3(randomDir.x * 30f, 0f, randomDir.y * 30f);
+			
+			if (!IsInBounds(targetPos)) continue;
+			
+			float distFromPlayer = Vector3.Distance(player.position, targetPos);
+			float distFromCurrent = Vector3.Distance(_slenderViewPoint, targetPos);
+			
+			if (distFromPlayer > minDist && ValidateTeleportPosition(distFromCurrent, distFromPlayer))
+			{
+				SetupTestObject(targetPos);
+				busymove = 1;
+				return;
+			}
+			maxdeviation += 0.25f;
+		}
+		maxdeviation += 0.25f;
+	}
+
+	// Validates if the teleport position meets distance criteria //
+	private bool ValidateTeleportPosition(float distFromCurrent, float distFromPlayer)
+	{
+		if (_distToPlayer > 30f)
+			return distFromCurrent >= 20f && distFromCurrent + distFromPlayer - maxdeviation <= _distToPlayer;
+		else
+			return distFromCurrent >= _distToPlayer - 10f && distFromCurrent <= _distToPlayer + 10f &&
+				   distFromCurrent + distFromPlayer - maxdeviation <= _distToPlayer;
+	}
+
+	// Prepares a far teleport attempt //
+	private void PrepareFarTeleport()
+	{
+		for (int i = 0; i < 30; i++)
+		{
+			Vector2 randomDir = Random.insideUnitCircle.normalized;
+			Vector3 targetPos = player.position + new Vector3(randomDir.x * view.maxrange, 2.3f, randomDir.y * view.maxrange);
+
+			if (IsInBounds(targetPos) && Vector3.Distance(player.position, targetPos) > view.minrange)
+			{
+				SetupTestObject(targetPos);
+				busymove = 2;
+				return;
+			}
+		}
+	}
+
+	// Updates Slender's rotation based on current state //
+	private void UpdateRotation()
+	{
+		if (justmoved)
+		{
+			if (sanityManager.cansee)
+				sanityManager.flicker = 3;
+			LookAtPlayer();
+		}
+		else if (chasing && !model.isVisible && !shared.caught)
+		{
+			// Chase movement
+			Quaternion rot = Quaternion.LookRotation(_slenderViewPoint - chaser, Vector3.up);
+			rot.x = rot.z = 0f;
+			_transform.rotation = rot;
+			_transform.Translate(_transform.forward * ((_totalProgress * -0.5f + 0.5f) * Time.deltaTime), Space.World);
+
+			if (Vector3.Distance(_slenderViewPoint, chaser) <= 0.75f)
+				chasing = false;
+		}
+		else if (!sanityManager.cansee)
+		{
+			LookAtPlayer();
+		}
+	}
+
+	// Handles idle state when player cannot see Slender //
+	private void HandleIdleState()
+	{
+		mightport = 0;
+		busymove = 0;
+		if (!sanityManager.cansee)
+			LookAtPlayer();
+	}
+
+	// Rotates Slender to face the player //
+	private void LookAtPlayer()
+	{
+		Quaternion rot = Quaternion.LookRotation(_cachedPosition - player.position, Vector3.up);
+		rot.x = rot.z = 0f;
+		_transform.rotation = rot;
+	}
+
+	// Checks if a position is within the defined boundaries //
+	private bool IsInBounds(Vector3 pos)
+	{
+		return pos.x < BOUNDS_MAX && pos.x > BOUNDS_MIN &&
+			   pos.z < BOUNDS_MAX && pos.z > BOUNDS_MIN;
+	}
+
+	// Sets up the test object for teleport validation //
+	private void SetupTestObject(Vector3 position)
+	{
+		testobj.position = position;
+		Quaternion rot = Quaternion.LookRotation(position - player.position, Vector3.up);
+		rot.x = rot.z = 0f;
+		testobj.rotation = rot;
+		tos.testing = true;
+		tos.valid = true;
+		tos.hidden = true;
+	}
+
+	// Resets the test object after teleport attempt //
+	private void ResetTestObject()
+	{
+		testobj.position = new Vector3(0f, -50f, 0f);
+		tos.testing = false;
+		tos.valid = true;
+		tos.hidden = true;
 	}
 }
