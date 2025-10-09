@@ -11,160 +11,182 @@ public class FlashlightManager : MonoBehaviour
     [SerializeField] private SharedVar shared;
 
     [Header("Flashlight Manager")]
-
     public bool flashlightEnabled;
     public AudioSource flashlightSound;
     public Transform fldown;
     public Transform flup;
     public Light torch;
     public Light eyes;
-	public float battery = 1f;
-	public bool torchdying;
+    public float battery = 1f;
+    public bool torchdying;
     private bool cranking;
     public LayerMask mask;
 
+    private float flickerTimer;
+
+    // Constants //
+    private const float FLICKER_INTERVAL = 0.1f;            // - Interval for flicker effect
+    private const float EYE_LIGHT_INCREASE = 0.15f;         // - Rate at which eye light increases
+    private const float EYE_LIGHT_DECREASE = 0.5f;          // - Rate at which eye light decreases
+    private const float BATTERY_DRAIN_TYPE0 = 1.8E-05f;     // - Battery drain rate for flashlight type 0
+    private const float BATTERY_DRAIN_TYPE2 = 0.0002f;      // - Battery drain rate for flashlight type 2
+    private const float BATTERY_RECHARGE = 0.001f;          // - Battery recharge rate when cranking
+
     private void Update()
     {
-        if (!pauseManager.paused)
+        if (pauseManager.paused) return;
+
+        if (!introScript.introEnded) return;
+
+        bool canInteract = !shared.lost || loseScript.timeleft > 250;
+
+        UpdateEyeLight();
+        UpdateBattery();
+        UpdateFlickerEffect();
+
+        if (canInteract)
         {
-            if (introScript.introEnded)
-            {
-                if (!torch.enabled && eyes.range < 120f)
-                {
-                    eyes.range += 0.15f;
-                    if (eyes.range >= 120f)
-                    {
-                        eyes.range = 120f;
-                    }
-                }
-                else if (torch.enabled)
-                {
-                    if (introScript.fltype == 0)
-                    {
-                        battery -= 1.8E-05f;
-                    }
-                    else if (introScript.fltype == 2 && !cranking)
-                    {
-                        battery -= 0.0002f;
-                    }
-                    if (battery <= 0.15f)
-                    {
-                        battery = 0f;
-                        Debug.Log("Flashlight battery dead");
-                        torch.enabled = false;
-                    }
-                    if (eyes.range > 30f)
-                    {
-                        eyes.range -= 0.5f;
-                        if (eyes.range <= 30f)
-                        {
-                            eyes.range = 30f;
-                        }
-                    }
-                }
-                if (battery < 0.25f && Random.value < 0.2f)
-                {
-                    if (torchdying)
-                    {
-                        torchdying = false;
-                    }
-                    else
-                    {
-                        torchdying = true;
-                    }
-                }
-                if (torchdying)
-                {
-                    torch.intensity = battery - 0.015f;
-                }
-                else
-                {
-                    torch.intensity = battery;
-                }
-            }
-
-            if (!shared.lost || loseScript.timeleft > 250)
-            {
-                if (introScript.introEnded)
-                {
-                    if (playerController.canRun && playerController.direction.y > 0f)
-                    {
-                        Quaternion to2 = Quaternion.LookRotation(fldown.position - torch.transform.position);
-                        torch.transform.rotation = Quaternion.Slerp(torch.transform.rotation, to2, Time.deltaTime * 8f);
-                    }
-                    else
-                    {
-                        if (cranking)
-                        {
-                            Quaternion to2 = Quaternion.LookRotation(fldown.position - torch.transform.position);
-                            torch.transform.rotation = Quaternion.Slerp(torch.transform.rotation, to2, Time.deltaTime * 8f);
-                            if (battery < 0.15f)
-                            {
-                                battery = 0.151f;
-                                torch.enabled = true;
-                            }
-                            battery += 0.001f;
-                            if (battery > 1f)
-                            {
-                                battery = 1f;
-                            }
-                        }
-                        else
-                        {
-                            RaycastHit hitInfo;
-                            Quaternion to2 = ((shared.nearpage == null) ? Quaternion.LookRotation(flup.position - torch.transform.position) : ((!Physics.Raycast(base.transform.position, (shared.nearpage.position - base.transform.position).normalized, out hitInfo, 2f, mask)) ? Quaternion.LookRotation(flup.position - torch.transform.position) : ((!(hitInfo.collider.gameObject == shared.nearpage.gameObject)) ? Quaternion.LookRotation(flup.position - torch.transform.position) : Quaternion.LookRotation(shared.nearpage.position - torch.transform.position))));
-                            if (staminaManager.sprintcooldown <= 0)
-                            {
-                                torch.transform.rotation = Quaternion.Slerp(torch.transform.rotation, to2, Time.deltaTime * 8f);
-                            }
-                            else
-                            {
-                                torch.transform.rotation = Quaternion.Slerp(torch.transform.rotation, to2, Time.deltaTime * (2f + (60f - (float)staminaManager.sprintcooldown) / 10f));
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (!shared.lost || loseScript.timeleft > 250)
-            {
-                if (introScript.timer == 1599)
-                {
-                    if (shared.daytime)
-                    {
-                        Debug.Log("Flashlight disabled by daytime");
-                        torch.enabled = false;
-                    }
-                }
-            }
-            if (!shared.lost)
-            {
-                return;
-            }
-            if (loseScript.timeleft < 250)
-            {
-                Debug.Log("Flashlight disabled");
-                torch.enabled = false;
-                return;
-            }
+            UpdateTorchRotation();
+            CheckDaytimeDisable();
+        }
+        else if (shared.lost && loseScript.timeleft < 250)
+        {
+            torch.enabled = false;
         }
     }
-    public void ToggleFlashlight(bool status)
+
+    // Updates the eye light intensity based on flashlight statu //
+    private void UpdateEyeLight()
     {
-        if (!pauseManager.paused && introScript.fltype == 0 && introScript.introEnded && ((!shared.lost && !shared.daytime) || (loseScript.timeleft > 250 && loseScript.timeleft < 950 && shared.daytime)))
+        if (!torch.enabled && eyes.range < 120f)
         {
-            if (torch.enabled)
+            eyes.range = Mathf.Min(eyes.range + EYE_LIGHT_INCREASE, 120f);
+        }
+        else if (torch.enabled && eyes.range > 30f)
+        {
+            eyes.range = Mathf.Max(eyes.range - EYE_LIGHT_DECREASE, 30f);
+        }
+    }
+
+    // Updates the battery level based on flashlight usage //
+    private void UpdateBattery()
+    {
+        if (!torch.enabled) return; // No battery drain if flashlight is off
+
+
+        if (introScript.fltype == 0)
+        {
+            battery -= BATTERY_DRAIN_TYPE0;
+        }
+        else if (introScript.fltype == 2 && !cranking)
+        {
+            battery -= BATTERY_DRAIN_TYPE2;
+        }
+
+        if (battery <= 0.15f)
+        {
+            battery = 0f;
+            torch.enabled = false;
+        }
+    }
+
+    // Updates the flicker effect when battery is low //
+    private void UpdateFlickerEffect()
+    {
+        flickerTimer -= Time.deltaTime;
+
+        if (battery < 0.25f && flickerTimer <= 0f)
+        {
+            torchdying = !torchdying;
+            flickerTimer = FLICKER_INTERVAL;
+        }
+
+        torch.intensity = torchdying ? battery - 0.015f : battery;
+    }
+
+    // Updates the torch rotation based on player actions and nearby pages //
+    private void UpdateTorchRotation()
+    {
+        Quaternion targetRotation; // Target rotation for the flashlight
+
+        // Prioritize looking down when running //
+        if (playerController.canRun && playerController.direction.y > 0f)
+        {
+            targetRotation = Quaternion.LookRotation(fldown.position - torch.transform.position);
+            torch.transform.rotation = Quaternion.Slerp(torch.transform.rotation, targetRotation, Time.deltaTime * 8f);
+            return;
+        }
+
+        // Look down when cranking flashlight type 2 //
+        if (cranking)
+        {
+            targetRotation = Quaternion.LookRotation(fldown.position - torch.transform.position);   // Look down
+            torch.transform.rotation = Quaternion.Slerp(torch.transform.rotation, targetRotation, Time.deltaTime * 8f); // Smooth transition
+
+            if (battery < 0.15f)
             {
-                Debug.Log("Flashlight off");
-                torch.enabled = false;
-            }
-            else if (battery > 0f)
-            {
+                battery = 0.151f;
                 torch.enabled = true;
             }
-            flashlightSound.Play();
-
-            flashlightEnabled = status;
+            battery = Mathf.Min(battery + BATTERY_RECHARGE, 1f);
+            return;
         }
+
+        // Idle rotation, considering nearby pages //
+        targetRotation = GetIdleTargetRotation();
+        float slerpSpeed = staminaManager.sprintcooldown <= 0 ? 8f : 2f + (60f - staminaManager.sprintcooldown) / 10f;
+        torch.transform.rotation = Quaternion.Slerp(torch.transform.rotation, targetRotation, Time.deltaTime * slerpSpeed);
+    }
+
+    // Determines the target rotation when idle, considering nearby pages //
+    private Quaternion GetIdleTargetRotation()
+    {
+        if (shared.nearpage == null)
+        {
+            return Quaternion.LookRotation(flup.position - torch.transform.position);
+        }
+
+        Vector3 directionToPage = (shared.nearpage.position - transform.position).normalized;
+
+        RaycastHit hitInfo;
+        if (Physics.Raycast(transform.position, directionToPage, out hitInfo, 2f, mask))
+        {
+            if (hitInfo.collider.gameObject == shared.nearpage.gameObject)
+            {
+                return Quaternion.LookRotation(shared.nearpage.position - torch.transform.position);
+            }
+        }
+        return Quaternion.LookRotation(flup.position - torch.transform.position);
+    }
+
+    // Disables the flashlight at a specific time during daytime //
+    private void CheckDaytimeDisable()
+    {
+        if (introScript.timer == 1599 && shared.daytime)
+        {
+            torch.enabled = false;
+        }
+    }
+
+    public void ToggleFlashlight(bool status)
+    {
+        if (pauseManager.paused || introScript.fltype != 0 || !introScript.introEnded) return;
+
+        bool canToggle = (!shared.lost && !shared.daytime) || 
+                         (shared.lost && loseScript.timeleft > 250 && loseScript.timeleft < 950 && shared.daytime);
+
+        if (!canToggle) return;
+
+        if (torch.enabled)
+        {
+            torch.enabled = false;
+        }
+        else if (battery > 0f)
+        {
+            torch.enabled = true;
+        }
+
+        flashlightSound.Play();
+        flashlightEnabled = status;
     }
 }
