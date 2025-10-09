@@ -146,26 +146,26 @@ public class IntroScript : MonoBehaviour
 			if (PlayerPrefs.GetInt("currentm") == 1 && PlayerPrefs.GetInt("daytime") == 1)
 			{
 				modeoff = false;
-				sanityManger.mh = true;
+				shared.mh = true;
 				shared.daytime = false;
 			}
 			else if (PlayerPrefs.GetInt("currentm") == 2 && PlayerPrefs.GetInt("daytime") == 1)
 			{
 				modeoff = false;
-				sanityManger.mh = false;
+				shared.mh = false;
 				shared.daytime = true;
 			}
 			else if (PlayerPrefs.GetInt("currentm") == 3)
 			{
 				modeoff = false;
-				sanityManger.mh = true;
+				shared.mh = true;
 				shared.daytime = false;
 				PlayerPrefs.SetInt("currentm", 0);
 			}
 			else
 			{
 				modeoff = true;
-				sanityManger.mh = false;
+				shared.mh = false;
 				shared.daytime = false;
 			}
 		}
@@ -173,7 +173,7 @@ public class IntroScript : MonoBehaviour
 		{
 			PlayerPrefs.SetInt("currentm", 0);
 			modeoff = true;
-			sanityManger.mh = false;
+			shared.mh = false;
 			shared.daytime = false;
 		}
 		if (PlayerPrefs.HasKey("fltype"))
@@ -204,7 +204,7 @@ public class IntroScript : MonoBehaviour
 
 	private void OnGUI()
 	{
-		/*if (sanityManger.mh)
+		/*if (shared.mh)
 		{
 			if (timer >= 300 && timer < 500)
 			{
@@ -222,7 +222,7 @@ public class IntroScript : MonoBehaviour
 			}
 		}*/
 
-		if (!sanityManger.mh)
+		if (!shared.mh)
 		{
 			if (timer >= 50 && timer < 400)
 			{
@@ -249,7 +249,7 @@ public class IntroScript : MonoBehaviour
 				gamestarted = true;
 				Screen.lockCursor = false;
 				entry = Random.Range(4, 16);
-				if (sanityManger.mh)
+				if (shared.mh)
 				{
 					timer = 200;
 				}
@@ -311,7 +311,7 @@ public class IntroScript : MonoBehaviour
 			{
 				thememusic.Stop();
 				view.flashlight.Play();
-				sanityManger.mh = false;
+				shared.mh = false;
 				view.lost = true;
 				view.pages = 8;
 				view.endgame.timeleft = 950;
@@ -418,21 +418,21 @@ public class IntroScript : MonoBehaviour
 				if (modeoff)
 				{
 					view.flashlight.Play();
-					sanityManger.mh = false;
+					shared.mh = false;
 					shared.daytime = false;
 					PlayerPrefs.SetInt("currentm", 0);
 				}
 			}
 			if (sunup)
 			{
-				if (sanityManger.mh)
+				if (shared.mh)
 				{
 					GUI.Toggle(new Rect(210f, 75f, 180f, 20f), true, "Marble Hornets Mode");
 				}
 				else
 				{
-					sanityManger.mh = GUI.Toggle(new Rect(210f, 75f, 180f, 20f), false, "Marble Hornets Mode");
-					if (sanityManger.mh)
+					shared.mh = GUI.Toggle(new Rect(210f, 75f, 180f, 20f), false, "Marble Hornets Mode");
+					if (shared.mh)
 					{
 						view.flashlight.Play();
 						modeoff = false;
@@ -451,7 +451,7 @@ public class IntroScript : MonoBehaviour
 					{
 						view.flashlight.Play();
 						modeoff = false;
-						sanityManger.mh = false;
+						shared.mh = false;
 						PlayerPrefs.SetInt("currentm", 2);
 					}
 				}
@@ -594,7 +594,7 @@ public class IntroScript : MonoBehaviour
 
 		timer++;
 
-		if (timer >= 700 && timer < 1700 && !sanityManger.mh)
+		if (timer >= 700 && timer < 1700 && !shared.mh)
 		{
 			spotlight.Rotate(new Vector3(0f, base.transform.rotation.x + Time.deltaTime * 5f, 0f));
 		}
@@ -613,7 +613,7 @@ public class IntroScript : MonoBehaviour
 		view.fadeoutgui = 0;
 		if (!shared.daytime)
 		{
-			if (!sanityManger.mh)
+			if (!shared.mh)
 			{
 				flashlight.Play();
 			}
@@ -629,7 +629,7 @@ public class IntroScript : MonoBehaviour
 		gamestarted = true;
 		Cursor.lockState = CursorLockMode.None;
 		entry = Random.Range(4, 16);
-		if (sanityManger.mh)
+		if (shared.mh)
 		{
 			timer = 200;
 		}

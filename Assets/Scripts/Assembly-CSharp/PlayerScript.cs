@@ -80,7 +80,7 @@ public class PlayerScript : MonoBehaviour
 
     private void OnGUI()
     {
-        if (!pauseManager.paused && fadeoutgui < 400 && !mh)
+        if (!pauseManager.paused && fadeoutgui < 400 && !shared.mh)
         {
             if (shared.pages == 0)
             {
@@ -97,12 +97,6 @@ public class PlayerScript : MonoBehaviour
     {
         if (!pauseManager.paused)
         {
-            chasetest.position = base.transform.position;
-            Quaternion rotation = Quaternion.LookRotation(base.transform.position - SM.transform.position, Vector3.up);
-            rotation.x = 0f;
-            rotation.z = 0f;
-            chasetest.rotation = rotation;
-
             // GUI //
             if (fadeoutgui < 400)
             {
@@ -137,9 +131,9 @@ public class PlayerScript : MonoBehaviour
                 dust.startColor = new Color(0.5f, 0.5f, 0.5f, 0.0625f + (float)(shared.pages + shared.level) * 0.045f);
             }
             
-            if (!lost || loseScript.timeleft > 250)
+            if (!shared.lost || loseScript.timeleft > 250)
             {
-                if (introScript.introEnded)
+                /*if (introScript.introEnded)
                 {
                     // FOOTSTEPS SOUND //
                     if (staminaManager.stepcd <= 0 && loseScript.timeleft < 950)
@@ -228,7 +222,7 @@ public class PlayerScript : MonoBehaviour
                         laststep = num;
                     }
                 }
-                else if (introScript.timer < 900 && introScript.timer > 0 && !mh)
+                else if (introScript.timer < 900 && introScript.timer > 0 && !shared.mh)
                 {
                     if (introScript.skintro)
                     {
@@ -288,11 +282,11 @@ public class PlayerScript : MonoBehaviour
                             laststep = num2;
                         }
                     }
-                }
-                else if (introScript.timer == 950)
+                } */
+                if (introScript.timer == 950)
                 {
                     staminaManager.stepcd = 120;
-                    if (!mh)
+                    if (!shared.mh)
                     {
                         climbfence.Play();
                     }
@@ -303,7 +297,7 @@ public class PlayerScript : MonoBehaviour
                     playerController.mouseLook.enabled = true;
                 }
             }
-            if (!lost)
+            if (!shared.lost)
             {
                 return;
             }
@@ -331,7 +325,7 @@ public class PlayerScript : MonoBehaviour
             }
             if (loseScript.timeleft < 2500 + loseScript.mhdelay)
             {
-                music1.volume = fadeinmusic;
+                shared.music1.volume = fadeinmusic;
                 fadeinmusic += 0.01f;
                 if (fadeinmusic > 2f)
                 {
@@ -340,7 +334,7 @@ public class PlayerScript : MonoBehaviour
             }
             else
             {
-                music1.volume = 1f - fadeinmusic / 2f;
+                shared.music1.volume = 1f - fadeinmusic / 2f;
                 fadeinmusic += 0.01f;
                 if (fadeinmusic > 2f)
                 {

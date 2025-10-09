@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class SprintScript : MonoBehaviour
 {
+	[Header("Scripts")]
+	[SerializeField] private StaminaManager staminaManager;
 	public float walkSpeed = 3f;
 
 	public float crchSpeed = 1f;
@@ -34,7 +36,7 @@ public class SprintScript : MonoBehaviour
 	{
 		float to = 1f;
 		float maxForwardSpeed = walkSpeed;
-		if (playerController.canRun && chMotor.grounded && view.stamina > 10f)
+		if (playerController.canRun && chMotor.grounded && staminaManager.stamina > 10f)
 		{
 			maxForwardSpeed = ((shared.scared <= 0) ? jogSpeed : runSpeed);
 		}

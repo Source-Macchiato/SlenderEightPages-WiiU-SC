@@ -15,10 +15,6 @@ public class SanityManager : MonoBehaviour
     public AudioSource san2;
     public AudioSource san3;
     public Transform tentacles;
-    public AudioSource music1;
-    public AudioSource music2;
-    public AudioSource music3;
-    public AudioSource music4;
     public float sanity = 100f;
     public bool cansee;
     public bool justsaw;
@@ -26,11 +22,6 @@ public class SanityManager : MonoBehaviour
     public int flicker;
     public bool endflicker;
     public bool lastflicker;
-    public bool mh;
-    public int scared;
-    public int pages;
-    public int level;
-    private float fadeinmusic;
 
     private void Update()
     {
@@ -43,10 +34,10 @@ public class SanityManager : MonoBehaviour
 
         if (!pauseManager.paused)
         {
-            music1.volume = 0f;
-            music2.volume = 0f;
-            music3.volume = 0f;
-            music4.volume = 0f;
+            shared.music1.volume = 0f;
+            shared.music2.volume = 0f;
+            shared.music3.volume = 0f;
+            shared.music4.volume = 0f;
 
             if (shared.caught && !shared.lost)
             {
@@ -102,7 +93,7 @@ public class SanityManager : MonoBehaviour
                     justsaw = cansee;
                     if (loseScript.timeleft == 0)
                     {
-                        if (sanity < 70f || mh)
+                        if (sanity < 70f || shared.mh)
                         {
                             san1.volume = 1f;
                             if (sanity < 40f)
@@ -151,7 +142,7 @@ public class SanityManager : MonoBehaviour
                             lastflicker = false;
                         }
                     }
-                    if (sanity > 80f || mh)
+                    if (sanity > 80f || shared.mh)
                     {
                         tentacles.localScale = new Vector3(0f, 0f, 0f);
                     }
@@ -159,50 +150,50 @@ public class SanityManager : MonoBehaviour
                     {
                         tentacles.localScale = new Vector3((80f - sanity) * 0.01f, (80f - sanity) * 0.01f, (80f - sanity) * (1f / 160f));
                     }
-                    if (shared.lost && !mh)
+                    if (shared.lost && !shared.mh)
                     {
                         tentacles.localScale = new Vector3(0.8f, 0.8f, 0.5f);
                     }
-                    if (pages + level > 0 && loseScript.timeleft == 0 && !mh)
+                    if (shared.pages + shared.level > 0 && loseScript.timeleft == 0 && !shared.mh)
                     {
-                        if (pages + level < 3)
+                        if (shared.pages + shared.level < 3)
                         {
-                            music1.volume = fadeinmusic;
+                            shared.music1.volume = shared.fadeinmusic;
                         }
-                        else if (pages + level < 5)
+                        else if (shared.pages + shared.level < 5)
                         {
-                            music1.volume = 2f - fadeinmusic;
-                            music2.volume = fadeinmusic;
+                            shared.music1.volume = 2f - shared.fadeinmusic;
+                            shared.music2.volume = shared.fadeinmusic;
                         }
-                        else if (pages + level < 7)
+                        else if (shared.pages + shared.level < 7)
                         {
-                            music1.volume = 0f;
-                            music2.volume = 2f - fadeinmusic;
-                            music3.volume = fadeinmusic;
+                            shared.music1.volume = 0f;
+                            shared.music2.volume = 2f - shared.fadeinmusic;
+                            shared.music3.volume = shared.fadeinmusic;
                         }
-                        else if (pages + level < 8)
+                        else if (shared.pages + shared.level < 8)
                         {
-                            music1.volume = 0f;
-                            music2.volume = 0f;
-                            music3.volume = 2f - fadeinmusic;
-                            music4.volume = fadeinmusic;
+                            shared.music1.volume = 0f;
+                            shared.music2.volume = 0f;
+                            shared.music3.volume = 2f - shared.fadeinmusic;
+                            shared.music4.volume = shared.fadeinmusic;
                         }
                         else
                         {
-                            music1.volume = 0f;
-                            music2.volume = 0f;
-                            music3.volume = 0f;
-                            music4.volume = 1f - fadeinmusic / 2f;
+                            shared.music1.volume = 0f;
+                            shared.music2.volume = 0f;
+                            shared.music3.volume = 0f;
+                            shared.music4.volume = 1f - shared.fadeinmusic / 2f;
                         }
-                        fadeinmusic += 0.01f;
-                        if (fadeinmusic > 2f)
+                        shared.fadeinmusic += 0.01f;
+                        if (shared.fadeinmusic > 2f)
                         {
-                            fadeinmusic = 2f;
+                            shared.fadeinmusic = 2f;
                         }
                     }
-                    if (scared > 0)
+                    if (shared.scared > 0)
                     {
-                        scared--;
+                        shared.scared--;
                     }
                 }
             }

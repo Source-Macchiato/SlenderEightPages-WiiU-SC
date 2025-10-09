@@ -3,6 +3,8 @@ using UnityEngine;
 public class SlenderMan : MonoBehaviour
 {
 	[Header("Scripts")]
+	[SerializeField] private SanityManager sanityManager;
+	[SerializeField] private StaminaManager staminaManager;
 	[SerializeField] private PauseManager pauseManager;
 	[SerializeField] private FlashlightManager flashLightManager;
 	[SerializeField] private SharedVar shared;
@@ -49,78 +51,78 @@ public class SlenderMan : MonoBehaviour
 		Vector3 vector = new Vector3(base.transform.position.x, base.transform.position.y + 1.33f, base.transform.position.z);
 		float num = Vector3.Distance(vector, player.position);
 		float drain = (shared.daytime ? Mathf.Pow(2f, (0f - num / 1.5f) / 10f) : ((!flashLightManager.torch.enabled) ? Mathf.Pow(2f, (0f - num * 2f) / 10f) : Mathf.Pow(2f, (0f - num) / 10f)));
-		view.cansee = false;
+		sanityManager.cansee = false;
 		RaycastHit hitInfo;
 		if (Physics.Raycast(player.position, (vector - player.position).normalized, out hitInfo) && hitInfo.collider.gameObject == base.gameObject)
 		{
-			view.cansee = true;
-			if (!view.justsaw && num < 10f && shared.scared <= 0)
+			sanityManager.cansee = true;
+			if (!sanityManager.justsaw && num < 10f && shared.scared <= 0)
 			{
-				if (!view.mh)
+				if (!shared.mh)
 				{
 					dramatic.Play();
 				}
 				else
 				{
-					view.flicker = 3;
+					sanityManager.flicker = 3;
 				}
-				view.justsaw = true;
+				sanityManager.justsaw = true;
 				shared.scared = 600;
-				view.stamina += 15f;
-				if (view.stamina > view.maxstam)
+				staminaManager.stamina += 15f;
+				if (staminaManager.stamina > staminaManager.maxstam)
 				{
-					view.stamina = view.maxstam;
+					staminaManager.stamina = staminaManager.maxstam;
 				}
 			}
-			view.drain = drain;
+			sanityManager.drain = drain;
 		}
-		if (!view.cansee && Physics.Raycast(player.position, (lhand.position - player.position).normalized, out hitInfo) && hitInfo.collider.gameObject == base.gameObject)
+		if (!sanityManager.cansee && Physics.Raycast(player.position, (lhand.position - player.position).normalized, out hitInfo) && hitInfo.collider.gameObject == base.gameObject)
 		{
-			view.cansee = true;
-			if (!view.justsaw && num < 10f && shared.scared <= 0)
+			sanityManager.cansee = true;
+			if (!sanityManager.justsaw && num < 10f && shared.scared <= 0)
 			{
-				if (!view.mh)
+				if (!shared.mh)
 				{
 					dramatic.Play();
 				}
 				else
 				{
-					view.flicker = 3;
+					sanityManager.flicker = 3;
 				}
-				view.justsaw = true;
+				sanityManager.justsaw = true;
 				shared.scared = 600;
-				view.stamina += 15f;
-				if (view.stamina > view.maxstam)
+				staminaManager.stamina += 15f;
+				if (staminaManager.stamina > staminaManager.maxstam)
 				{
-					view.stamina = view.maxstam;
+					staminaManager.stamina = staminaManager.maxstam;
 				}
 			}
-			view.drain = drain;
+			sanityManager.drain = drain;
 		}
-		if (view.cansee || !Physics.Raycast(player.position, (rhand.position - player.position).normalized, out hitInfo) || !(hitInfo.collider.gameObject == base.gameObject))
+		if (sanityManager.cansee || !Physics.Raycast(player.position, (rhand.position - player.position).normalized, out hitInfo) || !(hitInfo.collider.gameObject == base.gameObject))
 		{
 			return;
 		}
-		view.cansee = true;
-		if (!view.justsaw && num < 10f && shared.scared <= 0)
+		sanityManager.cansee = true;
+		if (!sanityManager.justsaw && num < 10f && shared.scared <= 0)
 		{
-			if (!view.mh)
+			if (!shared.mh)
 			{
 				dramatic.Play();
 			}
 			else
 			{
-				view.flicker = 3;
+				sanityManager.flicker = 3;
 			}
-			view.justsaw = true;
+			sanityManager.justsaw = true;
 			shared.scared = 600;
-			view.stamina += 15f;
-			if (view.stamina > view.maxstam)
+			staminaManager.stamina += 15f;
+			if (staminaManager.stamina > staminaManager.maxstam)
 			{
-				view.stamina = view.maxstam;
+				staminaManager.stamina = staminaManager.maxstam;
 			}
 		}
-		view.drain = drain;
+		sanityManager.drain = drain;
 	}
 
 	private void FixedUpdate()
@@ -136,9 +138,9 @@ public class SlenderMan : MonoBehaviour
 		if (justmoved)
 		{
 			justmoved = false;
-			if (view.cansee)
+			if (sanityManager.cansee)
 			{
-				view.flicker = 3;
+				sanityManager.flicker = 3;
 			}
 		}
 		if (shared.pages + shared.level > 0 && loser.timeleft == 0)
@@ -151,9 +153,9 @@ public class SlenderMan : MonoBehaviour
 				if (shared.pages >= 8 && !model.enabled)
 				{
 					model.enabled = true;
-					view.flicker = 3;
+					sanityManager.flicker = 3;
 				}
-				view.caught = true;
+				shared.caught = true;
 			}
 			if (num5 < 30f)
 			{
@@ -176,7 +178,7 @@ public class SlenderMan : MonoBehaviour
 					busymove = 4;
 				}
 			}
-			else if ((!view.cansee || shared.pages + shared.level >= 6) && !view.caught)
+			else if ((!sanityManager.cansee || shared.pages + shared.level >= 6) && !shared.caught)
 			{
 				if (model.isVisible && shared.pages + shared.level < 6)
 				{
@@ -218,7 +220,7 @@ public class SlenderMan : MonoBehaviour
 				{
 					if (tos.valid)
 					{
-						if (tos.hidden || shared.pages + shared.level >= 6 || !view.flraised)
+						if (tos.hidden || shared.pages + shared.level >= 6 || !shared.flraised)
 						{
 							vector2 = testobj.position;
 							vector2.y = 1f;
@@ -247,7 +249,7 @@ public class SlenderMan : MonoBehaviour
 				{
 					if (tos.valid)
 					{
-						if ((shared.pages + shared.level <= 5 && (tos.hidden || !view.flraised)) || shared.pages + shared.level == 6 || shared.pages >= 8 || (!tos.hidden && shared.pages + shared.level == 7))
+						if ((shared.pages + shared.level <= 5 && (tos.hidden || !shared.flraised)) || shared.pages + shared.level == 6 || shared.pages >= 8 || (!tos.hidden && shared.pages + shared.level == 7))
 						{
 							vector2 = testobj.position;
 							vector2.y = 1f;
@@ -371,16 +373,16 @@ public class SlenderMan : MonoBehaviour
 				}
 				if (justmoved)
 				{
-					if (view.cansee)
+					if (sanityManager.cansee)
 					{
-						view.flicker = 3;
+						sanityManager.flicker = 3;
 					}
 					Quaternion rotation3 = Quaternion.LookRotation(base.transform.position - player.position, Vector3.up);
 					rotation3.x = 0f;
 					rotation3.z = 0f;
 					base.transform.rotation = rotation3;
 				}
-				if (chasing && !model.isVisible && !view.caught)
+				if (chasing && !model.isVisible && !shared.caught)
 				{
 					Quaternion rotation4 = Quaternion.LookRotation(vector - chaser, Vector3.up);
 					rotation4.x = 0f;
@@ -392,7 +394,7 @@ public class SlenderMan : MonoBehaviour
 						chasing = false;
 					}
 				}
-				else if (!view.cansee)
+				else if (!sanityManager.cansee)
 				{
 					Quaternion rotation5 = Quaternion.LookRotation(base.transform.position - player.position, Vector3.up);
 					rotation5.x = 0f;
@@ -404,7 +406,7 @@ public class SlenderMan : MonoBehaviour
 			{
 				mightport = 0;
 				busymove = 0;
-				if (!view.cansee)
+				if (!sanityManager.cansee)
 				{
 					Quaternion rotation6 = Quaternion.LookRotation(base.transform.position - player.position, Vector3.up);
 					rotation6.x = 0f;
@@ -413,11 +415,11 @@ public class SlenderMan : MonoBehaviour
 				}
 			}
 		}
-		if (shared.pages >= 8 && ((!view.caught && model.enabled) || loser.timeleft > 1))
+		if (shared.pages >= 8 && ((!shared.caught && model.enabled) || loser.timeleft > 1))
 		{
-			if (view.cansee)
+			if (sanityManager.cansee)
 			{
-				view.flicker = 3;
+				sanityManager.flicker = 3;
 			}
 			model.enabled = false;
 			base.transform.position = new Vector3(0f, -200f, 0f);

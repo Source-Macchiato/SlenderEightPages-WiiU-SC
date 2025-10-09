@@ -2,22 +2,25 @@ using UnityEngine;
 
 public class StaticScript : MonoBehaviour
 {
-	public PlayerScript view;
-
+	[SerializeField] private SharedVar shared;
+	[SerializeField] private SanityManager sanityManager;
 	public LoseScript final;
+
+	private Renderer rend;
 
 	private void Start()
 	{
+		rend = GetComponent<Renderer>();
 	}
 
 	private void FixedUpdate()
 	{
-		Color color = base.GetComponent<Renderer>().material.color;
-		if (!view.lost)
+		Color color = rend.material.color;
+		if (!shared.lost)
 		{
-			if (view.flicker <= 0)
+			if (sanityManager.flicker <= 0)
 			{
-				color.a = 0.25f - view.sanity / 400f;
+				color.a = 0.25f - sanityManager.sanity / 400f;
 			}
 			else
 			{
@@ -32,7 +35,7 @@ public class StaticScript : MonoBehaviour
 		{
 			color.a = 0f;
 		}
-		base.GetComponent<Renderer>().material.color = color;
-		base.GetComponent<Renderer>().material.mainTextureOffset = new Vector2(Random.value, Random.value);
+		rend.material.color = color;
+		rend.material.mainTextureOffset = new Vector2(Random.value, Random.value);
 	}
 }

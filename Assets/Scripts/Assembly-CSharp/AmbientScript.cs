@@ -32,10 +32,10 @@ public class AmbientScript : MonoBehaviour
 
 	private void Update()
 	{
-		if ((intro.gamestarted && loser.timeleft == 0 && (!sanityManger.mh || (intro.timer >= 1600 && sanityManger.mh))) || (loser.timeleft > 250 && loser.timeleft < 900 && shared.pages >= 8))
+		if ((intro.gamestarted && loser.timeleft == 0 && (!shared.mh || (intro.timer >= 1600 && shared.mh))) || (loser.timeleft > 250 && loser.timeleft < 900 && shared.pages >= 8))
 		{
 			if (!pauseManager.paused)
-			{
+            {
                 wind.volume = 1f;
                 timer--;
                 if (timer > 0)

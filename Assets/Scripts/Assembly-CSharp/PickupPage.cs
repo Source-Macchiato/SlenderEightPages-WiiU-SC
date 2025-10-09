@@ -3,9 +3,13 @@ using WiiU = UnityEngine.WiiU;
 
 public class PickupPage : MonoBehaviour
 {
+    [Header("Scripts")]
+    [SerializeField] private FogManager fogManager;
     [SerializeField] private PauseManager pauseManager;
     [SerializeField] private SprintScript sprscr;
     [SerializeField] private SharedVar shared;
+
+    [Header("Settings")]
 	public Transform player;
 
 	public AudioClip pagesound;
@@ -125,11 +129,11 @@ public class PickupPage : MonoBehaviour
             sprscr.jogSpeed = 3.5f + (float)shared.pages * 0.1f;
             if (shared.pages < 8)
             {
-                view.targetfog = 0.02f + (float)shared.pages * 0.01f;
+                fogManager.targetfog = 0.02f + (float)shared.pages * 0.01f;
             }
             else
             {
-                view.targetfog = 0.01f;
+                fogManager.targetfog = 0.01f;
             }
             if (shared.level > 0)
             {

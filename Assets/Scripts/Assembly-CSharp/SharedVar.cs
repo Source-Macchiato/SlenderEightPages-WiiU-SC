@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class SharedVar : MonoBehaviour
 {
+    [Header("Shared Variables")]
     public bool daytime;
     public bool dustyair;
     public Transform endfix;
@@ -11,7 +12,15 @@ public class SharedVar : MonoBehaviour
     public int scared;
     public int pages;
     public int level;
+    public bool mh;
     public bool caught;
     public bool flraised = true;
+
+    [Header("Audio")]
+    public AudioSource music1;
+    public AudioSource music2;
+    public AudioSource music3;
+    public AudioSource music4;
+    public float fadeinmusic;
 
 }

@@ -64,7 +64,7 @@ public class LoseScript : MonoBehaviour
 	{
 		if (shared.pages >= 8)
 		{
-			if (sanityManger.mh)
+			if (shared.mh)
 			{
 				if (timeleft >= 1100 && timeleft < 1350)
 				{
@@ -82,7 +82,7 @@ public class LoseScript : MonoBehaviour
 				}
 			}
 		}
-		if (sanityManger.mh)
+		if (shared.mh)
 		{
 			if (timeleft >= 300 && timeleft < 550)
 			{
@@ -178,7 +178,7 @@ public class LoseScript : MonoBehaviour
             DynamicGI.UpdateEnvironment();
 
             sun.enabled = false;
-			if (sanityManger.mh)
+			if (shared.mh)
 			{
 				mhdelay = 1400;
 			}
@@ -278,7 +278,7 @@ public class LoseScript : MonoBehaviour
         }
 		if (timeleft > 250 && shared.pages >= 8)
 		{
-			if (sanityManger.mh)
+			if (shared.mh)
 			{
 				if ((float)timeleft < 425f)
 				{

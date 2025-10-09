@@ -6,7 +6,7 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private MenuManager menuManager;
     [SerializeField] private IntroScript introScript;
     [SerializeField] private PlayerController playerController;
-    [SerializeField] private PlayerScript playerScript; // TEMPORARY
+    [SerializeField] private SanityManager sanityManager;
     [SerializeField] private SharedVar shared;
 
     public bool paused;
@@ -43,7 +43,7 @@ public class PauseManager : MonoBehaviour
             }
             else
             {
-                playerScript.flicker = 3;
+                sanityManager.flicker = 3;
             }
 
             return;
