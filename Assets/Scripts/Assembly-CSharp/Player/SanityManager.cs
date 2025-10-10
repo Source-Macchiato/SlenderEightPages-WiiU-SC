@@ -68,7 +68,9 @@ public class SanityManager : MonoBehaviour
         UpdateBackgroundMusic();
 
         if (shared.scared > 0)
+        {
             shared.scared--;
+        }  
     }
 
     // Resets all background music //
@@ -100,7 +102,7 @@ public class SanityManager : MonoBehaviour
     {
         if (shared.caught)
         {
-            sanity -= SANITY_CAUGHT_DRAIN;
+            sanity -= 1f;
             if (sanity < 0f)
                 shared.lost = true;
         }
@@ -114,6 +116,7 @@ public class SanityManager : MonoBehaviour
         else if (drain > 0f)
         {
             sanity -= drain;
+            Debug.Log("Draining sanity by " + drain);
             if (sanity < 0f)
                 shared.lost = true;
         }

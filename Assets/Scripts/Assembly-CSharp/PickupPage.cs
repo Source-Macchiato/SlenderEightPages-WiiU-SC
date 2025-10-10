@@ -90,7 +90,7 @@ public class PickupPage : MonoBehaviour
         // Detect player looking at pages
         if (pageRenderer.isVisible)
         {
-            Debug.Log("Visible");
+            // Debug.Log("Visible");
             if ((double)Vector3.Distance(base.transform.position, player.position) <= 2.0)
             {
                 if (Physics.Raycast(player.position, (base.transform.position - player.position).normalized, out hitInfo, 2f, mask))

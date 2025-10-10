@@ -38,22 +38,6 @@ public class IntroScript : MonoBehaviour
 
 	public bool skintro;
 
-	public ParticleSystem sk1;
-
-	public ParticleSystem sk2;
-
-	public ParticleSystem sk3;
-
-	public ParticleSystem sk4;
-
-	public ParticleSystem sk5;
-
-	public ParticleSystem sk6;
-
-	public ParticleSystem sk7;
-
-	public ParticleSystem sk8;
-
 	public Transform toptitle;
 
 	public AudioSource thememusic;
@@ -642,22 +626,6 @@ public class IntroScript : MonoBehaviour
 		{
 			view.dust.Play();
 		}
-		sk1.enableEmission = false;
-		sk1.Clear();
-		sk2.enableEmission = false;
-		sk2.Clear();
-		sk3.enableEmission = false;
-		sk3.Clear();
-		sk4.enableEmission = false;
-		sk4.Clear();
-		sk5.enableEmission = false;
-		sk5.Clear();
-		sk6.enableEmission = false;
-		sk6.Clear();
-		sk7.enableEmission = false;
-		sk7.Clear();
-		sk8.enableEmission = false;
-		sk8.Clear();
 		toptitle.transform.Rotate(new Vector3(180f, 0f, 0f));
 		thememusic.Stop();
 		switch (fltype)

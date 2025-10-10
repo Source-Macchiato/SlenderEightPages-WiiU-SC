@@ -20,6 +20,9 @@ public class PlayerController : MonoBehaviour
     public Vector2 direction = Vector2.zero;
     private WiiU.GamePad gamePad;
     private WiiU.Remote remote;
+#if UNITY_EDITOR
+    public bool editorTesting = true;
+#endif
 
     private void Start()
     {
@@ -375,7 +378,15 @@ public class PlayerController : MonoBehaviour
                 break;
         }
         // Editor //
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
+        if (editorTesting)
+        {
+            // Debug
+            if (Input.GetKeyDown(KeyCode.F1))
+            {
+                shared.pages = 4;
+            }
+        }
             // Y axis
             if (Input.GetKey(KeyCode.W))
             {

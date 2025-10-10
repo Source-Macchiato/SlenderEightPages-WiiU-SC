@@ -75,7 +75,7 @@ public class SlenderMan : MonoBehaviour
 
 		_slenderViewPoint = _cachedPosition + Vector3.up * 0.99f;
 		_distToPlayer = Vector3.Distance(_slenderViewPoint, player.position);
-
+	
 		// Check catch condition
 		if (CheckCatchCondition()) return;
 
@@ -141,7 +141,7 @@ public class SlenderMan : MonoBehaviour
 					{
 						TriggerScare();
 					}
-					break; // No need to check other points
+					// break; // No need to check other points
 				}
 			}
 		}
