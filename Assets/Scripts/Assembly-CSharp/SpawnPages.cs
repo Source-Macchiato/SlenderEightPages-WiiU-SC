@@ -3,110 +3,78 @@ using UnityEngine;
 public class SpawnPages : MonoBehaviour
 {
 	public Transform page1;
-
 	public Transform page2;
-
 	public Transform page3;
-
 	public Transform page4;
-
 	public Transform page5;
-
 	public Transform page6;
-
 	public Transform page7;
-
 	public Transform page8;
-
 	public int whichpage;
+
+	private GameObject[] finishSpawns;
+
+	private void Start()
+	{
+		finishSpawns = GameObject.FindGameObjectsWithTag("Finish");
+		SpawnAllPages();
+	}
+
+	// (can you believe it ? this shit was on an update and called a FindGameObjectWithTag at EVERY FUCKING FRAMES WTF -- this was also 150 lines long...uhh...)
+	private void SpawnAllPages()
+	{
+		Transform[] pages = { page1, page2, page3, page4, page5, page6, page7, page8 };
+
+		for (int i = 0; i < pages.Length; i++)
+		{
+			FindSpawn(pages[i]);
+		}
+
+		// Cleanup remaining spawns
+		for (int i = 0; i < finishSpawns.Length; i++)
+		{
+			if (finishSpawns[i] != null)
+            {
+                Destroy(finishSpawns[i]);
+            }
+			
+		}
+		finishSpawns = null;
+	}
 
 	private void FindSpawn(Transform target)
 	{
-		bool flag = false;
-		GameObject[] array = GameObject.FindGameObjectsWithTag("Finish");
-		int num = 0;
-		GameObject[] array2 = array;
-		foreach (GameObject gameObject in array2)
+		if (finishSpawns == null || finishSpawns.Length == 0)
 		{
-			if (gameObject.tag == "Finish")
-			{
-				num++;
-			}
-		}
-		GameObject[] array3 = array;
-		foreach (GameObject gameObject2 in array3)
-		{
-			if (flag)
-			{
-				continue;
-			}
-			if (Random.value <= 1f / (float)num)
-			{
-				target.position = gameObject2.transform.position;
-				target.rotation = gameObject2.transform.rotation;
-				GameObject[] array4 = array;
-				foreach (GameObject gameObject3 in array4)
-				{
-					if (Vector3.Distance(target.position, gameObject3.transform.position) <= 35f)
-					{
-						Object.Destroy(gameObject3);
-					}
-				}
-				Object.Destroy(gameObject2);
-				flag = true;
-				return;
-			}
-			num--;
-		}
-		if (!flag)
-		{
-			MonoBehaviour.print("PAGEFAIL");
-		}
-	}
-
-	private void FixedUpdate()
-	{
-		if (whichpage >= 9)
-		{
+			Debug.LogWarning("PAGEFAIL");
 			return;
 		}
-		whichpage++;
-		switch (whichpage)
+
+		int count = finishSpawns.Length;
+		for (int i = 0; i < finishSpawns.Length; i++)
 		{
-		case 1:
-			FindSpawn(page1);
-			break;
-		case 2:
-			FindSpawn(page2);
-			break;
-		case 3:
-			FindSpawn(page3);
-			break;
-		case 4:
-			FindSpawn(page4);
-			break;
-		case 5:
-			FindSpawn(page5);
-			break;
-		case 6:
-			FindSpawn(page6);
-			break;
-		case 7:
-			FindSpawn(page7);
-			break;
-		case 8:
-			FindSpawn(page8);
-			break;
-		case 9:
-		{
-			GameObject[] array = GameObject.FindGameObjectsWithTag("Finish");
-			GameObject[] array2 = array;
-			foreach (GameObject obj in array2)
+			if (finishSpawns[i] == null) continue;
+
+			if (Random.value <= 1f / count)
 			{
-				Object.Destroy(obj);
+				Transform spawn = finishSpawns[i].transform;
+				target.position = spawn.position;
+				target.rotation = spawn.rotation;
+
+				for (int j = finishSpawns.Length - 1; j >= 0; j--)
+				{
+					if (finishSpawns[j] != null && 
+					    Vector3.Distance(target.position, finishSpawns[j].transform.position) <= 35f)
+					{
+						Destroy(finishSpawns[j]);
+						finishSpawns[j] = null;
+					}
+				}
+				return;
 			}
-			break;
+			count--;
 		}
-		}
+
+		Debug.LogWarning("PAGEFAIL");
 	}
 }
