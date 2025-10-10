@@ -236,7 +236,7 @@ public class SlenderMan : MonoBehaviour
 				makejump = 0;
 				if (shared.pages >= 8)
 					busymove = 3;
-				else if (_distToPlayer > view.maxrange || Random.value <= 0.1f)
+				else if (_distToPlayer > shared.maxrange || Random.value <= 0.1f)
 					busymove = 4;
 				else
 					busymove = 3;
@@ -367,9 +367,9 @@ public class SlenderMan : MonoBehaviour
 		for (int i = 0; i < 30; i++)
 		{
 			Vector2 randomDir = Random.insideUnitCircle.normalized;
-			Vector3 targetPos = player.position + new Vector3(randomDir.x * view.maxrange, 2.3f, randomDir.y * view.maxrange);
+			Vector3 targetPos = player.position + new Vector3(randomDir.x * shared.maxrange, 2.3f, randomDir.y * shared.maxrange);
 
-			if (IsInBounds(targetPos) && Vector3.Distance(player.position, targetPos) > view.minrange)
+			if (IsInBounds(targetPos) && Vector3.Distance(player.position, targetPos) > shared.minrange)
 			{
 				SetupTestObject(targetPos);
 				busymove = 2;

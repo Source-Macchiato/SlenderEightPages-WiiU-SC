@@ -313,11 +313,11 @@ public class LoseScript : MonoBehaviour
 		}
 		if (timeleft == 250 + mhdelay && shared.pages >= 8)
 		{
-			view.fadeinmusic = 0f;
+			shared.fadeinmusic = 0f;
 		}
 		if (timeleft == 2500 + mhdelay && shared.pages >= 8)
 		{
-			view.fadeinmusic = 0f;
+			shared.fadeinmusic = 0f;
 		}
 	}
 

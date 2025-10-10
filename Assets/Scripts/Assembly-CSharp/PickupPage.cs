@@ -120,12 +120,12 @@ public class PickupPage : MonoBehaviour
 		{
             if ((shared.pages == 0 || shared.pages == 2 || shared.pages == 4 || shared.pages == 6 || shared.pages == 7) && shared.level == 0)
             {
-                view.fadeinmusic = 0f;
+                shared.fadeinmusic = 0f;
             }
             shared.pages++;
             view.fadeoutgui = 0;
             shared.nearpage = null;
-            view.toolong = 15000;
+            shared.toolong = 15000;
             sprscr.jogSpeed = 3.5f + (float)shared.pages * 0.1f;
             if (shared.pages < 8)
             {
@@ -142,13 +142,13 @@ public class PickupPage : MonoBehaviour
             AudioSource.PlayClipAtPoint(pagesound, base.transform.position);
             if (shared.pages < 8)
             {
-                view.maxrange = 100 - (shared.pages + shared.level) * 11;
-                view.minrange = 80 - (shared.pages + shared.level) * 10;
+                shared.maxrange = 100 - (shared.pages + shared.level) * 11;
+                shared.minrange = 80 - (shared.pages + shared.level) * 10;
             }
             else
             {
-                view.maxrange = 20f;
-                view.minrange = 10f;
+                shared.maxrange = 20f;
+                shared.minrange = 10f;
                 shared.finaldelay = 750;
             }
 

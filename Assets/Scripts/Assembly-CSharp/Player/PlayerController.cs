@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PauseManager pauseManager;
     [SerializeField] private ZoomManager zoomManager;
     [SerializeField] private PlayerScript playerScript; // TEMPORARY
+    [SerializeField] private SharedVar shared;
     [SerializeField] private FlashlightManager flashlightManager;
 
     [Header("Player References")]
@@ -456,10 +457,29 @@ public class PlayerController : MonoBehaviour
         if (!pauseManager.paused)
         {
             playerScript.chasetest.position = base.transform.position;
-            Quaternion rotation = Quaternion.LookRotation(base.transform.position - playerScript.SM.transform.position, Vector3.up);
+            Quaternion rotation = Quaternion.LookRotation(base.transform.position - shared.SM.transform.position, Vector3.up);
             rotation.x = 0f;
             rotation.z = 0f;
             playerScript.chasetest.rotation = rotation;
+
+            if (shared.toolong > 0 && introScript.introEnded && shared.pages < 8)
+            {
+                shared.toolong--;
+                if (shared.toolong <= 0)
+                {
+                    shared.toolong = 12000;
+                    if (shared.pages + shared.level < 9)
+                    {
+                        shared.level++;
+                        shared.maxrange = 100 - (shared.pages + shared.level) * 11;
+                        shared.minrange = 80 - (shared.pages + shared.level) * 10;
+                        if (shared.pages + shared.level == 1 || shared.pages + shared.level == 3 || shared.pages + shared.level == 5 || shared.pages + shared.level == 7)
+                        {
+                            shared.fadeinmusic = 0f;
+                        }
+                    }
+                }
+            }
         }
     }
 }

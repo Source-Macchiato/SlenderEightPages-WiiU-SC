@@ -12,13 +12,9 @@ public class PlayerScript : MonoBehaviour
 
 
     // OLD REFERENCES //
-    public int toolong = 12000;
+    // public int toolong = 12000;
 
-    public float maxrange = 100f;
-
-    public float minrange = 80f;
-
-    public float fadeinmusic = 2f;
+    // public float shared.fadeinmusic = 2f;
 
     public AudioClip s1;
 
@@ -62,7 +58,7 @@ public class PlayerScript : MonoBehaviour
 
     public int laststep;
 
-    public GameObject SM;
+    //public GameObject SM;
 
     public GUIStyle hint;
 
@@ -74,7 +70,7 @@ public class PlayerScript : MonoBehaviour
 
     public Transform chasetest;
 
-    public Transform tentacles;
+    // public Transform tentacles;
 
     public ParticleSystem dust;
 
@@ -101,25 +97,6 @@ public class PlayerScript : MonoBehaviour
             if (fadeoutgui < 400)
             {
                 fadeoutgui++;
-            }
-
-            if (toolong > 0 && introScript.introEnded && shared.pages < 8)
-            {
-                toolong--;
-                if (toolong <= 0)
-                {
-                    toolong = 12000;
-                    if (shared.pages + shared.level < 9)
-                    {
-                        shared.level++;
-                        maxrange = 100 - (shared.pages + shared.level) * 11;
-                        minrange = 80 - (shared.pages + shared.level) * 10;
-                        if (shared.pages + shared.level == 1 || shared.pages + shared.level == 3 || shared.pages + shared.level == 5 || shared.pages + shared.level == 7)
-                        {
-                            fadeinmusic = 0f;
-                        }
-                    }
-                }
             }
 
             if (shared.pages >= 8)
@@ -325,20 +302,20 @@ public class PlayerScript : MonoBehaviour
             }
             if (loseScript.timeleft < 2500 + loseScript.mhdelay)
             {
-                shared.music1.volume = fadeinmusic;
-                fadeinmusic += 0.01f;
-                if (fadeinmusic > 2f)
+                shared.music1.volume = shared.fadeinmusic;
+                shared.fadeinmusic += 0.01f;
+                if (shared.fadeinmusic > 2f)
                 {
-                    fadeinmusic = 2f;
+                    shared.fadeinmusic = 2f;
                 }
             }
             else
             {
-                shared.music1.volume = 1f - fadeinmusic / 2f;
-                fadeinmusic += 0.01f;
-                if (fadeinmusic > 2f)
+                shared.music1.volume = 1f - shared.fadeinmusic / 2f;
+                shared.fadeinmusic += 0.01f;
+                if (shared.fadeinmusic > 2f)
                 {
-                    fadeinmusic = 2f;
+                    shared.fadeinmusic = 2f;
                 }
             }
         }
