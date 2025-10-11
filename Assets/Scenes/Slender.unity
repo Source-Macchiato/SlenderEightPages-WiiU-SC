@@ -26887,6 +26887,7 @@ MonoBehaviour:
   pauseManager: {fileID: 107483800}
   climbfence: {fileID: 1289}
   shared: {fileID: 1733396394}
+  cameraController: {fileID: 1385}
   timer: 0
   introEnded: 0
   credits:

@@ -7,6 +7,7 @@ public class IntroScript : MonoBehaviour
 	[SerializeField] private PauseManager pauseManager;
 	[SerializeField] private AudioSource climbfence;
 	[SerializeField] private SharedVar shared;
+	[SerializeField] private CameraController cameraController;
 
 	// OTHER
 	public int timer;
@@ -611,8 +612,12 @@ public class IntroScript : MonoBehaviour
 	private void StartGame()
 	{
 		gamestarted = true;
-		Cursor.lockState = CursorLockMode.None;
+
+		// Disable moving camera
+		cameraController.canLook = false;
+
 		entry = Random.Range(4, 16);
+
 		if (shared.mh)
 		{
 			timer = 200;
@@ -622,12 +627,16 @@ public class IntroScript : MonoBehaviour
 			stat1.GetComponent<Renderer>().enabled = false;
 			stat2.GetComponent<Renderer>().enabled = false;
 		}
+
 		if (shared.dustyair && !shared.daytime)
 		{
 			view.dust.Play();
 		}
+
 		toptitle.transform.Rotate(new Vector3(180f, 0f, 0f));
+
 		thememusic.Stop();
+
 		switch (fltype)
 		{
 			case 1:
