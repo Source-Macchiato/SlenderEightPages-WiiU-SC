@@ -118,7 +118,7 @@ PlayerSettings:
   wiiUSupportsMotionPlus: 1
   wiiUSupportsProController: 1
   wiiUAllowScreenCapture: 1
-  wiiUControllerCount: 0
+  wiiUControllerCount: 4
   m_SupportedAspectRatios:
     4:3: 1
     5:4: 1
