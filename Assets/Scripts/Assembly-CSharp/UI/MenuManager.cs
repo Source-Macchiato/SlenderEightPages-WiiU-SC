@@ -1151,6 +1151,10 @@ public class MenuManager : MonoBehaviour
         if (currentMenuId == -1)
         {
             ChangeMenu(0);
+
+            // Unlock cursor
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
     }
 
@@ -1166,6 +1170,10 @@ public class MenuManager : MonoBehaviour
             menuHistory.Push(currentMenuId);
 
             currentMenuId = -1;
+
+            // Lock cursor
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
         }
     }
 }
