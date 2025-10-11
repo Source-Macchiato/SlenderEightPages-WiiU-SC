@@ -6,6 +6,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] private StaminaManager staminaManager;
     [SerializeField] public ZoomManager zoomManager;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private CameraController cameraController;
     [SerializeField] private PauseManager pauseManager;
     [SerializeField] private SharedVar shared;
 
@@ -270,7 +271,7 @@ public class PlayerScript : MonoBehaviour
                 else if (introScript.timer == 1599)
                 {
                     playerController.canMove = true;
-                    playerController.mouseLook.enabled = true;
+                    cameraController.canLook = true;
                 }
             }
             if (!shared.lost)
@@ -286,14 +287,14 @@ public class PlayerScript : MonoBehaviour
             if (loseScript.timeleft >= 250)
             {
                 playerController.canMove = true;
-                playerController.mouseLook.enabled = true;
+                cameraController.canLook = true;
             }
             if (loseScript.timeleft >= 950)
             {
                 staminaManager.breathing.volume = 0f;
                 zoomManager.zsound.volume = 0f;
                 playerController.canMove = false;
-                playerController.mouseLook.enabled = false;
+                cameraController.canLook = false;
             }
             if (shared.pages < 8 || loseScript.timeleft < 1000 + loseScript.mhdelay)
             {

@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("Player References")]
     [SerializeField] private CharacterController characterController;
-    public MouseLook mouseLook;
     
     public bool paused;
     public bool canRun;
@@ -37,7 +36,6 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         canMove = false;
-        mouseLook.enabled = false;
 
         gamePad = WiiU.GamePad.access;
         remote = WiiU.Remote.Access(0);

@@ -1,20 +1,15 @@
 using UnityEngine;
 using WiiU = UnityEngine.WiiU;
 
-[AddComponentMenu("Camera-Control/Mouse Look")]
-public class MouseLook : MonoBehaviour
+public class CameraController : MonoBehaviour
 {
-	public float sensitivityX = 5f;
+    [HideInInspector] public bool canLook = true;
 
-	public float sensitivityY = 5f;
+	private float sensitivityX = 5f;
+	private float sensitivityY = 5f;
 
-	public float minimumX = -360f;
-
-	public float maximumX = 360f;
-
-	public float minimumY = -60f;
-
-	public float maximumY = 60f;
+	private float minimumY = -60f;
+	private float maximumY = 60f;
 
     [SerializeField]
     private Transform playerTransform;
@@ -25,11 +20,6 @@ public class MouseLook : MonoBehaviour
 
     private void Start()
     {
-        if ((bool)base.GetComponent<Rigidbody>())
-        {
-            base.GetComponent<Rigidbody>().freezeRotation = true;
-        }
-
         gamePad = WiiU.GamePad.access;
         remote = WiiU.Remote.Access(0);
 
@@ -43,6 +33,12 @@ public class MouseLook : MonoBehaviour
 
     private void Update()
     {
+        // Prevent camera for moving if canLook is false
+        if (!canLook)
+        {
+            return;
+        }
+
         WiiU.GamePadState gamePadState = gamePad.state;
         WiiU.RemoteState remoteState = remote.state;
 

@@ -6,6 +6,7 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private MenuManager menuManager;
     [SerializeField] private IntroScript introScript;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private CameraController cameraController;
     [SerializeField] private SanityManager sanityManager;
     [SerializeField] private SharedVar shared;
 
@@ -28,7 +29,7 @@ public class PauseManager : MonoBehaviour
             if (shared.lost || introScript.timer < 1598)
             {
                 return;
-            }  
+            }
 
             // Only pause when sanity is full otherwise trigger playerScript.flicker
             if (Mathf.Approximately(sanityManager.sanity, 100f))
@@ -39,7 +40,7 @@ public class PauseManager : MonoBehaviour
                 menuManager.DisplayMenu();
 
                 playerController.canMove = false;
-                playerController.mouseLook.enabled = false;
+                cameraController.canLook = false;
             }
             else
             {
@@ -56,7 +57,6 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 1f;
 
         playerController.canMove = true;
-        playerController.mouseLook.enabled = true;
+        cameraController.canLook = true;
     }
-
 }

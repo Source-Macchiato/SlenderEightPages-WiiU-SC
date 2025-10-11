@@ -4,6 +4,7 @@ public class SanityManager : MonoBehaviour
 {
     [Header("Scripts")]
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private CameraController cameraController;
     [SerializeField] private PauseManager pauseManager;
     [SerializeField] private IntroScript introScript;
     [SerializeField] private LoseScript loseScript;
@@ -87,8 +88,8 @@ public class SanityManager : MonoBehaviour
     {
         if (shared.caught && !shared.lost)
         {
-            playerController.mouseLook.enabled = false;
             playerController.canMove = false;
+            cameraController.canLook = false;
 
             Vector3 targetPos = slenderTransform.position;
             targetPos.y += 1f;

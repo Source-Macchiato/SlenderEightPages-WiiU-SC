@@ -3153,12 +3153,12 @@ GameObject:
   - component: {fileID: 1351}
   - component: {fileID: 1360}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: DustParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &206
 GameObject:
   m_ObjectHideFlags: 0
@@ -4618,7 +4618,7 @@ GameObject:
   - component: {fileID: 1386}
   - component: {fileID: 1297}
   m_Layer: 8
-  m_Name: Main Camera
+  m_Name: Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4824,7 +4824,7 @@ GameObject:
   - component: {fileID: 343}
   - component: {fileID: 1299}
   m_Layer: 8
-  m_Name: FPS
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5485,7 +5485,6 @@ MonoBehaviour:
   flashlightManager: {fileID: 2045855546}
   staminaManager: {fileID: 1717639347}
   characterController: {fileID: 1340}
-  mouseLook: {fileID: 1385}
   paused: 0
   canRun: 0
   canMove: 0
@@ -10097,7 +10096,7 @@ Camera:
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967291
-  m_RenderingPath: 2
+  m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
@@ -23473,7 +23472,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 1357351560
+  randomSeed: 853094545
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -27249,17 +27248,12 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 293}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3d9b65fe7bd5351b35eeedcc6a3770f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensitivityX: 5
-  sensitivityY: 5
-  minimumX: 0
-  maximumX: 360
-  minimumY: -60
-  maximumY: 60
+  canLook: 1
   playerTransform: {fileID: 631}
 --- !u!114 &1386
 MonoBehaviour:
@@ -27275,6 +27269,7 @@ MonoBehaviour:
   staminaManager: {fileID: 1717639347}
   zoomManager: {fileID: 1119387458}
   playerController: {fileID: 343}
+  cameraController: {fileID: 1385}
   pauseManager: {fileID: 107483800}
   shared: {fileID: 1733396394}
   s1: {fileID: 0}
@@ -27487,6 +27482,7 @@ MonoBehaviour:
   menuManager: {fileID: 780895475}
   introScript: {fileID: 1374}
   playerController: {fileID: 343}
+  cameraController: {fileID: 1385}
   sanityManager: {fileID: 2044652086}
   shared: {fileID: 1733396394}
   paused: 0
@@ -31457,7 +31453,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c16513edfc8a6941b7c6456d10f5d0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 0}
+  playerController: {fileID: 343}
+  cameraController: {fileID: 1385}
   pauseManager: {fileID: 107483800}
   introScript: {fileID: 1374}
   loseScript: {fileID: 1380}
