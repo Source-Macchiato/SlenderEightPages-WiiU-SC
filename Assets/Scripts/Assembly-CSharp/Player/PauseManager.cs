@@ -38,7 +38,7 @@ public class PauseManager : MonoBehaviour
 
                 menuManager.DisplayMenu();
 
-                playerController.cm.canControl = false;
+                playerController.canMove = false;
                 playerController.mouseLook.enabled = false;
             }
             else
@@ -55,7 +55,7 @@ public class PauseManager : MonoBehaviour
         paused = false;
         Time.timeScale = 1f;
 
-        playerController.cm.canControl = true;
+        playerController.canMove = true;
         playerController.mouseLook.enabled = true;
     }
 

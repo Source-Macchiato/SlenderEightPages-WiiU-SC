@@ -6,7 +6,7 @@ public class PickupPage : MonoBehaviour
     [Header("Scripts")]
     [SerializeField] private FogManager fogManager;
     [SerializeField] private PauseManager pauseManager;
-    [SerializeField] private SprintScript sprscr;
+    [SerializeField] private PlayerController playerController;
     [SerializeField] private SharedVar shared;
 
     [Header("Settings")]
@@ -126,7 +126,7 @@ public class PickupPage : MonoBehaviour
             view.fadeoutgui = 0;
             shared.nearpage = null;
             shared.toolong = 15000;
-            sprscr.jogSpeed = 3.5f + (float)shared.pages * 0.1f;
+            playerController.jogSpeed = 3.5f + (float)shared.pages * 0.1f;
             if (shared.pages < 8)
             {
                 fogManager.targetfog = 0.02f + (float)shared.pages * 0.01f;

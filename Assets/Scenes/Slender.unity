@@ -4616,7 +4616,6 @@ GameObject:
   - component: {fileID: 1385}
   - component: {fileID: 1286}
   - component: {fileID: 1386}
-  - component: {fileID: 1236}
   - component: {fileID: 1297}
   m_Layer: 8
   m_Name: Main Camera
@@ -4822,9 +4821,7 @@ GameObject:
   m_Component:
   - component: {fileID: 631}
   - component: {fileID: 1340}
-  - component: {fileID: 1389}
-  - component: {fileID: 1388}
-  - component: {fileID: 1391}
+  - component: {fileID: 343}
   - component: {fileID: 1299}
   m_Layer: 8
   m_Name: FPS
@@ -5469,6 +5466,35 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
+--- !u!114 &343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05910b5f507b4144eb4dafa143812757, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  introScript: {fileID: 1374}
+  pauseManager: {fileID: 107483800}
+  zoomManager: {fileID: 1119387458}
+  playerScript: {fileID: 1386}
+  shared: {fileID: 1733396394}
+  flashlightManager: {fileID: 2045855546}
+  staminaManager: {fileID: 1717639347}
+  characterController: {fileID: 1340}
+  mouseLook: {fileID: 1385}
+  paused: 0
+  canRun: 0
+  canMove: 0
+  flashlightEnabled: 0
+  walkSpeed: 2
+  runSpeed: 5.5
+  jogSpeed: 3.5
+  direction: {x: 0, y: 0}
+  editorTesting: 1
 --- !u!1 &344
 GameObject:
   m_ObjectHideFlags: 0
@@ -20921,30 +20947,6 @@ MeshCollider:
   m_InflateMesh: 0
   m_SkinWidth: 0.01
   m_Mesh: {fileID: 4300000, guid: 152dcf4fe7f637d4088230ef3407c98f, type: 2}
---- !u!114 &1236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 293}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05910b5f507b4144eb4dafa143812757, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  introScript: {fileID: 1374}
-  pauseManager: {fileID: 107483800}
-  zoomManager: {fileID: 1119387458}
-  playerScript: {fileID: 1386}
-  shared: {fileID: 1733396394}
-  flashlightManager: {fileID: 2045855546}
-  cm: {fileID: 1389}
-  mouseLook: {fileID: 1385}
-  paused: 0
-  canRun: 0
-  flashlightEnabled: 0
-  direction: {x: 0, y: 0}
-  editorTesting: 1
 --- !u!64 &1237
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -23471,7 +23473,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: -175150412
+  randomSeed: 1357351560
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -26715,7 +26717,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fogManager: {fileID: 1060037520}
   pauseManager: {fileID: 107483800}
-  sprscr: {fileID: 1391}
+  playerController: {fileID: 343}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
@@ -26756,7 +26758,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fogManager: {fileID: 1060037520}
   pauseManager: {fileID: 107483800}
-  sprscr: {fileID: 1391}
+  playerController: {fileID: 343}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
@@ -26794,7 +26796,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fogManager: {fileID: 1060037520}
   pauseManager: {fileID: 107483800}
-  sprscr: {fileID: 1391}
+  playerController: {fileID: 343}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
@@ -26860,7 +26862,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fogManager: {fileID: 1060037520}
   pauseManager: {fileID: 107483800}
-  sprscr: {fileID: 1391}
+  playerController: {fileID: 343}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
@@ -26984,7 +26986,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fogManager: {fileID: 1060037520}
   pauseManager: {fileID: 107483800}
-  sprscr: {fileID: 1391}
+  playerController: {fileID: 343}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
@@ -27008,7 +27010,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fogManager: {fileID: 1060037520}
   pauseManager: {fileID: 107483800}
-  sprscr: {fileID: 1391}
+  playerController: {fileID: 343}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
@@ -27230,7 +27232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fogManager: {fileID: 1060037520}
   pauseManager: {fileID: 107483800}
-  sprscr: {fileID: 1391}
+  playerController: {fileID: 343}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
@@ -27272,7 +27274,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   staminaManager: {fileID: 1717639347}
   zoomManager: {fileID: 1119387458}
-  playerController: {fileID: 1236}
+  playerController: {fileID: 343}
   pauseManager: {fileID: 107483800}
   shared: {fileID: 1733396394}
   s1: {fileID: 0}
@@ -27388,94 +27390,6 @@ MonoBehaviour:
   page7: {fileID: 400}
   page8: {fileID: 450}
   whichpage: 0
---- !u!114 &1388
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e42776e1c024a716c06d59b64284f5df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1389
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27d2203ebe409353c4fd3ca589248f24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canControl: 1
-  useFixedUpdate: 1
-  movement:
-    maxForwardSpeed: 2
-    maxSidewaysSpeed: 2
-    maxBackwardsSpeed: 2
-    slopeSpeedMultiplier:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 2
-        time: -90
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      - serializedVersion: 2
-        time: 90
-        value: 0
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    maxGroundAcceleration: 20
-    maxAirAcceleration: 15
-    gravity: 20
-    maxFallSpeed: 20
-  jumping:
-    enabled: 0
-    baseHeight: 1
-    extraHeight: 1
-    perpAmount: 0
-    steepPerpAmount: 0.5
-  movingPlatform:
-    enabled: 1
-    movementTransfer: 2
-  sliding:
-    enabled: 1
-    slidingSpeed: 10
-    sidewaysControl: 1
-    speedControl: 0.4
---- !u!114 &1391
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a5d49f94c2f45f0dc34ea0ca2c64930, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  staminaManager: {fileID: 1717639347}
-  walkSpeed: 2
-  crchSpeed: 1
-  runSpeed: 5.5
-  jogSpeed: 3.5
-  view: {fileID: 1386}
-  shared: {fileID: 1733396394}
 --- !u!114 &1392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27501,7 +27415,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fogManager: {fileID: 1060037520}
   pauseManager: {fileID: 107483800}
-  sprscr: {fileID: 1391}
+  playerController: {fileID: 343}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   pagesound: {fileID: 8300000, guid: 328938d693313b441b37c539fcbe23ce, type: 3}
@@ -27572,7 +27486,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   menuManager: {fileID: 780895475}
   introScript: {fileID: 1374}
-  playerController: {fileID: 1236}
+  playerController: {fileID: 343}
   sanityManager: {fileID: 2044652086}
   shared: {fileID: 1733396394}
   paused: 0
@@ -30963,13 +30877,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d856104764ccea49a9d70871c20eaac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 1236}
+  playerController: {fileID: 343}
   pauseManager: {fileID: 107483800}
   introScript: {fileID: 1374}
   loseScript: {fileID: 1380}
   shared: {fileID: 1733396394}
   zoomManager: {fileID: 1119387458}
-  sprscr: {fileID: 1391}
   sprintcooldown: 0
   amrunning: 0
   flraised: 0
@@ -31544,7 +31457,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c16513edfc8a6941b7c6456d10f5d0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 1236}
+  playerController: {fileID: 0}
   pauseManager: {fileID: 107483800}
   introScript: {fileID: 1374}
   loseScript: {fileID: 1380}
@@ -31601,7 +31514,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9582c5c72780ca4dad6f62f1d659d5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 1236}
+  playerController: {fileID: 343}
   pauseManager: {fileID: 107483800}
   staminaManager: {fileID: 1717639347}
   introScript: {fileID: 1374}

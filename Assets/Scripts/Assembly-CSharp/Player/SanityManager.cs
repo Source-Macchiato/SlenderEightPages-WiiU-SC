@@ -88,7 +88,7 @@ public class SanityManager : MonoBehaviour
         if (shared.caught && !shared.lost)
         {
             playerController.mouseLook.enabled = false;
-            playerController.cm.canControl = false;
+            playerController.canMove = false;
 
             Vector3 targetPos = slenderTransform.position;
             targetPos.y += 1f;

@@ -9,7 +9,6 @@ public class StaminaManager : MonoBehaviour
     [SerializeField] private LoseScript loseScript;
     [SerializeField] private SharedVar shared;
     [SerializeField] private ZoomManager zoomManager;
-    [SerializeField] private SprintScript sprscr;
 
     [Header("Stamina Manager")]
     public int sprintcooldown;
@@ -67,7 +66,7 @@ public class StaminaManager : MonoBehaviour
         }
         else
         {
-            stamina -= shared.scared > 0 ? 0.1125f : sprscr.jogSpeed / 105f;
+            stamina -= shared.scared > 0 ? 0.1125f : playerController.jogSpeed / 105f;
 
             if (shared.scared > 0)
             {

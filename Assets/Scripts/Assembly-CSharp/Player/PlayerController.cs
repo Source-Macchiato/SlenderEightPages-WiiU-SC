@@ -10,14 +10,24 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerScript playerScript; // TEMPORARY
     [SerializeField] private SharedVar shared;
     [SerializeField] private FlashlightManager flashlightManager;
+    [SerializeField] private StaminaManager staminaManager;
 
     [Header("Player References")]
-    public CharacterMotor cm;
+    [SerializeField] private CharacterController characterController;
     public MouseLook mouseLook;
+    
     public bool paused;
     public bool canRun;
+    public bool canMove;
     public bool flashlightEnabled;
+
+    [SerializeField] private float walkSpeed = 2f;
+    [SerializeField] private float runSpeed = 5.5f;
+    public float jogSpeed = 3.5f;
+
+    private Vector3 velocity;
     public Vector2 direction = Vector2.zero;
+
     private WiiU.GamePad gamePad;
     private WiiU.Remote remote;
 #if UNITY_EDITOR
@@ -26,7 +36,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        cm.canControl = false;
+        canMove = false;
         mouseLook.enabled = false;
 
         gamePad = WiiU.GamePad.access;
@@ -460,7 +470,9 @@ public class PlayerController : MonoBehaviour
 
                 introScript.SkipIntro();
             }
-        #endif
+#endif
+
+        HandleMovement();
     }
 
     private void FixedUpdate()
@@ -491,6 +503,37 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    private void HandleMovement()
+    {
+        // Calculate speed
+        float speed = walkSpeed;
+
+        if (canRun && direction.y > 0.1f && characterController.isGrounded && staminaManager.stamina > 10f)
+        {
+            speed = ((shared.scared <= 0) ? jogSpeed : runSpeed);
+        }
+
+        // Horizontal movement
+        Vector3 moveDir = transform.right * direction.x + transform.forward * direction.y;
+        Vector3 horizontalMove = moveDir.normalized * speed * Time.deltaTime;
+
+        // Vertical movement (gravity)
+        if (characterController.isGrounded)
+        {
+            velocity.y = Physics.gravity.y;
+        }
+        else
+        {
+            velocity.y += Physics.gravity.y * Time.deltaTime;
+        }
+
+        if (canMove)
+        {
+            Vector3 verticalMove = velocity * Time.deltaTime;
+            characterController.Move(horizontalMove + verticalMove);
         }
     }
 }
