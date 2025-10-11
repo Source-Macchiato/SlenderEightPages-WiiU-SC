@@ -29001,8 +29001,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1386}
-        m_MethodName: SetGamePlayed
+      - m_Target: {fileID: 107483800}
+        m_MethodName: SetGamePlay
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

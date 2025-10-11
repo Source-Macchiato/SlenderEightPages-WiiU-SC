@@ -59,4 +59,12 @@ public class PauseManager : MonoBehaviour
         playerController.canMove = true;
         cameraController.canLook = true;
     }
+
+    public void SetGamePlay()
+    {
+        if (paused)
+        {
+            ToggleGamePause();
+        }
+    }
 }
