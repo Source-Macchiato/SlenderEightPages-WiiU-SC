@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
     public bool canRun;
     public bool canMove;
     public bool flashlightEnabled;
-    private bool isCoop = false;
 
     [SerializeField] private float walkSpeed = 2f;
     [SerializeField] private float runSpeed = 5.5f;
@@ -58,7 +57,7 @@ public class PlayerController : MonoBehaviour
         WiiU.RemoteState remoteState = remote.state;
 
         // Gamepad //
-        if (isCoop == false || (isCoop == true && (int)playerId == 0))
+        if (GameMode.isCoop == false || (GameMode.isCoop == true && (int)playerId == 0))
         {
             if (gamePadState.gamePadErr == WiiU.GamePadError.None)
             {
@@ -147,7 +146,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Remotes Controller //
-        if (isCoop == false || (isCoop == true && (int)playerId == 1))
+        if (GameMode.isCoop == false || (GameMode.isCoop == true && (int)playerId == 1))
         {
             switch (remoteState.devType)
             {

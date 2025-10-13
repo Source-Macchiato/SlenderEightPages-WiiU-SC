@@ -18,5 +18,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Slender.unity
     guid: 1d5c125cfae134245ab6c3b2385b5745
   - enabled: 1
+    path: Assets/Scenes/Coop.unity
+    guid: 5b96aa96a1dece8468dffee23c76f47f
+  - enabled: 1
     path: Assets/Scenes/Credits.unity
     guid: 1e7cc0300c5fb1941876385753274d82

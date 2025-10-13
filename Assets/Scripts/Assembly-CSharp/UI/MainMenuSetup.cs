@@ -26,9 +26,23 @@ public class MainMenuSetup : MonoBehaviour
 		{
 			menuManager.canNavigate = false;
 
+			GameMode.isCoop = false;
+
             SceneManager.LoadSceneAsync("Loading");
         }
 	}
+
+	public void StartCoop()
+	{
+        if (menuManager.canNavigate)
+        {
+            menuManager.canNavigate = false;
+
+            GameMode.isCoop = true;
+
+            SceneManager.LoadSceneAsync("Loading");
+        }
+    }
 
 	public void Credits()
 	{

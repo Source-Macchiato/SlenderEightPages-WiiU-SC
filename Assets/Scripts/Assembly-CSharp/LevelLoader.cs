@@ -9,7 +9,14 @@ public class LevelLoader : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(LoadAsynchronously("Slender"));
+        if (GameMode.isCoop)
+        {
+            StartCoroutine(LoadAsynchronously("Coop"));
+        }
+        else
+        {
+            StartCoroutine(LoadAsynchronously("Slender"));
+        }
     }
 
     IEnumerator LoadAsynchronously(string sceneName)
