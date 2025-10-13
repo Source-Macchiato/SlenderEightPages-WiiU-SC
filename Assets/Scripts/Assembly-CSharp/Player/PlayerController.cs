@@ -12,10 +12,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private FlashlightManager flashlightManager;
     [SerializeField] private StaminaManager staminaManager;
 
-    [Header("Player References")]
-    [SerializeField] private CharacterController characterController;
+    private CharacterController characterController;
     
-    public bool paused;
     public bool canRun;
     public bool canMove;
     public bool flashlightEnabled;
@@ -35,6 +33,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        characterController = GetComponent<CharacterController>();
+
         canMove = false;
 
         gamePad = WiiU.GamePad.access;
