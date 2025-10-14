@@ -5477,6 +5477,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05910b5f507b4144eb4dafa143812757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerId: 0
   introScript: {fileID: 1374}
   pauseManager: {fileID: 107483800}
   zoomManager: {fileID: 1119387458}
@@ -5484,8 +5485,6 @@ MonoBehaviour:
   shared: {fileID: 1733396394}
   flashlightManager: {fileID: 2045855546}
   staminaManager: {fileID: 1717639347}
-  characterController: {fileID: 1340}
-  paused: 0
   canRun: 0
   canMove: 0
   flashlightEnabled: 0
@@ -23472,7 +23471,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 853094545
+  randomSeed: 1399626398
   InitialModule:
     serializedVersion: 3
     enabled: 1
