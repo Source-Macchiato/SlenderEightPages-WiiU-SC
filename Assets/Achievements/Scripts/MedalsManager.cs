@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -73,7 +74,13 @@ public class MedalsManager : MonoBehaviour {
         {
             if (SaveManager.saveData.achievements[i])
             {
-                StartCoroutine(PublishAchievementIE((Achievements.achievements)i));
+                Thread t = new Thread(new ThreadStart(
+                    delegate
+                    {
+                        StartCoroutine(PublishAchievementIE((Achievements.achievements)i));
+                    })
+                );
+                t.Start();
             }
         }
     }
@@ -83,7 +90,13 @@ public class MedalsManager : MonoBehaviour {
         SaveManager.saveData.UnlockAchievement(key);
         SaveManager.Save();
 
-        StartCoroutine(PublishAchievementIE(key));
+        Thread t = new Thread(new ThreadStart(
+            delegate
+            {
+                StartCoroutine(PublishAchievementIE(key));
+            })
+        );
+        t.Start();
     }
 
     private IEnumerator ShowAchievementIE(string title, string description, Sprite iconSprite = null)
