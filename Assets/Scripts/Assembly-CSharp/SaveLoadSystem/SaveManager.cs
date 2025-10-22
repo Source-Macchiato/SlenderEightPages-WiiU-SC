@@ -62,6 +62,7 @@ public class Settings
     public bool motionControls = true;
     public bool pointerVisibility = true;
     public bool subtitlesEnabled = true;
+    public bool fogEnabled = false;
 }
 
 [Serializable]

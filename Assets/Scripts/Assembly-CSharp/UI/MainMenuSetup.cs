@@ -14,6 +14,7 @@ public class MainMenuSetup : MonoBehaviour
         menuManager.ChangeMenu(0);
 
 		menuManager.SetBackCallback(2, OnBackFromBrewConnect);
+		menuManager.SetBackCallback(3, OnBackFromVideo);
 
 		Cursor.visible = true;
 		Cursor.lockState = CursorLockMode.None;
@@ -61,9 +62,21 @@ public class MainMenuSetup : MonoBehaviour
         menuData.LoadAnalyticsAndUpdateSwitcher();
     }
 
+	public void Video()
+	{
+		menuManager.ChangeMenu(3);
+
+		menuData.LoadFogSwitcher();
+	}
+
 	// Callback functions
 	public void OnBackFromBrewConnect()
 	{
 		menuData.SaveAndUpdateAnalytics();
+	}
+
+	public void OnBackFromVideo()
+	{
+		menuData.SaveFogSwitcher();
 	}
 }
