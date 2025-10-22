@@ -3,12 +3,22 @@ using UnityEngine;
 public class FogManager : MonoBehaviour 
 {
     public float targetfog = 0.02f;
+
+    [SerializeField] private GameObject fogParticles;
+
     [Header("Scripts")]
     [SerializeField] private PauseManager pauseManager;
 
+    private void Start()
+    {
+        if (fogParticles != null && SaveManager.saveData != null)
+        {
+            fogParticles.SetActive(SaveManager.saveData.settings.fogEnabled);
+        }
+    }
+
     private void Update()
     {
-
         if (!pauseManager.paused)
         {
             // Fog Manager //

@@ -3153,12 +3153,12 @@ GameObject:
   - component: {fileID: 1351}
   - component: {fileID: 1360}
   m_Layer: 0
-  m_Name: DustParticles
+  m_Name: FogParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &206
 GameObject:
   m_ObjectHideFlags: 0
@@ -23471,7 +23471,7 @@ ParticleSystem:
   moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 1399626398
+  randomSeed: 1932562706
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -29747,6 +29747,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetfog: 0.02
+  fogParticles: {fileID: 205}
   pauseManager: {fileID: 107483800}
 --- !u!1001 &1065282505
 Prefab:
