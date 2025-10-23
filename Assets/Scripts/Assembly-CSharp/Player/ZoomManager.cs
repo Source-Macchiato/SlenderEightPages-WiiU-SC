@@ -20,7 +20,7 @@ public class ZoomManager : MonoBehaviour
     {
         if (zoomIn && !zoomOut && zoom > 20f)
         {
-            zoom -= 0.75f;
+            zoom -= 50f * Time.deltaTime;
             if (zoom < 20f)
             {
                 zoom = 20f;
@@ -29,7 +29,7 @@ public class ZoomManager : MonoBehaviour
         }
         else if (zoomOut && !zoomIn && zoom < 60f)
         {
-            zoom += 0.75f;
+            zoom += 50f * Time.deltaTime;
             if (zoom > 60f)
             {
                 zoom = 60f;
