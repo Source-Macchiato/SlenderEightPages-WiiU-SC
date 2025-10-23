@@ -74,13 +74,7 @@ public class MedalsManager : MonoBehaviour {
         {
             if (SaveManager.saveData.achievements[i])
             {
-                Thread t = new Thread(new ThreadStart(
-                    delegate
-                    {
-                        StartCoroutine(PublishAchievementIE((Achievements.achievements)i));
-                    })
-                );
-                t.Start();
+                StartCoroutine(PublishAchievementIE((Achievements.achievements)i));
             }
         }
     }
@@ -90,13 +84,7 @@ public class MedalsManager : MonoBehaviour {
         SaveManager.saveData.UnlockAchievement(key);
         SaveManager.Save();
 
-        Thread t = new Thread(new ThreadStart(
-            delegate
-            {
-                StartCoroutine(PublishAchievementIE(key));
-            })
-        );
-        t.Start();
+        StartCoroutine(PublishAchievementIE(key));
     }
 
     private IEnumerator ShowAchievementIE(string title, string description, Sprite iconSprite = null)
