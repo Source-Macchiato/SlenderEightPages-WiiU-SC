@@ -135,7 +135,7 @@ public class PlayerController : MonoBehaviour
 
                 if (gamePadState.IsTriggered(WiiU.GamePadButton.B))
                 {
-                    pauseManager.ToggleGamePause();
+                    pauseManager.SetGamePlay();
                 }
 
                 if (gamePadState.IsTriggered(WiiU.GamePadButton.Plus))
@@ -225,7 +225,7 @@ public class PlayerController : MonoBehaviour
 
                     if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.B))
                     {
-                        pauseManager.ToggleGamePause();
+                        pauseManager.SetGamePlay();
                     }
 
                     if (remoteState.pro.IsTriggered(WiiU.ProControllerButton.Plus))
@@ -324,7 +324,7 @@ public class PlayerController : MonoBehaviour
 
                     if (remoteState.classic.IsTriggered(WiiU.ClassicButton.B))
                     {
-                        pauseManager.ToggleGamePause();
+                        pauseManager.SetGamePlay();
                     }
 
                     if (remoteState.classic.IsTriggered(WiiU.ClassicButton.Plus))
@@ -348,7 +348,7 @@ public class PlayerController : MonoBehaviour
                     if (remoteState.IsTriggered(WiiU.RemoteButton.B))
                     {
                         canRun = true;
-                        pauseManager.ToggleGamePause();
+                        pauseManager.SetGamePlay();
                     }
                     else if (remoteState.IsReleased(WiiU.RemoteButton.B))
                     {

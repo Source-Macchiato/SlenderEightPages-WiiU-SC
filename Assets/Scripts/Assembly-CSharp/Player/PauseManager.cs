@@ -18,6 +18,18 @@ public class PauseManager : MonoBehaviour
         // Pause logic
         if (!paused)
         {
+            SetGamePause();
+        }
+        else
+        {
+            SetGamePlay();
+        }
+    }
+
+    public void SetGamePause()
+    {
+        if (!paused)
+        {
             // If the game hasn't started yet, keep the original "backedup = true" behavior
             if (!introScript.gamestarted)
             {
@@ -46,25 +58,21 @@ public class PauseManager : MonoBehaviour
             {
                 sanityManager.flicker = 3;
             }
-
-            return;
         }
-
-        // Unpause logic
-        menuManager.HideMenu();
-
-        paused = false;
-        Time.timeScale = 1f;
-
-        playerController.canMove = true;
-        cameraController.canLook = true;
     }
 
     public void SetGamePlay()
     {
         if (paused)
         {
-            ToggleGamePause();
+            // Unpause logic
+            menuManager.HideMenu();
+
+            paused = false;
+            Time.timeScale = 1f;
+
+            playerController.canMove = true;
+            cameraController.canLook = true;
         }
     }
 }
