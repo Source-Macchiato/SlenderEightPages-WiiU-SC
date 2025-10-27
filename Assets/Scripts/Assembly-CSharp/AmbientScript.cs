@@ -4,7 +4,6 @@ public class AmbientScript : MonoBehaviour
 {
     [SerializeField] private PauseManager pauseManager;
     [SerializeField] private SharedVar shared;
-    [SerializeField] private SanityManager sanityManger;
 	public Transform rotateme;
 
 	public int timer = 100;

@@ -5,7 +5,6 @@ using WiiU = UnityEngine.WiiU;
 public class LoseScript : MonoBehaviour
 {
 	[SerializeField] private FogManager fogManager;
-	[SerializeField] private SanityManager sanityManger;
 	[SerializeField] private IntroScript introScript;
 	[SerializeField] private SharedVar shared;
 	[SerializeField] private FlashlightManager flashLightManager;

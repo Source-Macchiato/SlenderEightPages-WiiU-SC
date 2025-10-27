@@ -26847,7 +26847,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseManager: {fileID: 107483800}
   shared: {fileID: 1733396394}
-  sanityManger: {fileID: 0}
   rotateme: {fileID: 483}
   timer: 100
   fs1: {fileID: 8300000, guid: bacb9259ef45c1340af830cf4d3a1709, type: 3}
@@ -27097,10 +27096,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fogManager: {fileID: 1060037520}
-  sanityManger: {fileID: 2044652086}
   introScript: {fileID: 1374}
   shared: {fileID: 1733396394}
-  flashLightManager: {fileID: 0}
+  flashLightManager: {fileID: 349}
   player: {fileID: 631}
   view: {fileID: 1386}
   onthistime: 0
