@@ -4822,6 +4822,7 @@ GameObject:
   - component: {fileID: 631}
   - component: {fileID: 1340}
   - component: {fileID: 343}
+  - component: {fileID: 349}
   - component: {fileID: 1299}
   m_Layer: 8
   m_Name: Player
@@ -5483,7 +5484,7 @@ MonoBehaviour:
   zoomManager: {fileID: 1119387458}
   playerScript: {fileID: 1386}
   shared: {fileID: 1733396394}
-  flashlightManager: {fileID: 2045855546}
+  flashlightManager: {fileID: 0}
   staminaManager: {fileID: 1717639347}
   canRun: 0
   canMove: 0
@@ -5577,6 +5578,34 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
+--- !u!114 &349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9582c5c72780ca4dad6f62f1d659d5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 343}
+  pauseManager: {fileID: 107483800}
+  staminaManager: {fileID: 1717639347}
+  introScript: {fileID: 1374}
+  loseScript: {fileID: 1380}
+  shared: {fileID: 1733396394}
+  flashlightEnabled: 0
+  flashlightSound: {fileID: 1292}
+  fldown: {fileID: 661}
+  flup: {fileID: 484}
+  torch: {fileID: 1308}
+  eyes: {fileID: 1309}
+  battery: 1
+  torchdying: 0
+  mask:
+    serializedVersion: 2
+    m_Bits: 23
 --- !u!1 &350
 GameObject:
   m_ObjectHideFlags: 0
@@ -27071,7 +27100,7 @@ MonoBehaviour:
   sanityManger: {fileID: 2044652086}
   introScript: {fileID: 1374}
   shared: {fileID: 1733396394}
-  flashLightManager: {fileID: 2045855546}
+  flashLightManager: {fileID: 0}
   player: {fileID: 631}
   view: {fileID: 1386}
   onthistime: 0
@@ -27196,7 +27225,7 @@ MonoBehaviour:
   sanityManager: {fileID: 2044652086}
   staminaManager: {fileID: 1717639347}
   pauseManager: {fileID: 107483800}
-  flashLightManager: {fileID: 2045855546}
+  flashLightManager: {fileID: 0}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   SM: {fileID: 250}
@@ -29733,7 +29762,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1360401515}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1060037520
 MonoBehaviour:
@@ -30271,7 +30300,6 @@ Transform:
   - {fileID: 107483801}
   - {fileID: 1119387457}
   - {fileID: 1733396395}
-  - {fileID: 2045855545}
   - {fileID: 1717639346}
   - {fileID: 1060037519}
   m_Father: {fileID: 0}
@@ -30861,7 +30889,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1360401515}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1717639347
 MonoBehaviour:
@@ -31472,63 +31500,6 @@ MonoBehaviour:
   flicker: 0
   endflicker: 0
   lastflicker: 0
---- !u!1 &2045855544
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 2045855545}
-  - component: {fileID: 2045855546}
-  m_Layer: 0
-  m_Name: FlashlightManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2045855545
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2045855544}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1360401515}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2045855546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2045855544}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9582c5c72780ca4dad6f62f1d659d5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerController: {fileID: 343}
-  pauseManager: {fileID: 107483800}
-  staminaManager: {fileID: 1717639347}
-  introScript: {fileID: 1374}
-  loseScript: {fileID: 1380}
-  shared: {fileID: 1733396394}
-  flashlightEnabled: 0
-  flashlightSound: {fileID: 1292}
-  fldown: {fileID: 661}
-  flup: {fileID: 484}
-  torch: {fileID: 1308}
-  eyes: {fileID: 1309}
-  battery: 1
-  torchdying: 0
-  mask:
-    serializedVersion: 2
-    m_Bits: 23
 --- !u!1 &2127140950
 GameObject:
   m_ObjectHideFlags: 0
