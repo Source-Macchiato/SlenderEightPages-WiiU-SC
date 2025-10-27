@@ -27225,7 +27225,7 @@ MonoBehaviour:
   sanityManager: {fileID: 2044652086}
   staminaManager: {fileID: 1717639347}
   pauseManager: {fileID: 107483800}
-  flashLightManager: {fileID: 0}
+  flashLightManager: {fileID: 349}
   shared: {fileID: 1733396394}
   player: {fileID: 619}
   SM: {fileID: 250}
