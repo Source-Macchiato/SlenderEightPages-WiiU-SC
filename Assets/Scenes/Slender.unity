@@ -5484,7 +5484,7 @@ MonoBehaviour:
   zoomManager: {fileID: 1119387458}
   playerScript: {fileID: 1386}
   shared: {fileID: 1733396394}
-  flashlightManager: {fileID: 0}
+  flashlightManager: {fileID: 349}
   staminaManager: {fileID: 1717639347}
   canRun: 0
   canMove: 0

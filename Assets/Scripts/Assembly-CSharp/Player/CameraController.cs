@@ -44,6 +44,10 @@ public class CameraController : MonoBehaviour
 
         Vector2 input = Vector2.zero;
 
+        // When using the pointer (Wiimote) we will optionally map its Y directly to the camera pitch.
+        bool usePointerY = false;
+        float mappedPointerY = 0f;
+
         // Gamepad
         if (gamePadState.gamePadErr == WiiU.GamePadError.None)
         {
@@ -65,23 +69,19 @@ public class CameraController : MonoBehaviour
                 pointerPosition.x = ((pointerPosition.x + 1.0f) / 2.0f) * WiiU.Core.GetScreenWidth(WiiU.DisplayIndex.TV);
                 pointerPosition.y = WiiU.Core.GetScreenHeight(WiiU.DisplayIndex.TV) - ((pointerPosition.y + 1.0f) / 2.0f) * WiiU.Core.GetScreenHeight(WiiU.DisplayIndex.TV);
 
-                if (pointerPosition.x < 300f)
+                if (pointerPosition.x < 150f)
                 {
                     input.x = -1f;
                 }
-                else if (pointerPosition.x > WiiU.Core.GetScreenWidth(WiiU.DisplayIndex.TV) - 300f)
+                else if (pointerPosition.x > WiiU.Core.GetScreenWidth(WiiU.DisplayIndex.TV) - 150f)
                 {
                     input.x = 1f;
                 }
 
-                if (pointerPosition.y < 200f)
-                {
-                    input.y = -1f;
-                }
-                else if (pointerPosition.y > WiiU.Core.GetScreenHeight(WiiU.DisplayIndex.TV) - 200f)
-                {
-                    input.y = 1f;
-                }
+                float remoteRawY = remoteState.pos.y;
+                float t = Mathf.Clamp01((remoteRawY + 1f) / 2f);
+                mappedPointerY = Mathf.Lerp(maximumY, minimumY, t);
+                usePointerY = true;
                 break;
         }
 
@@ -89,11 +89,20 @@ public class CameraController : MonoBehaviour
         {
             input.x = Input.GetAxis("Mouse X");
             input.y = Input.GetAxis("Mouse Y");
+
+            usePointerY = false;
         }
 
         // Apply rotation
         currentRotation.x += input.x * sensitivityX;
         currentRotation.y += input.y * sensitivityY;
+
+        // If the Wiimote pointer is being used we override the pitch
+        if (usePointerY)
+        {
+            currentRotation.y = mappedPointerY;
+        }
+
         currentRotation.y = Mathf.Clamp(currentRotation.y, minimumY, maximumY);
 
         transform.localEulerAngles = new Vector3(-currentRotation.y, 0f, 0f);
