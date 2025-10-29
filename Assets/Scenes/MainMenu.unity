@@ -3206,7 +3206,7 @@ GameObject:
   - component: {fileID: 1056849305}
   - component: {fileID: 1056849304}
   m_Layer: 0
-  m_Name: AnalyticsData
+  m_Name: Analytics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3223,6 +3223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac8d58d2813c099439e91c1d1e983f89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectToken: 31bd0a33956e67961b6cc12117530e188d95d89d35cd435339883c67c0e370bc
 --- !u!4 &1056849305
 Transform:
   m_ObjectHideFlags: 0

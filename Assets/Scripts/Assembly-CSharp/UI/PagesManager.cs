@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+using BrewConnect;
+
 public class PagesManager : MonoBehaviour
 {
     [SerializeField] private GameObject pageFullScreen;
@@ -33,9 +35,9 @@ public class PagesManager : MonoBehaviour
 		pageStatus[(int)achievement] = true;
 
 		// Send analytics
-		if (AnalyticsData.analyticsData != null)
+		if (Analytics.analytics != null)
 		{
-			StartCoroutine(AnalyticsData.analyticsData.UpdateAnalytics("pages", AnalyticsData.analyticsData.GetPages()));
+			StartCoroutine(Analytics.analytics.UpdateAnalytics("pages", Analytics.analytics.GetPages()));
 		}
 	}
 

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using BrewConnect;
+
 public class MenuData : MonoBehaviour
 {
 	[SerializeField] private SwitcherData analyticsSwitcher;
@@ -16,9 +18,9 @@ public class MenuData : MonoBehaviour
 		SaveManager.saveData.settings.shareAnalytics = analyticsSwitcher.currentOptionId == 1 ? 0 : 1;
 		SaveManager.Save();
 
-		if (AnalyticsData.analyticsData != null)
+		if (Analytics.analytics != null)
 		{
-            AnalyticsData.analyticsData.CanShareAnalytics();
+            Analytics.analytics.CanShareAnalytics();
         }
 	}
 
