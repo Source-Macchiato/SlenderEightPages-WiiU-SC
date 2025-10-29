@@ -47,6 +47,7 @@ namespace BrewConnect
                     analytics_entries = new List<AnalyticsEntry>
                     {
                         new AnalyticsEntry { name = "username", value = GetAccountName() },
+                        new AnalyticsEntry { name = "nnid", value = GetNintendoName() },
                         new AnalyticsEntry { name = "version", value = GetVersion() },
                         new AnalyticsEntry { name = "language", value = GetLanguage() },
                         new AnalyticsEntry { name = "pages", value = GetPages() }
@@ -111,6 +112,8 @@ namespace BrewConnect
             }
         }
 
+        
+
         private int StatusCode(WWW www)
         {
             string statusLine;
@@ -135,9 +138,9 @@ namespace BrewConnect
 
         private string GetAccountName()
         {
-            string username = SaveManager.token;
+            string username = SaveManager.username;
 
-            if (string.IsNullOrEmpty(username) || username == "<WiiU_AccountName>")
+            if (string.IsNullOrEmpty(username))
             {
                 return "Unknown";
             }
@@ -238,12 +241,6 @@ namespace BrewConnect
         public List<AnalyticsEntry> analytics_entries;
     }
 
-    [Serializable]
-    public class Login
-    {
-        public string token;
-    }
-
     // Responses
     [Serializable]
     public class Response<T>
@@ -255,13 +252,6 @@ namespace BrewConnect
     [Serializable]
     public class AddDataResponse
     {
-        public string token;
-    }
-
-    [Serializable]
-    public class LoginResponse
-    {
-        public string username;
         public string token;
     }
 }

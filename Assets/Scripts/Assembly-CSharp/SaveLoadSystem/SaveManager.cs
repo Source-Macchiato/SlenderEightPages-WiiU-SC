@@ -7,6 +7,7 @@ public class SaveManager : MonoBehaviour
 {
     public static SaveData saveData = new SaveData();
     public static string token;
+    public static string username;
 
     void Start()
     {
