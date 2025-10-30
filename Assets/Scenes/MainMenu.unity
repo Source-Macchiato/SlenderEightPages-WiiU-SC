@@ -2074,6 +2074,9 @@ MonoBehaviour:
   fadeInDuration: 2
   fadeOutDuration: 2
   overlapTime: 1
+  randomizePosition: 1
+  minPosition: {x: -400, y: -400}
+  maxPosition: {x: 400, y: 400}
 --- !u!1 &801290203
 GameObject:
   m_ObjectHideFlags: 0
