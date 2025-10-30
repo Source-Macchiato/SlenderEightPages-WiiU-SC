@@ -131,7 +131,10 @@ public class SlenderMan : MonoBehaviour
 
 		for (int i = 0; i < checkPoints.Length; i++)
 		{
-			if (Physics.Raycast(player.position, (checkPoints[i] - player.position).normalized, out hit))
+            sanityManager.cansee = false;
+            sanityManager.drain = 0f;
+
+            if (Physics.Raycast(player.position, (checkPoints[i] - player.position).normalized, out hit))
 			{
 				if (hit.collider.gameObject == gameObject)
 				{
@@ -144,15 +147,9 @@ public class SlenderMan : MonoBehaviour
 					{
 						TriggerScare();
 					}
-					// break; // No need to check other points
-				}
-				else
-				{
-                    sanityManager.cansee = false;
-                    sanityManager.drain = 0f;
 				}
 			}
-		}
+        }
 	}
 
 	// Triggers a scare event when the player first sees Slender

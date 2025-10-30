@@ -44,7 +44,7 @@ public class SanityManager : MonoBehaviour
         slenderTransform = slenderMan.SM.transform;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (endflicker)
         {
@@ -71,7 +71,7 @@ public class SanityManager : MonoBehaviour
         if (shared.scared > 0)
         {
             shared.scared--;
-        }  
+        }
     }
 
     // Resets all background music //
