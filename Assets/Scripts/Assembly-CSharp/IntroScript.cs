@@ -209,9 +209,17 @@ public class IntroScript : MonoBehaviour
 
 		if (!shared.mh)
 		{
-			if (timer >= 50 && timer < 400)
+			if (timer >= 50 && timer < 200)
 			{
 				GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Parsec Productions", credits);
+			}
+			else if (timer >= 200 && timer < 350)
+			{
+				GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "and", credits);
+			}
+			else if (timer >= 350 && timer < 500)
+			{
+				GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 25, 600f, 50f), "Source Macchiato", credits);
 			}
 			else if (timer >= 500 && timer < 850)
 			{
