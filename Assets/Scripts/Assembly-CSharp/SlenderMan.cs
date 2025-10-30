@@ -131,8 +131,8 @@ public class SlenderMan : MonoBehaviour
 
 		for (int i = 0; i < checkPoints.Length; i++)
 		{
-            sanityManager.cansee = false;
-            sanityManager.drain = 0f;
+            // sanityManager.cansee = false;
+            // sanityManager.drain = 0f;
 
             if (Physics.Raycast(player.position, (checkPoints[i] - player.position).normalized, out hit))
 			{
