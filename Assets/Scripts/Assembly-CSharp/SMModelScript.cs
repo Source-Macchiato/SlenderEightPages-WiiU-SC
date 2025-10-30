@@ -10,8 +10,8 @@ public class SMModelScript : MonoBehaviour
 
 	private void Update()
 	{
-		sanityManager.cansee = false;
-		sanityManager.drain = 0f;
+		//sanityManager.cansee = false;
+		//sanityManager.drain = 0f;
 	}
 
 	private void OnWillRenderObject()

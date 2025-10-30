@@ -119,7 +119,9 @@ public class SlenderMan : MonoBehaviour
 
 		// Calculate drain once
 		float drainMultiplier = shared.daytime ? 1.5f : (flashLightManager.torch.enabled ? 1f : 2f);
+		Debug.Log("le caca de cheval: " + drainMultiplier);
 		float drain = Mathf.Pow(2f, -_distToPlayer * drainMultiplier / 10f);
+		Debug.Log("prout: " + drain);
 
 		sanityManager.cansee = false;
 
@@ -135,6 +137,7 @@ public class SlenderMan : MonoBehaviour
 				{
 					sanityManager.cansee = true;
 					sanityManager.drain = drain;
+					Debug.Log("chocolat");
 
 					// First sighting logic
 					if (!sanityManager.justsaw && _distToPlayer < SCARE_DISTANCE && shared.scared <= 0)
@@ -142,6 +145,11 @@ public class SlenderMan : MonoBehaviour
 						TriggerScare();
 					}
 					// break; // No need to check other points
+				}
+				else
+				{
+                    sanityManager.cansee = false;
+                    sanityManager.drain = 0f;
 				}
 			}
 		}
