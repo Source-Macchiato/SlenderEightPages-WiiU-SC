@@ -27298,25 +27298,25 @@ MonoBehaviour:
   cameraController: {fileID: 1385}
   pauseManager: {fileID: 107483800}
   shared: {fileID: 1733396394}
-  s1: {fileID: 0}
-  s2: {fileID: 0}
-  s3: {fileID: 0}
-  s4: {fileID: 0}
-  s5: {fileID: 0}
-  s6: {fileID: 0}
-  s7: {fileID: 0}
-  s8: {fileID: 0}
-  s9: {fileID: 0}
-  s10: {fileID: 0}
-  s11: {fileID: 0}
-  s12: {fileID: 0}
-  t1: {fileID: 0}
-  t2: {fileID: 0}
-  t3: {fileID: 0}
-  t4: {fileID: 0}
-  t5: {fileID: 0}
-  t6: {fileID: 0}
-  t7: {fileID: 0}
+  s1: {fileID: 8300000, guid: d6977d86095e64a41b1ef626eae46b6f, type: 3}
+  s2: {fileID: 8300000, guid: d6d91ad151b7e9842a753f31b843cb0a, type: 3}
+  s3: {fileID: 8300000, guid: d0c43a0f87f8edf4ba446e1cb2ff770d, type: 3}
+  s4: {fileID: 8300000, guid: d28641f277a2d664c997e0ee5ed6232e, type: 3}
+  s5: {fileID: 8300000, guid: 50c299f9dda2ed241821557ec8787227, type: 3}
+  s6: {fileID: 8300000, guid: b646f72822b4821408f9eb8aefdc5b29, type: 3}
+  s7: {fileID: 8300000, guid: 1555e06f8c1c3dc42a3af0b9310ffa56, type: 3}
+  s8: {fileID: 8300000, guid: 172354e706dfc214fa6d763dfe8b25da, type: 3}
+  s9: {fileID: 8300000, guid: 9768ad6622040d948bba0cdb225fa9d7, type: 3}
+  s10: {fileID: 8300000, guid: 89a4a0f48f7d40a48a640c19f796845a, type: 3}
+  s11: {fileID: 8300000, guid: a1323745970d6614b9c92f5de08a5bd7, type: 3}
+  s12: {fileID: 8300000, guid: b14c6bbcacf32254ba3fe301f1362866, type: 3}
+  t1: {fileID: 8300000, guid: 997872408ff42bc4fa9e5dc6194ffc17, type: 3}
+  t2: {fileID: 8300000, guid: ee4fa3359c76a6c49a52cc40cb3548ba, type: 3}
+  t3: {fileID: 8300000, guid: cc18f3be026f15644b330cd9d969b15d, type: 3}
+  t4: {fileID: 8300000, guid: e2cbc726ad844314c877cd62175f4905, type: 3}
+  t5: {fileID: 8300000, guid: 27f2e46abba15db4883b46c6f96c5e7c, type: 3}
+  t6: {fileID: 8300000, guid: 337f1b0fbf2144d4c92fa2b3e2d39584, type: 3}
+  t7: {fileID: 8300000, guid: 0d4456524f4eec945bd60b750bd4cf36, type: 3}
   climbfence: {fileID: 1289}
   laststep: 0
   hint:

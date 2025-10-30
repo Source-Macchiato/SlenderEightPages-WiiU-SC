@@ -25,7 +25,7 @@ public class StaminaManager : MonoBehaviour
     private const float SCALE_DIVISOR = 57.5f;  // Divisor for scaling calculation
     private const float SCALE_OFFSET = 2.5f;    // Offset for scaling calculation
 
-    private void Update()
+    private void FixedUpdate()
     {
         // Early exits for performance
         if (pauseManager.paused || (shared.lost && loseScript.timeleft <= 250) || !introScript.introEnded) return;

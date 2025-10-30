@@ -110,7 +110,7 @@ public class PlayerScript : MonoBehaviour
             
             if (!shared.lost || loseScript.timeleft > 250)
             {
-                /*if (introScript.introEnded)
+                if (introScript.introEnded)
                 {
                     // FOOTSTEPS SOUND //
                     if (staminaManager.stepcd <= 0 && loseScript.timeleft < 950)
@@ -259,7 +259,7 @@ public class PlayerScript : MonoBehaviour
                             laststep = num2;
                         }
                     }
-                } */
+                }
                 if (introScript.timer == 950)
                 {
                     staminaManager.stepcd = 120;
