@@ -77,7 +77,17 @@ public class Credits : MonoBehaviour
 
 		yield return new WaitForSeconds(0.5f);
 
-		thanksForPlayingText.text = "Thanks for playing";
+		titleText.text = "Decompilation";
+		descriptionText.text = "Gamejolt @Real_JackOfficial_Demon";
+
+		yield return new WaitForSeconds(1.5f);
+
+        titleText.text = string.Empty;
+        descriptionText.text = string.Empty;
+
+        yield return new WaitForSeconds(0.5f);
+
+        thanksForPlayingText.text = "Thanks for playing";
 
 		yield return new WaitForSeconds(1.5f);
 

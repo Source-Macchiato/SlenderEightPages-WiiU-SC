@@ -259,8 +259,8 @@ PlayerSettings:
   openGLRequireES31AEP: 0
   webPlayerTemplate: APPLICATION:Default
   m_TemplateCustomTags: {}
-  wiiUTitleID: 0005000011000000
-  wiiUGroupID: 00010000
+  wiiUTitleID: 000500001027F500
+  wiiUGroupID: 001027F5
   wiiUCommonSaveSize: 0
   wiiUAccountSaveSize: 2048
   wiiUOlvAccessKey: 0
