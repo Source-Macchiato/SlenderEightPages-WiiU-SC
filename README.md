@@ -25,7 +25,7 @@ STEP: Wii U Edition is a fan-made homebrew port of *Slender The Eight Pages*, ad
 - SD card with sufficient space
 
 ### How to install
-1. Download the latest release from the [itch.io official page](`https://source-macchiato.itch.io/step-wiiu-edition`).
+1. Download the latest release from the [itch.io official page](https://source-macchiato.itch.io/step-wiiu-edition).
 2. Put the unzipped folder in the "install" folder of your SD card
 3. Start the installation with WUP Installer GX2 or NUSspli (don't forget to put the [Sigpatches module](https://github.com/marco-calautti/SigpatchesModuleWiiU) in SD:/wiiu/environments/your-environment/modules/setup).
 4. Go back to the Wii U menu, the game should appear. if you have any issue [join our discord server](https://sourcemacchiato.com/discord)
