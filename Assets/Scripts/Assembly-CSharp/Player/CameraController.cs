@@ -5,8 +5,8 @@ public class CameraController : MonoBehaviour
 {
     [HideInInspector] public bool canLook = true;
 
-    private float sensitivityX = 5f;
-    private float sensitivityY = 5f;
+    private float sensitivityX = 200f;
+    private float sensitivityY = 200f;
 
     private float minimumY = -60f;
     private float maximumY = 60f;
@@ -87,8 +87,8 @@ public class CameraController : MonoBehaviour
         }
 
         // Apply rotation
-        currentRotation.x += input.x * sensitivityX;
-        currentRotation.y += input.y * sensitivityY;
+        currentRotation.x += input.x * sensitivityX * Time.deltaTime;
+        currentRotation.y += input.y * sensitivityY * Time.deltaTime;
         currentRotation.y = Mathf.Clamp(currentRotation.y, minimumY, maximumY);
 
         transform.localEulerAngles = new Vector3(-currentRotation.y, 0f, 0f);
